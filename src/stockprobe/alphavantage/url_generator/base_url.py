@@ -1,7 +1,9 @@
-# This module contains the base pydal class that is used to interact with the alphavantage API
+"""This module contains the base pydantic class that is used to interact with the alphavantage API."""
+
+from __future__ import annotations
+
 import logging
 from enum import StrEnum
-from typing import Optional
 
 import requests
 from pydantic import BaseModel, Field, model_validator
@@ -20,17 +22,19 @@ class DataType(StrEnum):
 
 
 class BaseAPIurl(BaseModel):
-    """Base model for all API requests"""
+    """Base model for all API requests."""
 
     base_url: str = "https://www.alphavantage.co/query"
     apikey: str = Field(..., description="Your API key")
     datatype: DataType = Field(
-        DataType.JSON, description="Response format (JSON or CSV)"
+        DataType.JSON,
+        description="Response format (JSON or CSV)",
     )
-    symbol: Optional[str] = Field(..., description="Stock symbol")
-    symbols: Optional[list[str]] = Field([], description="Stock symbols")
+    symbol: str | None = Field(..., description="Stock symbol")
+    symbols: list[str] | None = Field([], description="Stock symbols")
     validate_symbol: bool = Field(
-        True, description="Check if the symbol exists in the API database"
+        default_factory=True,
+        description="Check if the symbol exists in the API database",
     )
 
     def _to_url_params(self) -> str:
@@ -41,27 +45,29 @@ class BaseAPIurl(BaseModel):
         return "&".join(params)
 
     def return_url(self) -> str:
-        """Return the URL for the request"""
+        """Return the URL for the request."""
         return f"{self.base_url}?{self._to_url_params()}"
 
     @model_validator(mode="after")
-    def check_symbol_exists(self):
-        """Check if the symbol exists in the API database"""
+    def check_symbol_exists(self) -> BaseAPIurl:
+        """Check if the symbol exists in the API database."""
         if not self.validate_symbol:
             return self
 
-        logger.info(f"Checking if symbol {self.symbol} exists")
+        logger.info("Checking if symbol %s exists", self.symbol)
         response = requests.get(
-            f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={self.symbol}&apikey={self.apikey}"
+            f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={self.symbol}&apikey={self.apikey}",
+            timeout=10,  # Timeout is in seconds
         )
         if response.status_code != 200:
-            raise ValueError(f"An error occurred: {response.text}")
+            msg = f"An error occurred: {response.text}"
+            raise ValueError(msg)
+
         data = response.json()
-        logger.info(f"Symbol search response: {data}")
+        logger.info("Symbol search response: %s", data)
         if data.get("bestMatches", [{}])[0].get("9. matchScore", 0) != "1.0000":
-            raise ValueError(
-                f"Symbol {self.symbol} not found did you mean: {data.get("bestMatches", "No matches found")}"
-            )
+            msg = f"Symbol {self.symbol} not found did you mean: {data.get('bestMatches', 'No matches found')}"
+            raise ValueError(msg)
         return self
 
     class Config:
