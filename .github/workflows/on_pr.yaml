@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run Ruff linter
-        uses: ./.github/actions/ruff
+        uses: astral-sh/ruff-action@v3
 
   python-test:
     runs-on: ubuntu-latest
