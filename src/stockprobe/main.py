@@ -17,7 +17,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def get_api_data(url) -> dict | None:
+def get_api_data(url: str) -> dict | None:
+    """Fetch data from an API."""
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()  # Raise an exception for HTTP errors
