@@ -4,4 +4,4 @@ from abc import ABC
 
 
 class AlphavantageUrls(ABC):
-    pass
+    base_url = "https://www.alphavantage.co/query?"
