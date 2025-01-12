@@ -1,3 +1,5 @@
+"""Pytest test cases for the BaseAPIurl class."""
+
 import pytest
 import requests_mock
 from pydantic import ValidationError
