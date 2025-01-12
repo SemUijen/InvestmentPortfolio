@@ -62,4 +62,4 @@ def test_validate_symbol_no_matches_found() -> None:
             ValidationError,
             match="Symbol INVALID not found and no close matches found",
         ):
-            base_url = BaseAPIurl(symbol="INVALID", apikey="demo", validate_symbol=True)
+            BaseAPIurl(symbol="INVALID", apikey="demo", validate_symbol=True)
