@@ -1,4 +1,5 @@
 requests
+requests_mock
 python-dotenv
 pytest
 pydantic
