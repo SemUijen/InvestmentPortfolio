@@ -35,7 +35,11 @@ if __name__ == "__main__":
     if not api_key:
         error_message = "No API key found. Please set the API_KEY environment variable."
         raise ValueError(error_message)
-    url_generator = TimeSeriesDailyURL(apikey=api_key, symbol="IWDA")
+    url_generator = TimeSeriesDailyURL(
+        apikey=api_key,
+        symbol="IWDA.AMS",
+        validate_symbol=False,
+    )
     daily_url = url_generator.return_url()
     data = get_api_data(daily_url)
     if data:

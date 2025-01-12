@@ -1,4 +1,4 @@
-"""This module contains the base pydantic class that is used to interact with the alphavantage API."""
+"""Module contains the base pydantic class that is used to interact with the alphavantage API."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ class BaseAPIurl(BaseModel):
     symbol: str | None = Field(..., description="Stock symbol")
     symbols: list[str] | None = Field([], description="Stock symbols")
     validate_symbol: bool = Field(
-        default_factory=True,
+        default=True,
         description="Check if the symbol exists in the API database",
     )
 
@@ -50,7 +50,11 @@ class BaseAPIurl(BaseModel):
 
     @model_validator(mode="after")
     def check_symbol_exists(self) -> BaseAPIurl:
-        """Check if the symbol exists in the API database."""
+        """Check if the symbol exists in the alphavantage database.
+
+        This is necessary because the API does not return an error if the symbol
+        does not exist.
+        """
         if not self.validate_symbol:
             return self
 
@@ -71,5 +75,7 @@ class BaseAPIurl(BaseModel):
         return self
 
     class Config:
+        """Pydantic configuration."""
+
         frozen = True
         forbid_extra = True
