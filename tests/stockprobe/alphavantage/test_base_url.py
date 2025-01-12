@@ -21,13 +21,11 @@ def test_to_url_params(valid_base_api_url) -> None:
     assert valid_base_api_url._to_url_params() == expected
 
 
-def test_return_url(valid_base_api_url):
+def test_return_url(valid_base_api_url) -> None:
     """Test the return_url method."""
     expected = (
         "https://www.alphavantage.co/query?apikey=testapikey&datatype=json&symbol=AAPL"
     )
-    print(valid_base_api_url.return_url())
-    print(expected)
     assert valid_base_api_url.return_url() == expected
 
 
@@ -51,6 +49,7 @@ def test_validate_symbol_success() -> None:
 
 
 def test_validate_symbol_no_matches_found() -> None:
+    """Test that the symbol validation raises an error when no matches are found."""
     with requests_mock.Mocker() as m:
         m.get(
             "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=INVALID&apikey=demo",
