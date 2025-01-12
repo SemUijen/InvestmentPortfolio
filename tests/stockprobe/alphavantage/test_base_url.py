@@ -15,13 +15,13 @@ def valid_base_api_url() -> BaseAPIurl:
     )
 
 
-def test_to_url_params(valid_base_api_url) -> None:
+def test_to_url_params(valid_base_api_url: BaseAPIurl) -> None:
     """Test the _to_url_params method."""
     expected = "apikey=testapikey&datatype=json&symbol=AAPL"
     assert valid_base_api_url._to_url_params() == expected
 
 
-def test_return_url(valid_base_api_url) -> None:
+def test_return_url(valid_base_api_url: BaseAPIurl) -> None:
     """Test the return_url method."""
     expected = (
         "https://www.alphavantage.co/query?apikey=testapikey&datatype=json&symbol=AAPL"
