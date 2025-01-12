@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import os
-from pprint import pprint
 
 import requests
 from alphavantage.url_generator.core_stock_api import TimeSeriesDailyURL
@@ -41,6 +40,7 @@ if __name__ == "__main__":
         validate_symbol=False,
     )
     daily_url = url_generator.return_url()
-    data = get_api_data(daily_url)
-    if data:
-        pprint(data)
+    print(daily_url)
+    # #data = get_api_data(daily_url)
+    # if data:
+    #     pprint(data)
