@@ -32,8 +32,8 @@ class BaseAPIurl(BaseModel):
         DataType.JSON,
         description="Response format (JSON or CSV)",
     )
-    symbol: str | None = Field(..., description="Stock symbol")
-    symbols: list[str] | None = Field([], description="Stock symbols")
+    symbol: str | None = Field(None, description="Stock symbol")
+    symbols: list[str] | None = Field(None, description="Stock symbols")
     validate_symbol: bool = Field(
         default=True,
         description="Check if the symbol exists in the API database",
@@ -41,8 +41,13 @@ class BaseAPIurl(BaseModel):
 
     def _to_url_params(self) -> str:
         """Convert the model to URL parameters string."""
+        exclude = ["base_url", "validate_symbol"]
         params = []
-        for field_name, field_value in self.model_dump(exclude_none=True).items():
+        for field_name, field_value in self.model_dump(
+            exclude_none=True,
+            exclude=exclude,
+        ).items():
+
             params.append(f"{field_name}={field_value}")
         return "&".join(params)
 
@@ -71,13 +76,15 @@ class BaseAPIurl(BaseModel):
 
         data = response.json()
         logger.info("Symbol search response: %s", data)
-        if data.get("bestMatches", [{}])[0].get("9. matchScore", 0) != "1.0000":
+        if not data.get("bestMatches"):
+            msg = f"Symbol {self.symbol} not found and no close matches found"
+            raise ValueError(msg)
+        if data.get("bestMatches")[0].get("9. matchScore", 0) != "1.0000":
             msg = f"Symbol {self.symbol} not found did you mean: {data.get('bestMatches', 'No matches found')}"
             raise ValueError(msg)
         return self
 
-    class Config:
-        """Pydantic configuration."""
-
-        frozen = True
-        forbid_extra = True
+    model_config = {
+        "frozen": True,
+        "extra": "forbid",
+    }
