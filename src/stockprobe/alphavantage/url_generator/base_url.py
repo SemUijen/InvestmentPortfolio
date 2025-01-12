@@ -1,4 +1,4 @@
-"""Module contains the base pydantic class that is used to interact with the alphavantage API."""
+"""Module contains the base pydantic class  to interact with the alphavantage API."""
 
 from __future__ import annotations
 
@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 
 
 class DataType(StrEnum):
+    """Enumeration for data types used in API responses."""
+
     JSON = "json"
     CSV = "csv"
 
