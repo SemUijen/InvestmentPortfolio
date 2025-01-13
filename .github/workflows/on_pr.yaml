@@ -6,22 +6,27 @@ on:
       - main
 
 jobs:
-  build:
-    name: Validate on PR
+  python-lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: "3.12"
-
       - name: Run Ruff linter
         uses: ./.github/actions/ruff
 
+  python-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
       - name: Run tests
         run: |
           pip install -r requirements.txt
