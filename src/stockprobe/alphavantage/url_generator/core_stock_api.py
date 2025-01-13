@@ -2,13 +2,25 @@
 
 from __future__ import annotations
 
+from enum import StrEnum
+
 from pydantic import Field
 
 from .base_url import BaseAPIurl
+
+
+class OutputSizeEnum(StrEnum):
+    """Enum for output size."""
+
+    COMPACT = "compact"
+    FULL = "full"
 
 
 class TimeSeriesDailyURL(BaseAPIurl):
     """Model for intraday time series request."""
 
     function: str = "TIME_SERIES_DAILY"
-    outputsize: str | None = Field("compact", description="Size of the output data")
+    outputsize: OutputSizeEnum = Field(
+        OutputSizeEnum.COMPACT,
+        description="Size of the output data",
+    )
