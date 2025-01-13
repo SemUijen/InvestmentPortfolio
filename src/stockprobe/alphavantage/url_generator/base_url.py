@@ -80,7 +80,7 @@ class BaseAPIurl(BaseModel):
             msg = f"Symbol {self.symbol} not found and no close matches found"
             raise ValueError(msg)
         if data.get("bestMatches")[0].get("9. matchScore", 0) != "1.0000":
-            msg = f"Symbol {self.symbol} not found did you mean: {data.get('bestMatches', 'No matches found')}"
+            msg = f"Symbol {self.symbol} not found did you mean: {data.get('bestMatches')}"
             raise ValueError(msg)
         return self
 
