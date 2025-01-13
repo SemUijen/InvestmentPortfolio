@@ -14,6 +14,7 @@ def valid_base_api_url() -> BaseAPIurl:
         apikey="testapikey",
         datatype=DataType.JSON,
         symbol="AAPL",
+        validate_symbol=False,
     )
 
 
@@ -64,3 +65,47 @@ def test_validate_symbol_no_matches_found() -> None:
             match="Symbol INVALID not found and no close matches found",
         ):
             BaseAPIurl(symbol="INVALID", apikey="demo", validate_symbol=True)
+
+
+def test_validate_symbol__matches_found() -> None:
+    """Test that the symbol validation raises an error when no matches are found."""
+    matches = [
+        {
+            "1. symbol": "AAPL1",
+            "2. name": "Apple Inc.",
+            "9. matchScore": "0.9000",
+        },
+        {
+            "1. symbol": "AAPLLL",
+            "2. name": "Apple Inc.",
+            "9. matchScore": "0.8900",
+        },
+    ]
+
+    with requests_mock.Mocker() as m:
+        m.get(
+            "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=INVALID&apikey=demo",
+            json={"bestMatches": matches},
+            status_code=200,
+        )
+
+        with pytest.raises(
+            ValueError,
+            match=r"Symbol INVALID not found did you mean: \[{'1. symbol': 'AAPL1', '2. name': 'Apple Inc.', '9. matchScore': '0.9000'}, {'1. symbol': 'AAPLLL', '2. name': 'Apple Inc.', '9. matchScore': '0.8900'}\]",
+        ):
+            BaseAPIurl(symbol="INVALID", apikey="demo", validate_symbol=True)
+
+
+def test_extra_field_forbidden() -> None:
+    """Test that the model raises an error when an extra field is provided."""
+    with pytest.raises(
+        ValidationError,
+        match="Extra inputs are not permitted",
+    ):
+        BaseAPIurl(
+            apikey="testapikey",
+            datatype=DataType.JSON,
+            symbol="AAPL",
+            validate_symbol=False,
+            extra_field="extra",
+        )
