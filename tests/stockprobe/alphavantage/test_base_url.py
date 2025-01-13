@@ -96,6 +96,39 @@ def test_validate_symbol__matches_found() -> None:
             BaseAPIurl(symbol="INVALID", apikey="demo", validate_symbol=True)
 
 
+def test_not_validating_symbol() -> None:
+    """Test that the symbol is not validated when validate_symbol is False."""
+    with requests_mock.Mocker() as m:
+        m.get(
+            "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=AAPL&apikey=demo",
+            json={"bestMatches": []},
+            status_code=200,
+        )
+
+        BaseAPIurl(symbol="AAPL", apikey="demo", validate_symbol=False)
+        assert not m.called
+
+
+def test_api_call_when_validate_symbol_true() -> None:
+    """Test that an API call is made when validate_symbol is True."""
+    with requests_mock.Mocker() as m:
+        m.get(
+            "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=AAPL&apikey=demo",
+            json={
+                "bestMatches": [
+                    {
+                        "1. symbol": "AAPL",
+                        "2. name": "Apple Inc.",
+                        "9. matchScore": "1.0000",
+                    },
+                ],
+            },
+            status_code=200,
+        )
+        BaseAPIurl(symbol="AAPL", apikey="demo", validate_symbol=True)
+        assert m.called
+
+
 def test_extra_field_forbidden() -> None:
     """Test that the model raises an error when an extra field is provided."""
     with pytest.raises(
@@ -108,4 +141,18 @@ def test_extra_field_forbidden() -> None:
             symbol="AAPL",
             validate_symbol=False,
             extra_field="extra",
+        )
+
+
+def test_type_validations() -> None:
+    """Test that the model raises an error when an invalid type is provided."""
+    with pytest.raises(
+        ValidationError,
+        match="Input should be 'json' or 'csv'",
+    ):
+        BaseAPIurl(
+            apikey="testapikey",
+            datatype="invalid",
+            symbol="AAPL",
+            validate_symbol=False,
         )
