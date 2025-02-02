@@ -3,3 +3,5 @@ requests_mock
 python-dotenv
 pytest
 pydantic
+# Fabric Version
+delta-spark==3.2
