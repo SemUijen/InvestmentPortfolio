@@ -4,14 +4,14 @@ FROM apache/spark:3.5.0-scala2.12-java11-python3-ubuntu
 USER 0
 # copy the requirements file
 COPY requirements.txt .
+# Install dependencies 
+RUN pip install -r requirements.txt
+
 # Set the working directory
 WORKDIR /src
 
 # Copy the application files
 COPY . /src
-
-# Install dependencies
-RUN pip install -r requirements.txt
 
 ENV BRONZE_DATA_PATH=/InvestmentPortfolioData/bronze
 ENV SILVER_DATA_PATH=/InvestmentPortfolioData/silver
