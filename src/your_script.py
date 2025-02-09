@@ -2,6 +2,9 @@ import json
 import logging
 import os
 
+# Read the data from the JSON file using spark
+from pyspark.sql import SparkSession
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -42,9 +45,6 @@ file_path = f"{bronze_data_path}/data.json"
 with open(file_path, "w") as f:
     json.dump(data, f, indent=4)
 logger.info("Data successfully written to %s", file_path)
-
-# Read the data from the JSON file using spark
-from pyspark.sql import SparkSession
 
 # Initialize Spark session
 spark = (
