@@ -1,5 +1,8 @@
 requests
 requests_mock
+aiohttp
+asyncio
+aiofiles
 python-dotenv
 pytest
 pydantic
