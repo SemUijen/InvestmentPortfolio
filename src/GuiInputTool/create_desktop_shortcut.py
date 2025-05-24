@@ -6,7 +6,7 @@ from pathlib import Path
 def create_bat_shortcut():
     # Get absolute paths
     script_dir = Path(__file__).resolve().parent  # Main folder of the repo
-    main_script = script_dir / "data_input_gui.py"
+    main_script = script_dir / "app.py"
     python_exe = Path(sys.executable).resolve()
 
     print(f"Script path: {main_script}")
