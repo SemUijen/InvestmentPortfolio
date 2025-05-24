@@ -14,7 +14,7 @@ def main() -> None:
         InputField("Price Bought", tk.DoubleVar),
         InputField("Cost of Buy", tk.DoubleVar),
     ]
-    app = DataInputGUI(root, input_fields=input_fields)
+    DataInputGUI(root, input_fields=input_fields)
     root.mainloop()
 
 
