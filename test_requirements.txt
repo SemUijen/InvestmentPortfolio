@@ -4,8 +4,6 @@ python-dotenv
 pytest
 pydantic
 tk
-pywin32
-winshell
 python-dotenv
 # Fabric Version
 delta-spark==3.2
