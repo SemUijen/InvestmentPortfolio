@@ -3,31 +3,47 @@ import os
 import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox, ttk
+from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
 
 from src.stockprobe.alphavantage.url_generator.base_url import BaseAPIurl
 
+from .base_screen import BaseScreen, InputField
+
 load_dotenv()
+if TYPE_CHECKING:
+    from src.GuiInputTool.application.application import (
+        MainApplication as MainApplication,
+    )
 
 
-class InputField:
-    def __init__(self, label, input_type: tk.StringVar | tk.DoubleVar | tk.IntVar):
-        self.label = label
-        self.input_type = input_type
-        self.field = input_type()
+class DataInputScreen(BaseScreen):
+    """Screen for inputting stock investment data."""
 
-
-class DataInputGUI:
-    def __init__(self, root, input_fields: list[InputField]):
-        self.root = root
-        self.root.title("Data Input Application")
-        self.root.geometry("400x500")
+    def __init__(
+        self,
+        root: tk.Tk,
+        app_controller: "MainApplication",
+        input_fields: list[InputField],
+    ):
+        super().__init__(root, app_controller)
+        self.input_fields = input_fields
 
         # Create main frame
-        self.main_frame = ttk.Frame(self.root, padding="10")
         self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        # Configure grid weights
+        self.main_frame.columnconfigure(1, weight=1)
         self.current_row = 0
+
+        # Title
+        title_label = ttk.Label(
+            self.main_frame,
+            text="Stock Investment Manager",
+            font=("Arial", 16, "bold"),
+        )
+        title_label.grid(row=0, column=0, pady=(0, 30), columnspan=2)
+        self.current_row += 1
 
         # add input fields
         self.add_standard_fields()
@@ -54,56 +70,34 @@ class DataInputGUI:
         )
         self.current_row += 1
 
-    def add_input_fields(self, input_fields: list[InputField]) -> None:
-        """Create input fields for the GUI."""
-        # Name symbol
-        for i, field in enumerate(input_fields):
-
-            ttk.Label(self.main_frame, text=f"{field.label}:").grid(
-                row=self.current_row,
-                column=0,
-                sticky=tk.W,
-                pady=5,
-            )
-
-            ttk.Entry(self.main_frame, textvariable=field.field).grid(
-                row=self.current_row,
-                column=1,
-                sticky=(tk.W, tk.E),
-                pady=5,
-            )
-            self.current_row += 1
-
     def create_buttons(self) -> None:
         """Create buttons for saving and clearing data."""
-        # Comment
-        ttk.Label(
-            self.main_frame,
-            text="Note: Setting quantity to zero will overwrite existing data.",
-            foreground="red",
-        ).grid(
-            row=self.current_row,
-            column=0,
-            columnspan=2,
-            sticky=tk.W,
-            pady=5,
-        )
-        self.current_row += 1
-        # Save button
-        ttk.Button(self.main_frame, text="Save", command=self.save_data).grid(
+        # NEW - buttons are placed in a horizontal frame
+        button_frame = ttk.Frame(self.main_frame)
+        button_frame.grid(
             row=self.current_row,
             column=0,
             columnspan=2,
             pady=20,
         )
-        self.current_row += 1
-        # Clear button
-        ttk.Button(self.main_frame, text="Clear", command=self.clear_fields).grid(
-            row=self.current_row,
-            column=0,
-            columnspan=2,
+
+        # Save button
+        ttk.Button(button_frame, text="Save", command=self.save_data).pack(
+            side=tk.LEFT,
+            padx=(0, 10),
         )
-        self.current_row += 1
+
+        # Clear button
+        ttk.Button(button_frame, text="Clear", command=self.clear_fields).pack(
+            side=tk.LEFT,
+            padx=(0, 10),
+        )
+
+        ttk.Button(
+            button_frame,
+            text="Back to Main",
+            command=self.app_controller.show_startup_screen,
+        ).pack(side=tk.LEFT)
 
     def validate_input(self):
         api_key = os.getenv("ALPHAVANTAGE_API_KEY")
@@ -160,3 +154,7 @@ class DataInputGUI:
         # Clear all input fields
         for field in self.input_fields:
             field.field.set("")
+
+    def destroy(self):
+        """Clean up the screen."""
+        self.main_frame.destroy()
