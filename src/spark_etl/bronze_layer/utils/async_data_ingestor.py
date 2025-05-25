@@ -30,9 +30,11 @@ class AsyncDataIngestor:
 
     async def fetch_data(self, url: str) -> dict:
         """Fetch data from the URL asynchronously."""
+        logging.info("Fetching data from %s", url)
         async with self.semaphore, aiohttp.ClientSession() as session, session.get(
             url,
         ) as response:
+            logging.info("Status %s", response.status)
             response.raise_for_status()  # Raise an error for bad responses
             return await response.json()
 
