@@ -6,7 +6,7 @@ from .screens import BoughtInvestmentScreen, InputField, StartupScreen
 class MainApplication:
     """Main application controller that manages different screens."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.root = tk.Tk()
         self.root.title("Stock Investment Manager")
         self.root.geometry("500x600")
@@ -21,17 +21,17 @@ class MainApplication:
         # Show startup screen initially
         self.show_startup_screen()
 
-    def clear_screen(self):
+    def clear_screen(self) -> None:
         """Clear the current screen."""
         if self.current_screen:
             self.current_screen.destroy()
 
-    def show_startup_screen(self):
+    def show_startup_screen(self) -> None:
         """Display the startup/main menu screen."""
         self.clear_screen()
         self.current_screen = StartupScreen(self.root, self)
 
-    def show_data_input_screen(self):
+    def show_data_input_screen(self) -> None:
         """Display the data input screen."""
         self.clear_screen()
 
@@ -52,12 +52,12 @@ class MainApplication:
 
         self.current_screen = BoughtInvestmentScreen(self.root, self, input_fields)
 
-    def show_investment_options_screen(self):
+    def show_investment_options_screen(self) -> None:
         """Display the add investment options screen."""
         self.clear_screen()
         # We'll implement this later
         print("Navigate to Investment Options Screen")
 
-    def run(self):
+    def run(self) -> None:
         """Start the application."""
         self.root.mainloop()
