@@ -26,7 +26,7 @@ async def main():
         error_message = "No API key found. Please set the API_KEY environment variable."
         raise ValueError(error_message)
 
-    symbols = ["AIAA.DEX", "IMAE.AMS", "IWDA.AMS", "NDIA", "QDVE.DEX", "VWCE.DEX"]
+    symbols = ["AIAA.DEX", "IMAE.AMS", "IWDA.AMS", "NDIA.AMS", "QDVE.DEX", "VWCE.DEX"]
     urls_to_ingest = [
         (
             TimeSeriesDailyURL(
