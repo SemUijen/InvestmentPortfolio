@@ -6,7 +6,7 @@ import logging
 import os
 
 import requests
-from alphavantage.url_generator.core_stock_api import TimeSeriesDailyURL
+from alphavantage.url_generator import TimeSeriesDailyURL
 from dotenv import load_dotenv
 
 logging.basicConfig(
@@ -41,6 +41,3 @@ if __name__ == "__main__":
     )
     daily_url = url_generator.return_url()
     print(daily_url)
-    # #data = get_api_data(daily_url)
-    # if data:
-    #     pprint(data)
