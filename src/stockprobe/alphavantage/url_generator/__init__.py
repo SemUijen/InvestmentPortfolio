@@ -1,1 +1,1 @@
-from .core_stock_api import TimeSeriesDailyURL
+from .core_stock_api import TimeSeriesDailyURL as TimeSeriesDailyURL
