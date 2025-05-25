@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     )
 
 
-class DataInputScreen(BaseScreen):
+class BoughtInvestmentScreen(BaseScreen):
     """Screen for inputting stock investment data."""
 
     def __init__(

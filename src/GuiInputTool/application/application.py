@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from .screens import DataInputScreen, InputField, StartupScreen
+from .screens import BoughtInvestmentScreen, InputField, StartupScreen
 
 
 class MainApplication:
@@ -45,7 +45,7 @@ class MainApplication:
             InputField("Broker", "DeGiro", tk.StringVar),
         ]
 
-        self.current_screen = DataInputScreen(self.root, self, input_fields)
+        self.current_screen = BoughtInvestmentScreen(self.root, self, input_fields)
 
     def show_investment_options_screen(self):
         """Display the add investment options screen."""
