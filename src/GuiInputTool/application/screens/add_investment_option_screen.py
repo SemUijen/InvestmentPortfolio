@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from typing import TYPE_CHECKING
 
 from .base_screen import BaseScreen, InputField
@@ -22,3 +23,29 @@ class InvestmentOptionsScreen(BaseScreen):
         self.main_frame.columnconfigure(1, weight=1)
 
         self.add_input_fields(input_fields)
+        self.create_buttons()
+
+    def create_buttons(self) -> None:
+        """Create buttons for saving and clearing data."""
+        # NEW - buttons are placed in a horizontal frame
+        button_frame = ttk.Frame(self.main_frame)
+        button_frame.grid(
+            row=self.current_row,
+            column=0,
+            columnspan=2,
+            pady=20,
+        )
+
+        # Save button
+        ttk.Button(
+            button_frame,
+            text="Search",
+            command=self._search_investment_options,
+        ).pack(
+            side=tk.LEFT,
+            padx=(0, 10),
+        )
+
+    def _search_investment_options(self) -> None:
+        """Search for investment options based on user input."""
+        # Implement search logic here

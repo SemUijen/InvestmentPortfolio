@@ -1,6 +1,11 @@
 import tkinter as tk
 
-from .screens import BoughtInvestmentScreen, InputField, StartupScreen
+from .screens import (
+    BoughtInvestmentScreen,
+    InputField,
+    InvestmentOptionsScreen,
+    StartupScreen,
+)
 
 
 class MainApplication:
@@ -38,7 +43,7 @@ class MainApplication:
         # Define the input fields you want
         input_fields = [
             InputField(
-                "Quantity",
+                "Symbol",
                 "e.g. 'VWCE' for Vanguard FTSE All-World ",
                 tk.StringVar,
             ),
@@ -55,8 +60,17 @@ class MainApplication:
     def show_investment_options_screen(self) -> None:
         """Display the add investment options screen."""
         self.clear_screen()
-        # We'll implement this later
-        print("Navigate to Investment Options Screen")
+
+        # Define the input fields you want
+        input_fields = [
+            InputField(
+                "Symbol",
+                "e.g. 'VWCE' for Vanguard FTSE All-World ",
+                tk.StringVar,
+            ),
+        ]
+
+        self.current_screen = InvestmentOptionsScreen(self.root, self, input_fields)
 
     def run(self) -> None:
         """Start the application."""
