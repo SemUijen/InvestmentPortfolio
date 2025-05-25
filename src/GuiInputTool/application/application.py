@@ -37,12 +37,17 @@ class MainApplication:
 
         # Define the input fields you want
         input_fields = [
+            InputField(
+                "Quantity",
+                "e.g. 'VWCE' for Vanguard FTSE All-World ",
+                tk.StringVar,
+            ),
             InputField("Quantity", None, tk.DoubleVar),
             InputField("Purchase Price", None, tk.DoubleVar),
             InputField("Purchase Date", "YYYY-mm-dd", tk.StringVar),
-            InputField("Cost of Buy", "23.95", tk.DoubleVar),
-            InputField("Stock Exchange", "AMS for Amsterdam", tk.StringVar),
-            InputField("Broker", "DeGiro", tk.StringVar),
+            InputField("Cost of Buy", None, tk.DoubleVar),
+            InputField("Stock Exchange", "e.g. 'AMS' for Amsterdam", tk.StringVar),
+            InputField("Broker", "e.g. degiro", tk.StringVar),
         ]
 
         self.current_screen = BoughtInvestmentScreen(self.root, self, input_fields)

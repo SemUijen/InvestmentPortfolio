@@ -5,13 +5,8 @@ from pathlib import Path
 from tkinter import messagebox, ttk
 from typing import TYPE_CHECKING
 
-from dotenv import load_dotenv
-
-from src.stockprobe.alphavantage.url_generator.base_url import BaseAPIurl
-
 from .base_screen import BaseScreen, InputField
 
-load_dotenv()
 if TYPE_CHECKING:
     from src.GuiInputTool.application.application import (
         MainApplication as MainApplication,
@@ -45,30 +40,10 @@ class BoughtInvestmentScreen(BaseScreen):
         title_label.grid(row=0, column=0, pady=(0, 30), columnspan=2)
         self.current_row += 1
 
-        # add input fields
-        self.add_standard_fields()
-        self.input_fields = input_fields
+        # Create all input fields
         self.add_input_fields(input_fields)
-
         # Create buttons
         self.create_buttons()
-
-    def add_standard_fields(self) -> None:
-        """Add standard input fields to the GUI."""
-        ttk.Label(self.main_frame, text="Symbol:").grid(
-            row=self.current_row,
-            column=0,
-            sticky=tk.W,
-            pady=5,
-        )
-        self.symbol = tk.StringVar()
-        ttk.Entry(self.main_frame, textvariable=self.symbol).grid(
-            row=self.current_row,
-            column=1,
-            sticky=(tk.W, tk.E),
-            pady=5,
-        )
-        self.current_row += 1
 
     def create_buttons(self) -> None:
         """Create buttons for saving and clearing data."""
@@ -98,32 +73,6 @@ class BoughtInvestmentScreen(BaseScreen):
             text="Back to Main",
             command=self.app_controller.show_startup_screen,
         ).pack(side=tk.LEFT)
-
-    def validate_input(self):
-        api_key = os.getenv("ALPHAVANTAGE_API_KEY")
-        if not api_key:
-            error_message = (
-                "No API key found. Please set the API_KEY environment variable."
-            )
-            raise ValueError(error_message)
-        # validate symbol
-        errors = []
-
-        # Validate symbol
-        try:
-            self.url_generator = BaseAPIurl(
-                apikey=api_key,
-                symbol=self.symbol.get(),
-                validate_symbol=True,
-            )
-        except ValueError as e:
-            errors.append(f"Invalid symbol: {e!s}")
-
-        if errors:
-            messagebox.showerror("Error", "\n".join(errors))
-            return False
-
-        return True
 
     def save_data(self) -> None:
         """Save the input data to a JSON file."""
