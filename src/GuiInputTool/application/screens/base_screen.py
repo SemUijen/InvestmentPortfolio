@@ -81,5 +81,5 @@ class BaseScreen:
         entry.bind("<FocusOut>", on_focus_out)
 
     def destroy(self):
-        """Clean up the screen - to be implemented by child classes."""
-        raise NotImplementedError("Child classes must implement destroy method")
+        """Clean up the screen."""
+        self.main_frame.destroy()
