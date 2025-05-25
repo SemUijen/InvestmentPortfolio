@@ -2,7 +2,8 @@
 
 import tkinter as tk
 
-from data_input_gui import DataInputGUI, InputField
+from src.GuiInputTool.application.application import MainApplication
+from src.GuiInputTool.application.screens import DataInputScreen, InputField
 
 
 def main() -> None:
@@ -14,9 +15,10 @@ def main() -> None:
         InputField("Price Bought", tk.DoubleVar),
         InputField("Cost of Buy", tk.DoubleVar),
     ]
-    DataInputGUI(root, input_fields=input_fields)
+    DataInputScreen(root, input_fields=input_fields)
     root.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+    app = MainApplication()
+    app.run()
