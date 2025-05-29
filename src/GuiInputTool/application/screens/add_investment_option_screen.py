@@ -103,7 +103,7 @@ class InvestmentOptionsScreen(BaseScreen):
         )
 
         # Get top 5 results (adjust based on your API response structure)
-        results = data.get("bestMatches", [])[:5]  # Assuming 'bestMatches' key
+        results = data.get("bestMatches", [])  # Assuming 'bestMatches' key
 
         if not results:
             ttk.Label(self.results_frame, text="No results found").pack()
@@ -115,9 +115,12 @@ class InvestmentOptionsScreen(BaseScreen):
         # Display each result as a radio button
         for i, result in enumerate(results):
             # Adjust these keys based on your API response structure
+            io_type = result.get("3. type", "N/A")
             symbol = result.get("1. symbol", "N/A")
             name = result.get("2. name", "N/A")
-            option_text = f"{symbol} - {name}"
+            region = result.get("4. region", "N/A")
+            currency = result.get("8. currency", "N/A")
+            option_text = f" {name}: \n {io_type} - {symbol} - {region} - {currency}"
 
             ttk.Radiobutton(
                 self.results_frame,
