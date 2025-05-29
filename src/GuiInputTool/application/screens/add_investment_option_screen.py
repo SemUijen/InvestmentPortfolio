@@ -6,6 +6,11 @@ from typing import TYPE_CHECKING
 import requests
 from dotenv import load_dotenv
 
+from src.spark_etl.silver_layer.tables import (
+    InvestmentOption,
+    IoStockExchange,
+    StockExchange,
+)
 from src.stockprobe.alphavantage.url_generator.base_url import BaseAPIurl
 
 from .base_screen import BaseScreen, InputField
@@ -115,18 +120,31 @@ class InvestmentOptionsScreen(BaseScreen):
         # Display each result as a radio button
         for i, result in enumerate(results):
             # Adjust these keys based on your API response structure
-            io_type = result.get("3. type", "N/A")
-            symbol = result.get("1. symbol", "N/A")
-            name = result.get("2. name", "N/A")
-            region = result.get("4. region", "N/A")
-            currency = result.get("8. currency", "N/A")
+            try:
+                symbol = result.get("1. symbol")
+                name = result.get("2. name")
+                io_type = result.get("3. type")
+                region = result.get("4. region")
+                market_open = result.get("5. marketOpen")
+                market_close = result.get("6. marketClose")
+                time_zone = result.get("7. timezone")
+                currency = result.get("8. currency")
+            except KeyError as e:
+                self.app_controller.show_error(
+                    f"Missing data in result: {e}. Please check the API response.",
+                )
+                return
+
             option_text = f" {name}: \n {io_type} - {symbol} - {region} - {currency}"
 
             ttk.Radiobutton(
                 self.results_frame,
                 text=option_text,
                 variable=self.selected_option,
-                value=f"{symbol}|{name}",  # Store both symbol and name
+                value=(
+                    f"{symbol}|{name}|{io_type}|{region}|"
+                    f"{market_open}|{market_close}|{time_zone}|{currency}"
+                ),  # Store all relevant data in the value
             ).pack(anchor=tk.W, pady=2)
 
         # Add select button
@@ -137,4 +155,42 @@ class InvestmentOptionsScreen(BaseScreen):
         ).pack(pady=10)
 
     def _save_selected_option(self) -> None:
-        pass
+        """Save the selected investment option to the database."""
+        selected_value = self.selected_option.get()
+        if not selected_value:
+            self.app_controller.show_error("Please select an investment option.")
+            return
+
+        (
+            symbol,
+            name,
+            io_type,
+            region,
+            market_open,
+            market_close,
+            time_zone,
+            currency,
+        ) = selected_value.split("|")
+        io_symbol, exchange_symbol = symbol.split(".")
+
+        investment_option_data = {
+            "symbol": io_symbol,
+            "name": name,
+            "type": io_type,
+        }
+        InvestmentOption().merge_dict_data(investment_option_data)
+        io_stock_exchange_data = {
+            "io_symbol": io_symbol,
+            "exchange_symbol": exchange_symbol,
+        }
+        IoStockExchange().merge_dict_data(io_stock_exchange_data)
+
+        stock_exchange_data = {
+            "symbol": exchange_symbol,
+            "region": region,
+            "markt_open": market_open,
+            "markt_close": market_close,
+            "currency": currency,
+        }
+        StockExchange().merge_dict_data(stock_exchange_data)
+        self.app_controller.show_info("Investment option saved successfully.")
