@@ -19,7 +19,7 @@ jobs:
         with:
           src: >-
             ./src
-            ./test
+            ./tests
 
       - run: ruff check
 
