@@ -17,6 +17,7 @@ delta-spark==3.2
 
 # For testing
 pytest
+pytest-cov
 
 ## Development tools
 # linting and formatting
