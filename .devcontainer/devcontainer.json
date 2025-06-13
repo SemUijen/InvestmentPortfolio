@@ -1,0 +1,46 @@
+{
+    "name": "Development PySpark local cluster",
+    "dockerComposeFile": [
+        "./docker-compose.yaml"
+    ],
+    "workspaceFolder": "/code",
+    "service": "dev-synapse",
+    "forwardPorts": [
+        4040,
+        4041
+    ],
+    "portsAttributes": {
+        "4040": {
+            "label": "web",
+            "onAutoForward": "notify"
+        },
+        "4041": {
+            "label": "web",
+            "onAutoForward": "notify"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "/bin/bash"
+                    }
+                },
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "python.analysis.stubPath": "/code/.devcontainer/docker-container/scripts",
+                "python.analysis.diagnosticMode": "workspace",
+                "python.analysis.autoImportCompletions": true,
+                "editor.suggest.showVariables": true,
+                "editor.suggest.showClasses": true,
+                "editor.suggest.showFunctions": true,
+                "python.languageServer": "Pylance"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-toolsai.jupyter",
+                "synapsevscode.synapse"
+            ]
+        }
+    }
+}
