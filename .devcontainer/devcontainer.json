@@ -27,6 +27,14 @@
                         "path": "/bin/bash"
                     }
                 },
+                "ruff.configuration": ".vscode/config/ruff.toml",
+                "ruff.enable": true,
+                "ruff.lint.enable": true,
+                "[python]": {
+                  "editor.formatOnSave": true,
+                  "editor.defaultFormatter": "charliermarsh.ruff",
+                },
+                "mypy.runUsingActiveInterpreter": true,
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "python.analysis.stubPath": "/code/.devcontainer/docker-container/scripts",
                 "python.analysis.diagnosticMode": "workspace",
@@ -38,8 +46,8 @@
             },
             "extensions": [
                 "ms-python.python",
-                "ms-toolsai.jupyter",
-                "synapsevscode.synapse"
+                "matangover.mypy",
+                "tamasfe.even-better-toml",
             ]
         }
     }
