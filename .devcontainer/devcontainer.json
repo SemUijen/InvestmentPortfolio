@@ -31,8 +31,8 @@
                 "ruff.enable": true,
                 "ruff.lint.enable": true,
                 "[python]": {
-                  "editor.formatOnSave": true,
-                  "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "charliermarsh.ruff",
                 },
                 "mypy.runUsingActiveInterpreter": true,
                 "terminal.integrated.defaultProfile.linux": "bash",
@@ -42,12 +42,12 @@
                 "editor.suggest.showVariables": true,
                 "editor.suggest.showClasses": true,
                 "editor.suggest.showFunctions": true,
-                "python.languageServer": "Pylance"
             },
             "extensions": [
                 "ms-python.python",
                 "matangover.mypy",
                 "tamasfe.even-better-toml",
+                "charliermarsh.ruff",
             ]
         }
     }
