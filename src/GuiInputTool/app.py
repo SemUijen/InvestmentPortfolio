@@ -2,7 +2,7 @@
 
 import tkinter as tk
 
-from data_input_gui import DataInputGUI, InputField
+from .data_input_gui import DataInputGUI, InputField
 
 
 def main() -> None:
