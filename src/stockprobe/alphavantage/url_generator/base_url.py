@@ -28,12 +28,12 @@ class BaseAPIurl(BaseModel):
 
     base_url: str = "https://www.alphavantage.co/query"
     apikey: str = Field(..., description="Your API key")
-    datatype: DataType | None = Field(
-        DataType.JSON,
+    datatype: DataType = Field(
+        default=DataType.JSON,
         description="Response format (JSON or CSV)",
     )
-    symbol: str | None = Field(None, description="Stock symbol")
-    symbols: list[str] | None = Field(None, description="Stock symbols")
+    symbol: str | None = Field(default=None, description="Stock symbol")
+    symbols: list[str] | None = Field(default=None, description="Stock symbols")
     validate_symbol: bool = Field(
         default=True,
         description="Check if the symbol exists in the API database",
