@@ -29,11 +29,11 @@ class BaseAPIurl(BaseModel):
     base_url: str = "https://www.alphavantage.co/query"
     apikey: str = Field(..., description="Your API key")
     datatype: DataType = Field(
-        DataType.JSON,
+        default=DataType.JSON,
         description="Response format (JSON or CSV)",
     )
-    symbol: str | None = Field(None, description="Stock symbol")
-    symbols: list[str] | None = Field(None, description="Stock symbols")
+    symbol: str | None = Field(default=None, description="Stock symbol")
+    symbols: list[str] | None = Field(default=None, description="Stock symbols")
     validate_symbol: bool = Field(
         default=True,
         description="Check if the symbol exists in the API database",
@@ -41,13 +41,12 @@ class BaseAPIurl(BaseModel):
 
     def _to_url_params(self) -> str:
         """Convert the model to URL parameters string."""
-        exclude = ["base_url", "validate_symbol"]
+        exclude = {"base_url", "validate_symbol"}
         params = []
         for field_name, field_value in self.model_dump(
             exclude_none=True,
             exclude=exclude,
         ).items():
-
             params.append(f"{field_name}={field_value}")
         return "&".join(params)
 

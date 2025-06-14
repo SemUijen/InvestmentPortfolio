@@ -1,5 +1,11 @@
 {
-  "python.testing.pytestArgs": ["tests"],
-  "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
+  "ruff.configuration": ".vscode/config/ruff.toml",
+  "ruff.enable": true,
+  "ruff.lint.enable": true,
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+  },
+  "mypy.runUsingActiveInterpreter": true,
+  "mypy.configFile": "mypy.ini",
 }

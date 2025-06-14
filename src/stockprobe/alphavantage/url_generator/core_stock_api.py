@@ -1,7 +1,5 @@
 """Module contains class for generating URLs for Alpha Vantage CoreStockAPI."""
 
-from __future__ import annotations
-
 from enum import StrEnum
 
 from pydantic import Field
@@ -21,6 +19,6 @@ class TimeSeriesDailyURL(BaseAPIurl):
 
     function: str = "TIME_SERIES_DAILY"
     outputsize: OutputSizeEnum = Field(
-        OutputSizeEnum.COMPACT,
+        default=OutputSizeEnum.COMPACT,
         description="Size of the output data",
     )
