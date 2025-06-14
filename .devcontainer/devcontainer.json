@@ -27,6 +27,7 @@
                         "path": "/bin/bash"
                     }
                 },
+                "mypy.configFile": "mypy.ini",
                 "ruff.configuration": ".vscode/config/ruff.toml",
                 "ruff.enable": true,
                 "ruff.lint.enable": true,

@@ -22,4 +22,6 @@ pytest-cov
 ruff
 # type checking
 mypy
-types-requests
+
+# Include stubs for type checking
+-r stubs-requirements.txt

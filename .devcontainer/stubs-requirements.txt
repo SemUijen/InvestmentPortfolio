@@ -1,0 +1,3 @@
+# Stubss
+types-requests
+types-aiofiles
