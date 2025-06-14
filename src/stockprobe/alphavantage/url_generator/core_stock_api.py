@@ -20,7 +20,7 @@ class TimeSeriesDailyURL(BaseAPIurl):
     """Model for intraday time series request."""
 
     function: str = "TIME_SERIES_DAILY"
-    outputsize: OutputSizeEnum = Field(
+    outputsize: OutputSizeEnum | None = Field(
         OutputSizeEnum.COMPACT,
         description="Size of the output data",
     )
