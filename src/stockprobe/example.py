@@ -6,8 +6,9 @@ import logging
 import os
 
 import requests
-from alphavantage.url_generator import TimeSeriesDailyURL
 from dotenv import load_dotenv
+
+from .alphavantage.url_generator import TimeSeriesDailyURL
 
 logging.basicConfig(
     level=logging.INFO,
@@ -28,7 +29,6 @@ def get_api_data(url: str) -> dict | None:
 
 
 if __name__ == "__main__":
-
     load_dotenv()
     api_key = os.getenv("ALPHAVANTAGE_API_KEY")
     if not api_key:
