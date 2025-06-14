@@ -24,3 +24,4 @@ pytest-cov
 ruff
 # type checking
 mypy
+types-requests
