@@ -15,7 +15,7 @@ class InputField:
     def __init__(self, label, input_type: tk.StringVar | tk.DoubleVar | tk.IntVar):
         self.label = label
         self.input_type = input_type
-        self.field = input_type()
+        self.field = input_type
 
 
 class DataInputGUI:
@@ -58,7 +58,6 @@ class DataInputGUI:
         """Create input fields for the GUI."""
         # Name symbol
         for i, field in enumerate(input_fields):
-
             ttk.Label(self.main_frame, text=f"{field.label}:").grid(
                 row=self.current_row,
                 column=0,
