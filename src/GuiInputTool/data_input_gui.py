@@ -15,7 +15,7 @@ class InputField:
     def __init__(self, label, input_type: tk.StringVar | tk.DoubleVar | tk.IntVar):
         self.label = label
         self.input_type = input_type
-        self.field = input_type()
+        self.field = input_type
 
 
 class DataInputGUI:
@@ -26,7 +26,7 @@ class DataInputGUI:
 
         # Create main frame
         self.main_frame = ttk.Frame(self.root, padding="10")
-        self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.main_frame.grid(row=0, column=0, sticky="nsew")
         self.current_row = 0
 
         # add input fields
@@ -49,7 +49,7 @@ class DataInputGUI:
         ttk.Entry(self.main_frame, textvariable=self.symbol).grid(
             row=self.current_row,
             column=1,
-            sticky=(tk.W, tk.E),
+            sticky="we",
             pady=5,
         )
         self.current_row += 1
@@ -58,7 +58,6 @@ class DataInputGUI:
         """Create input fields for the GUI."""
         # Name symbol
         for i, field in enumerate(input_fields):
-
             ttk.Label(self.main_frame, text=f"{field.label}:").grid(
                 row=self.current_row,
                 column=0,
@@ -69,7 +68,7 @@ class DataInputGUI:
             ttk.Entry(self.main_frame, textvariable=field.field).grid(
                 row=self.current_row,
                 column=1,
-                sticky=(tk.W, tk.E),
+                sticky="we",
                 pady=5,
             )
             self.current_row += 1
@@ -141,7 +140,10 @@ class DataInputGUI:
             data[field.label.lower().replace(" ", "_")] = field.field.get()
 
         try:
-            data_dir = Path(os.getenv("DATA_DIR")) / "bronze" / "bought_stocks"
+            if not (data_dir_env := os.getenv("DATA_DIR")):
+                raise ValueError("DATA_DIR environment variable is not set.")
+
+            data_dir = Path(data_dir_env) / "bronze" / "bought_stocks"
             # Create data directory if it doesn't exist
             data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -159,4 +161,9 @@ class DataInputGUI:
         self.symbol.set("")
         # Clear all input fields
         for field in self.input_fields:
-            field.field.set("")
+            if isinstance(field.field, tk.StringVar):
+                field.field.set("")
+            elif isinstance(field.field, tk.DoubleVar):
+                field.field.set(0.0)
+            elif isinstance(field.field, tk.IntVar):
+                field.field.set(0)
