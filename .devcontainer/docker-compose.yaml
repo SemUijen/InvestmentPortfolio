@@ -2,8 +2,8 @@ services:
   dev-synapse:
     container_name: investment-portfolio-dev-container
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile
+      context: ./docker
+      dockerfile: ./Dockerfile
     ports:
       - 127.0.0.1:8888:20
     volumes:
