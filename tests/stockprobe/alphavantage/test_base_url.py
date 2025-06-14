@@ -91,7 +91,11 @@ def test_validate_symbol__matches_found() -> None:
 
         with pytest.raises(
             ValueError,
-            match=r"Symbol INVALID not found did you mean: \[{'1. symbol': 'AAPL1', '2. name': 'Apple Inc.', '9. matchScore': '0.9000'}, {'1. symbol': 'AAPLLL', '2. name': 'Apple Inc.', '9. matchScore': '0.8900'}\]",
+            match=(
+                r"Symbol INVALID not found did you mean: "
+                r"\[{'1. symbol': 'AAPL1', '2. name': 'Apple Inc.', '9. matchScore': '0.9000'}, "
+                r"{'1. symbol': 'AAPLLL', '2. name': 'Apple Inc.', '9. matchScore': '0.8900'}\]"
+            ),
         ):
             BaseAPIurl(symbol="INVALID", apikey="demo", validate_symbol=True)
 
@@ -140,7 +144,8 @@ def test_extra_field_forbidden() -> None:
             datatype=DataType.JSON,
             symbol="AAPL",
             validate_symbol=False,
-            extra_field="extra",
+            extra_field="extra",  # This should not be allowed
+            # The BaseAPIurl model does not accept an 'extra_field'
         )
 
 
@@ -152,7 +157,7 @@ def test_type_validations() -> None:
     ):
         BaseAPIurl(
             apikey="testapikey",
-            datatype="invalid",
+            datatype="invalid",  # This should be DataType.JSON or DataType.CSV
             symbol="AAPL",
             validate_symbol=False,
         )

@@ -61,7 +61,7 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [per-file-ignores]
-'*test/*.py' = [
+'*tests/*.py' = [
     'ANN201', # Missing return type annotation for public function
     'S101',   # Matches 'assert'
 ]
