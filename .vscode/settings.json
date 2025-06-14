@@ -7,4 +7,5 @@
     "editor.defaultFormatter": "charliermarsh.ruff",
   },
   "mypy.runUsingActiveInterpreter": true,
+  "mypy.configFile": "mypy.ini",
 }
