@@ -35,6 +35,7 @@ class InvestmentOptionsScreen(BaseScreen):
         self.main_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N + tk.S)
         self.main_frame.columnconfigure(1, weight=1)
 
+        self.results_frame: ttk.Labelframe | None = None
         self.add_input_fields(input_fields)
         self.create_buttons()
 
