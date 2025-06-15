@@ -12,12 +12,12 @@ class InputField:
     def __init__(
         self,
         label: str,
-        placeholder: str,
         input_type: tk.StringVar | tk.DoubleVar | tk.IntVar,
+        placeholder: str | None = None,
     ):
         self.label = label
         self.input_type = input_type
-        self.field = input_type()
+        self.field = input_type
         self.placeholder = placeholder
 
 
@@ -47,7 +47,7 @@ class BaseScreen:
             entry.grid(
                 row=self.current_row,
                 column=1,
-                sticky=(tk.W, tk.E),
+                sticky="we",
                 pady=5,
             )
 
@@ -80,6 +80,6 @@ class BaseScreen:
         entry.bind("<FocusIn>", on_focus_in)
         entry.bind("<FocusOut>", on_focus_out)
 
-    def destroy(self):
+    def destroy(self) -> None:
         """Clean up the screen."""
         self.main_frame.destroy()
