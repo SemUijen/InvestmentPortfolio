@@ -161,7 +161,7 @@ class InvestmentOptionsScreen(BaseScreen):
 
     def _save_selected_option(self) -> None:
         """Save the selected investment option to the database."""
-        selected_value = self.selected_option.get()
+        selected_value = str(self.selected_option.get())
         if not selected_value:
             self.app_controller.show_error("Please select an investment option.")
             return
