@@ -76,20 +76,22 @@ class BoughtInvestmentScreen(BaseScreen):
 
     def save_data(self) -> None:
         """Save the input data to a JSON file."""
-        if not self.validate_input():
-            return
-
         data = {}
         for field in self.input_fields:
             data[field.label.lower().replace(" ", "_")] = field.field.get()
 
         try:
-            data_dir = Path(os.getenv("DATA_DIR")) / "bronze" / "bought_stocks"
+            if not (data_dir_env := os.getenv("DATA_DIR")):
+                self.app_controller.show_error(
+                    "DATA_DIR is not set in the environment variables.",
+                )
+                return
+            path_data_dir = Path(data_dir_env) / "bronze" / "bought_stocks"
             # Create data directory if it doesn't exist
-            data_dir.mkdir(parents=True, exist_ok=True)
+            path_data_dir.mkdir(parents=True, exist_ok=True)
 
             # Save data to JSON file
-            with open(data_dir / "user_data.json", "w") as f:
+            with open(path_data_dir / "user_data.json", "w") as f:
                 json.dump(data, f, indent=4)
 
             messagebox.showinfo("Success", "Data saved successfully!")
@@ -99,7 +101,11 @@ class BoughtInvestmentScreen(BaseScreen):
 
     def clear_fields(self) -> None:
         """Clear all input fields."""
-        self.symbol.set("")
         # Clear all input fields
         for field in self.input_fields:
-            field.field.set("")
+            if isinstance(field.field, tk.StringVar):
+                field.field.set("")
+            elif isinstance(field.field, tk.DoubleVar):
+                field.field.set(0.0)
+            elif isinstance(field.field, tk.IntVar):
+                field.field.set(0)
