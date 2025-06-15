@@ -60,6 +60,16 @@ class InvestmentOptionsScreen(BaseScreen):
             padx=(0, 10),
         )
 
+        # Save button
+        ttk.Button(
+            button_frame,
+            text="Back to Main Menu",
+            command=self.app_controller.show_startup_screen,
+        ).pack(
+            side=tk.LEFT,
+            padx=(0, 10),
+        )
+
     def _search_investment_options(self) -> None:
         """Search for investment options based on user input."""
         # Implement search logic here
