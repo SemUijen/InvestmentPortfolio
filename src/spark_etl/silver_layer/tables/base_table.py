@@ -25,8 +25,7 @@ logger = logging.getLogger(__name__)
 class BaseTable(ABC):
     """Base class for Silver Layer tables in Spark ETL."""
 
-    def __init__(self, spark: SparkSession = None):
-
+    def __init__(self, spark: SparkSession | None = None):
         if spark is None:
             logging.info("Creating Spark session.")
             spark = self._create_spark_session()
@@ -62,9 +61,8 @@ class BaseTable(ABC):
 
     def _create_spark_session(
         self,
-        spark: SparkSession = None,
+        spark: SparkSession | None = None,
     ) -> SparkSession:
-
         builder = (
             SparkSession.builder.appName("MyApp")
             .config(
@@ -128,8 +126,7 @@ class BaseTable(ABC):
         """Creates the Delta table if it does not exist."""
         table_path = f"{self.silver_path}/{self.table_name}"
         if not DeltaTable.isDeltaTable(self.spark, table_path):
-
-            builder = self._return_delta_table_builder(self.spark)
+            builder = self._return_delta_table_builder()
             builder.execute()
             logging.info("Table %s created at %s", self.table_name, table_path)
         else:
