@@ -99,7 +99,7 @@ class InvestmentOptionsScreen(BaseScreen):
             self.results_frame.destroy()
 
         # Create results frame
-        self.results_frame = ttk.LabelFrame(
+        self.results_frame = ttk.Labelframe(
             self.main_frame,
             text="Search Results",
             padding="10",
