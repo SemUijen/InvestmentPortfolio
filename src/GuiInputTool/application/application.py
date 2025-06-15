@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 from .screens import (
     BaseScreen,
@@ -80,3 +81,11 @@ class MainApplication:
     def run(self) -> None:
         """Start the application."""
         self.root.mainloop()
+
+    def show_error(self, message: str) -> None:
+        """Display an error message in a popup."""
+        messagebox.showerror("Error", message)
+
+    def show_info(self, message: str) -> None:
+        """Display an informational message in a popup."""
+        messagebox.showinfo("Info", message)
