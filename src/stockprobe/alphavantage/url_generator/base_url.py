@@ -54,6 +54,12 @@ class BaseAPIurl(BaseModel):
         """Return the URL for the request."""
         return f"{self.base_url}?{self._to_url_params()}"
 
+    def return_search_url(self) -> str:
+        """Return the URL for the search request."""
+        if not self.symbol:
+            raise ValueError("Symbol must be provided for search URL")
+        return f"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={self.symbol}&apikey={self.apikey}"
+
     @model_validator(mode="after")
     def check_symbol_exists(self) -> BaseAPIurl:
         """Check if the symbol exists in the alphavantage database.
