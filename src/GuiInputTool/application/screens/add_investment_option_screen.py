@@ -96,7 +96,7 @@ class InvestmentOptionsScreen(BaseScreen):
     def _display_search_results(self, data: dict) -> None:
         """Display the top 5 search results for user selection."""
         # Clear any existing results
-        if hasattr(self, "results_frame"):
+        if self.results_frame:
             self.results_frame.destroy()
 
         # Create results frame
