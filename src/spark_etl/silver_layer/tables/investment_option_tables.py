@@ -12,7 +12,7 @@ load_dotenv()
 class InvestmentOption(BaseTable):
     """Investment Option Table in Silver Layer."""
 
-    def __init__(self, spark: SparkSession = None):
+    def __init__(self, spark: SparkSession | None = None):
         """Initialize the InvestmentOption table."""
         super().__init__(spark)
 
@@ -34,7 +34,7 @@ class InvestmentOption(BaseTable):
 class IoStockExchange(BaseTable):
     """Investment Option Stock Exchange Table in Silver Layer."""
 
-    def __init__(self, spark: SparkSession = None):
+    def __init__(self, spark: SparkSession | None = None):
         """Initialize the IoStockExchange table."""
         super().__init__(spark)
 
@@ -55,7 +55,7 @@ class IoStockExchange(BaseTable):
 class StockExchange(BaseTable):
     """Stock Exchange Table in Silver Layer."""
 
-    def __init__(self, spark: SparkSession = None):
+    def __init__(self, spark: SparkSession | None = None):
         """Initialize the StockExchange table."""
         super().__init__(spark)
 
