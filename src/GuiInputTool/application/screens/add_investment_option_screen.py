@@ -32,7 +32,7 @@ class InvestmentOptionsScreen(BaseScreen):
         super().__init__(root, app_controller)
         self.input_fields = input_fields
         # Setup main frame
-        self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.main_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N + tk.S)
         self.main_frame.columnconfigure(1, weight=1)
 
         self.add_input_fields(input_fields)
@@ -67,7 +67,7 @@ class InvestmentOptionsScreen(BaseScreen):
             self.app_controller.show_error("Please enter a stock symbol.")
             return
 
-        data = self._get_symbol_data(symbol)
+        data = self._get_symbol_data(str(symbol))
 
         self._display_search_results(data)
 
@@ -75,8 +75,13 @@ class InvestmentOptionsScreen(BaseScreen):
         """Fetch data for a given symbol."""
         # Implement data fetching logic here
         try:
+            if not (apikey := os.getenv("ALPHAVANTAGE_API_KEY")):
+                self.app_controller.show_error(
+                    "ALPHAVANTAGE_API_KEY is not set in the environment variables.",
+                )
+                return {}
             base_url = BaseAPIurl(
-                apikey=os.getenv("ALPHAVANTAGE_API_KEY"),
+                apikey=apikey,
                 symbol=symbol,
                 validate_symbol=False,
             )
