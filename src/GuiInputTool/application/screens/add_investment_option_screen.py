@@ -108,7 +108,7 @@ class InvestmentOptionsScreen(BaseScreen):
             row=self.current_row + 1,
             column=0,
             columnspan=2,
-            sticky=(tk.W, tk.E),
+            sticky=tk.W + tk.E,
             pady=20,
         )
 
