@@ -26,7 +26,7 @@ class BoughtInvestmentScreen(BaseScreen):
         self.input_fields = input_fields
 
         # Create main frame
-        self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.main_frame.grid(row=0, column=0, sticky="nsew")
         # Configure grid weights
         self.main_frame.columnconfigure(1, weight=1)
         self.current_row = 0
