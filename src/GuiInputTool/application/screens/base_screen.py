@@ -72,13 +72,14 @@ class BaseScreen:
                 entry.insert(0, field.placeholder)
                 entry.configure(foreground="gray")
 
-        # Set initial placeholder
-        entry.insert(0, field.placeholder)
-        entry.configure(foreground="gray")
+        if field.placeholder:
+            # Set initial placeholder
+            entry.insert(0, field.placeholder)
+            entry.configure(foreground="gray")
 
-        # Bind focus events
-        entry.bind("<FocusIn>", on_focus_in)
-        entry.bind("<FocusOut>", on_focus_out)
+            # Bind focus events
+            entry.bind("<FocusIn>", on_focus_in)
+            entry.bind("<FocusOut>", on_focus_out)
 
     def destroy(self) -> None:
         """Clean up the screen."""
