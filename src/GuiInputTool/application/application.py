@@ -1,6 +1,7 @@
 import tkinter as tk
 
 from .screens import (
+    BaseScreen,
     BoughtInvestmentScreen,
     InputField,
     InvestmentOptionsScreen,
@@ -21,7 +22,7 @@ class MainApplication:
         self.root.rowconfigure(0, weight=1)
 
         # Current screen reference
-        self.current_screen = None
+        self.current_screen: BaseScreen | None = None
 
         # Show startup screen initially
         self.show_startup_screen()
@@ -44,15 +45,19 @@ class MainApplication:
         input_fields = [
             InputField(
                 "Symbol",
+                tk.StringVar(),
                 "e.g. 'VWCE' for Vanguard FTSE All-World ",
-                tk.StringVar,
             ),
-            InputField("Quantity", None, tk.DoubleVar),
-            InputField("Purchase Price", None, tk.DoubleVar),
-            InputField("Purchase Date", "YYYY-mm-dd", tk.StringVar),
-            InputField("Cost of Buy", None, tk.DoubleVar),
-            InputField("Stock Exchange", "e.g. 'AMS' for Amsterdam", tk.StringVar),
-            InputField("Broker", "e.g. degiro", tk.StringVar),
+            InputField("Quantity", tk.DoubleVar()),
+            InputField("Purchase Price", tk.DoubleVar()),
+            InputField("Purchase Date", tk.StringVar(), "YYYY-mm-dd"),
+            InputField("Cost of Buy", tk.DoubleVar()),
+            InputField("Stock Exchange", tk.StringVar(), "e.g. 'AMS' for Amsterdam"),
+            InputField(
+                "Broker",
+                tk.StringVar(),
+                "e.g. degiro",
+            ),
         ]
 
         self.current_screen = BoughtInvestmentScreen(self.root, self, input_fields)
@@ -65,8 +70,8 @@ class MainApplication:
         input_fields = [
             InputField(
                 "Symbol",
+                tk.StringVar(),
                 "e.g. 'VWCE' for Vanguard FTSE All-World ",
-                tk.StringVar,
             ),
         ]
 
