@@ -184,6 +184,7 @@ class InvestmentOptionsScreen(BaseScreen):
         ) = selected_value.split("|")
         io_symbol, exchange_symbol = symbol.split(".")
 
+        self.app_controller.show_info("Investment option Received.")
         # Prepare data as JSON
         data = {
             "investment_option": {
