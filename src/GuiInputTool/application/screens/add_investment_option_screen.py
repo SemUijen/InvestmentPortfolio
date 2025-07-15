@@ -6,11 +6,6 @@ from typing import TYPE_CHECKING
 import requests
 from dotenv import load_dotenv
 
-from src.spark_etl.silver_layer.tables import (
-    InvestmentOption,
-    IoStockExchange,
-    StockExchange,
-)
 from src.stockprobe.alphavantage.url_generator.base_url import BaseAPIurl
 
 from .base_screen import BaseScreen, InputField
@@ -189,24 +184,55 @@ class InvestmentOptionsScreen(BaseScreen):
         ) = selected_value.split("|")
         io_symbol, exchange_symbol = symbol.split(".")
 
-        investment_option_data = {
-            "symbol": io_symbol,
-            "name": name,
-            "type": io_type,
+        # Prepare data as JSON
+        data = {
+            "investment_option": {
+                "symbol": io_symbol,
+                "name": name,
+                "type": io_type,
+            },
+            "io_stock_exchange": {
+                "io_symbol": io_symbol,
+                "exchange_symbol": exchange_symbol,
+            },
+            "stock_exchange": {
+                "symbol": exchange_symbol,
+                "region": region,
+                "markt_open": market_open,
+                "markt_close": market_close,
+                "currency": currency,
+            },
         }
-        InvestmentOption().merge_dict_data(investment_option_data)
-        io_stock_exchange_data = {
-            "io_symbol": io_symbol,
-            "exchange_symbol": exchange_symbol,
-        }
-        IoStockExchange().merge_dict_data(io_stock_exchange_data)
 
-        stock_exchange_data = {
-            "symbol": exchange_symbol,
-            "region": region,
-            "markt_open": market_open,
-            "markt_close": market_close,
-            "currency": currency,
-        }
-        StockExchange().merge_dict_data(stock_exchange_data)
-        self.app_controller.show_info("Investment option saved successfully.")
+        # Call Docker container to process the data
+        try:
+            import json
+            import subprocess
+
+            result = subprocess.run(
+                [
+                    "docker",
+                    "run",
+                    "--rm",
+                    "--entrypoint=",  # Add this line to override default entrypoint
+                    "-v",
+                    f"{os.getenv('DATA_DIR')}:/data",
+                    "-e",
+                    "DATA_DIR=/data",
+                    "investment-portfolio",
+                    "python3",
+                    "-c",
+                    f"import json; from src.spark_etl.silver_layer.tables import *; data={json.dumps(data)}; InvestmentOption().merge_dict_data(data['investment_option']); IoStockExchange().merge_dict_data(data['io_stock_exchange']); StockExchange().merge_dict_data(data['stock_exchange'])",
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            if result.returncode == 0:
+                self.app_controller.show_info("Investment option saved successfully.")
+            else:
+                self.app_controller.show_error(f"Error saving data: {result.stderr}")
+
+        except Exception as e:
+            self.app_controller.show_error(f"Error running Docker: {e}")
