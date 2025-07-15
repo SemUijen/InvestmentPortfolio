@@ -94,11 +94,11 @@ class BaseTable(ABC):
         """Creates a unique identifier for the table based on its primary keys columns."""
         primary_keys = self.return_primary_keys_columns()
 
+        from pyspark.sql.functions import concat_ws
+
         return input_df.withColumn(
             "id",
-            md5(
-                *[input_df[col] for col in primary_keys],
-            ),  # Create a hash based on primary key columns
+            md5(concat_ws("||", *[input_df[col] for col in primary_keys])),
         )
 
     def get_table(self) -> DeltaTable:
