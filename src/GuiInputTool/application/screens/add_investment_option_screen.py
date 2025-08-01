@@ -6,6 +6,11 @@ from typing import TYPE_CHECKING
 import requests
 from dotenv import load_dotenv
 
+from src.spark_etl.silver_layer.tables.deltalake_tables import (
+    InvestmentOption,
+    IoStockExchange,
+    StockExchange,
+)
 from src.stockprobe.alphavantage.url_generator.base_url import BaseAPIurl
 
 from .base_screen import BaseScreen, InputField
@@ -184,56 +189,30 @@ class InvestmentOptionsScreen(BaseScreen):
         ) = selected_value.split("|")
         io_symbol, exchange_symbol = symbol.split(".")
 
-        self.app_controller.show_info("Investment option Received.")
-        # Prepare data as JSON
+        # Prepare data with lists for PyArrow table creation
         data = {
             "investment_option": {
-                "symbol": io_symbol,
-                "name": name,
-                "type": io_type,
+                "symbol": [io_symbol],
+                "name": [name],
+                "type": [io_type],
             },
             "io_stock_exchange": {
-                "io_symbol": io_symbol,
-                "exchange_symbol": exchange_symbol,
+                "io_symbol": [io_symbol],
+                "exchange_symbol": [exchange_symbol],
             },
             "stock_exchange": {
-                "symbol": exchange_symbol,
-                "region": region,
-                "markt_open": market_open,
-                "markt_close": market_close,
-                "currency": currency,
+                "symbol": [exchange_symbol],
+                "region": [region],
+                "markt_open": [market_open],
+                "markt_close": [market_close],
+                "currency": [currency],
             },
         }
 
-        # Call Docker container to process the data
         try:
-            import json
-            import subprocess
-
-            result = subprocess.run(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "--entrypoint=",  # Add this line to override default entrypoint
-                    "-v",
-                    f"{os.getenv('DATA_DIR')}:/data",
-                    "-e",
-                    "DATA_DIR=/data",
-                    "investment-portfolio",
-                    "python3",
-                    "-c",
-                    f"import json; from src.spark_etl.silver_layer.tables import *; data={json.dumps(data)}; InvestmentOption().merge_dict_data(data['investment_option']); IoStockExchange().merge_dict_data(data['io_stock_exchange']); StockExchange().merge_dict_data(data['stock_exchange'])",
-                ],
-                capture_output=True,
-                text=True,
-                check=False,
-            )
-
-            if result.returncode == 0:
-                self.app_controller.show_info("Investment option saved successfully.")
-            else:
-                self.app_controller.show_error(f"Error saving data: {result.stderr}")
-
+            InvestmentOption().merge_from_dict(data["investment_option"])
+            IoStockExchange().merge_from_dict(data["io_stock_exchange"])
+            StockExchange().merge_from_dict(data["stock_exchange"])
+            self.app_controller.show_info("Investment option saved successfully!")
         except Exception as e:
-            self.app_controller.show_error(f"Error running Docker: {e}")
+            self.app_controller.show_error(f"Error saving investment option: {e}")

@@ -1,4 +1,11 @@
 from .bought_investment_table import InvestmentOptionBought
 from .deltalake_base_table import BaseTable
+from .investment_option_tables import InvestmentOption, IoStockExchange, StockExchange
 
-__all__ = ["BaseTable", "InvestmentOptionBought"]
+__all__ = [
+    "BaseTable",
+    "InvestmentOption",
+    "InvestmentOptionBought",
+    "IoStockExchange",
+    "StockExchange",
+]
