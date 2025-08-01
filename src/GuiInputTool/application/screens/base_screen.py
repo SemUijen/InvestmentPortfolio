@@ -2,10 +2,13 @@ import tkinter as tk
 from tkinter import ttk
 from typing import TYPE_CHECKING
 
+from dotenv import load_dotenv
+
 if TYPE_CHECKING:
     from src.GuiInputTool.application.application import (
         MainApplication as MainApplication,
     )
+load_dotenv()
 
 
 class InputField:
