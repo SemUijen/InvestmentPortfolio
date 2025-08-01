@@ -1,11 +1,14 @@
-import json
+import logging
 import os
 import tkinter as tk
+from datetime import datetime
 from pathlib import Path
-from tkinter import messagebox, ttk
+from tkinter import ttk
 from typing import TYPE_CHECKING
 
 from deltalake import DeltaTable
+
+from src.spark_etl.silver_layer.tables.deltalake_tables import InvestmentOptionBought
 
 from .base_screen import BaseScreen, InputField
 
@@ -59,7 +62,10 @@ class BoughtInvestmentScreen(BaseScreen):
         path = Path(DATA_DIR) / "silver" / "investment_option"
         dt = DeltaTable(path).to_pyarrow_table()
         symbols = dt.column("symbol").to_pylist()
-        print(f"Symbols loaded: {symbols}")
+        if not symbols:
+            self.app_controller.show_error("No symbols found in the database.")
+            return None
+
         return symbols
 
     def add_symbol_dropdown(self) -> None:
@@ -116,32 +122,63 @@ class BoughtInvestmentScreen(BaseScreen):
         ).pack(side=tk.LEFT)
 
     def save_data(self) -> None:
-        """Save the input data to a JSON file."""
+        """Save the input data to the Delta table."""
+        # Get the selected symbol from dropdown
+        selected_symbol = self.symbol_dropdown.get()
+        if selected_symbol == "Select Symbol" or not selected_symbol:
+            self.app_controller.show_error("Please select a symbol.")
+            return
+
+        # Collect data from input fields
         data = {}
         for field in self.input_fields:
-            data[field.label.lower().replace(" ", "_")] = field.field.get()
-
-        try:
-            if not (data_dir_env := os.getenv("DATA_DIR")):
+            field_name = field.label.lower().replace(" ", "_")
+            if not field.field.get() or field.field.get() == field.placeholder:
                 self.app_controller.show_error(
-                    "DATA_DIR is not set in the environment variables.",
+                    f"Please fill in the {field.label} field.",
                 )
                 return
-            path_data_dir = Path(data_dir_env) / "bronze" / "bought_stocks"
-            # Create data directory if it doesn't exist
-            path_data_dir.mkdir(parents=True, exist_ok=True)
+            data[field_name] = field.field.get()  # Validate required fields
 
-            # Save data to JSON file
-            with open(path_data_dir / "user_data.json", "w") as f:
-                json.dump(data, f, indent=4)
+        date_str = str(data.get("purchase_date", ""))
+        try:
+            parsed_date = datetime.strptime(
+                date_str,
+                "%Y-%m-%d",
+            ).date()
+        except ValueError:
+            error_msg = "Please enter date in YYYY-MM-DD format."
+            self.app_controller.show_error(error_msg)
+            return
 
-            messagebox.showinfo("Success", "Data saved successfully!")
+        # Map the GUI field names to the expected schema field names
+        try:
+            # Prepare data for the delta table with correct field names
+            table_data = {
+                "symbol": [selected_symbol],
+                "date_bought": [parsed_date],
+                "price": [float(data.get("purchase_price", ""))],
+                "amount": [int(data.get("quantity", 0))],
+                "cost_of_buy": [float(data.get("cost_of_buy", ""))],
+                "broker": [data.get("broker")],
+            }
+
+            # Create table instance and merge data
+            bought_investment_table = InvestmentOptionBought()
+            bought_investment_table.merge_from_dict(table_data)
+
+            self.app_controller.show_info("Investment data saved successfully!")
             self.clear_fields()
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to save data: {e!s}")
+
+        except (ValueError, ImportError, OSError) as e:
+            self.app_controller.show_error(f"Error saving data: {e!s}")
+            logging.exception("Error saving investment data")
 
     def clear_fields(self) -> None:
         """Clear all input fields."""
+        # Clear the symbol dropdown
+        self.symbol_dropdown.set("Select Symbol")
+
         # Clear all input fields
         for field in self.input_fields:
             if isinstance(field.field, tk.StringVar):

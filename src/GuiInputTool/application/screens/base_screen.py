@@ -46,7 +46,9 @@ class BaseScreen:
                 pady=5,
             )
 
-            entry = ttk.Entry(self.main_frame, textvariable=field.field)
+            entry = ttk.Entry(
+                self.main_frame, textvariable=field.field, validate="focusout"
+            )
             entry.grid(
                 row=self.current_row,
                 column=1,
