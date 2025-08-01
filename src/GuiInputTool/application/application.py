@@ -44,11 +44,11 @@ class MainApplication:
 
         # Define the input fields you want
         input_fields = [
-            InputField(
-                "Symbol",
-                tk.StringVar(),
-                "e.g. 'VWCE' for Vanguard FTSE All-World ",
-            ),
+            # InputField(
+            #     "Symbol",
+            #     tk.StringVar(),
+            #     "e.g. 'VWCE' for Vanguard FTSE All-World ",
+            # ),
             InputField("Quantity", tk.DoubleVar()),
             InputField("Purchase Price", tk.DoubleVar()),
             InputField("Purchase Date", tk.StringVar(), "YYYY-mm-dd"),
