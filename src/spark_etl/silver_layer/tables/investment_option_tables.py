@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StringType, StructField, StructType
 
-from .base_table import BaseTable
+from .spark_base_table import BaseTable
 
 load_dotenv()
 
