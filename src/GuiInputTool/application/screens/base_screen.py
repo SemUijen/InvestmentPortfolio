@@ -2,10 +2,13 @@ import tkinter as tk
 from tkinter import ttk
 from typing import TYPE_CHECKING
 
+from dotenv import load_dotenv
+
 if TYPE_CHECKING:
     from src.GuiInputTool.application.application import (
         MainApplication as MainApplication,
     )
+load_dotenv()
 
 
 class InputField:
@@ -43,7 +46,9 @@ class BaseScreen:
                 pady=5,
             )
 
-            entry = ttk.Entry(self.main_frame, textvariable=field.field)
+            entry = ttk.Entry(
+                self.main_frame, textvariable=field.field, validate="focusout"
+            )
             entry.grid(
                 row=self.current_row,
                 column=1,
