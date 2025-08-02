@@ -99,7 +99,7 @@ async def main():
         )
         for symbol, symbol_info in symbols.items()
     ]
-    logger.info("URLs to ingest: %s", urls_to_ingest)
+    logger.info("Found %d URLs to ingest", len(urls_to_ingest))
 
     data_dir = os.getenv("DATA_DIR", "")
     if not data_dir:

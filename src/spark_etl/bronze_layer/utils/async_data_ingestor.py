@@ -23,17 +23,19 @@ class AsyncDataIngestor:
         base_dir: str,
         semaphore: int = 5,
     ) -> None:
-
         self.semaphore = asyncio.Semaphore(semaphore)
         self.to_ingest = to_ingest
         self.base_dir = base_dir
 
     async def fetch_data(self, url: str) -> dict:
         """Fetch data from the URL asynchronously."""
-        logging.info("Fetching data from %s", url)
-        async with self.semaphore, aiohttp.ClientSession() as session, session.get(
-            url,
-        ) as response:
+        async with (
+            self.semaphore,
+            aiohttp.ClientSession() as session,
+            session.get(
+                url,
+            ) as response,
+        ):
             logging.info("Status %s", response.status)
             response.raise_for_status()  # Raise an error for bad responses
             return await response.json()
@@ -49,6 +51,7 @@ class AsyncDataIngestor:
     async def ingest(self, url: str, symbol_name: str) -> None:
         """Ingest data from the URL and save it to a file."""
         try:
+            logging.info("Starting data ingestion for %s", symbol_name)
             data = await self.fetch_data(url=url)
             file_path = await self.create_file_path(symbol_name)
             await self.save_data(data, file_path)
