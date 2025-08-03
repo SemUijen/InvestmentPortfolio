@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 
+from delta import configure_spark_with_delta_pip
 from dotenv import load_dotenv
 from pyspark.sql import SparkSession
 
@@ -8,7 +9,20 @@ from .utils import InvestmentOptionBronzePipeline
 
 if __name__ == "__main__":
     load_dotenv()  # Load environment variables from .env file
-    spark = SparkSession.builder.appName("SilverLayerApp").getOrCreate()
+    builder = (
+        SparkSession.builder.appName("MyApp")
+        .config(
+            "spark.sql.extensions",
+            "io.delta.sql.DeltaSparkSessionExtension",
+        )
+        .config(
+            "spark.sql.catalog.spark_catalog",
+            "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+        )
+    )
+
+    spark = configure_spark_with_delta_pip(builder).getOrCreate()
+
     if not (DATA_DIR := os.getenv("DATA_DIR")):
         raise ValueError("DATA_DIR environment variable is not set")
 
@@ -16,7 +30,4 @@ if __name__ == "__main__":
 
     # Example usage
     today = datetime.now()
-    symbol_name = "example_symbol"
-    df = bronze_source.run(today)
-
-    df.show()  # Display the loaded DataFrame
+    bronze_source.run(today)
