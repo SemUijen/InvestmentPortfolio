@@ -1,9 +1,18 @@
+import logging
 from datetime import datetime
 from pathlib import Path
 
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import col, explode, split, to_date
 from pyspark.sql.types import MapType, StringType, StructField, StructType
+
+from src.spark_etl.silver_layer.tables.spark_tables import InvestmentOptionValueOvertime
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 
 class InvestmentOptionBronzePipeline:
@@ -55,6 +64,7 @@ class InvestmentOptionBronzePipeline:
         :param today: The date in 'YYYY-MM-DD' format.
         :return: The full file path as a string.
         """
+        logger.info("Getting file paths for %s", today)
         file_paths = []
         year, month, day = (
             today.strftime("%Y"),
@@ -78,7 +88,6 @@ class InvestmentOptionBronzePipeline:
                         / file_name,
                     ),
                 )
-        print(f"File paths for {today}: {file_paths}")
 
         return file_paths
 
@@ -88,14 +97,16 @@ class InvestmentOptionBronzePipeline:
         :param today: The date in 'YYYY-MM-DD' format.
         :return: A Spark DataFrame containing the investment options data.
         """
+        logger.info("Loading investment options data for %s", today)
         file_paths = self._get_file_paths(today)
+        logger.info("File paths: %s", file_paths)
         if not file_paths:
             raise ValueError("No files found for the specified date.")
 
         return (
             self.spark.read.option("multiline", "true")
             .schema(self._bronze_json_schema())
-            .json(file_paths[0])
+            .json(file_paths)
         )
 
     def _extract_nested_json(self, df: DataFrame) -> DataFrame:
@@ -104,6 +115,7 @@ class InvestmentOptionBronzePipeline:
         return : DataFrame with extracted fields.
         """
         # Explode the daily time series
+        logger.info("Extracting nested JSON fields from DataFrame")
         df = df.select(
             col("Meta Data.`2. Symbol`").alias("symbol"),
             col("Time Series (Daily)"),
@@ -112,9 +124,11 @@ class InvestmentOptionBronzePipeline:
             col("symbol"),
             explode(col("Time Series (Daily)")).alias("date", "values"),
         )
+        logger.info("Cleaning symbol and converting date to date format")
         df = df.withColumn("symbol", split(col("symbol"), "\\.")[0])
         df = df.withColumn("date", to_date(col("date"), "yyyy-MM-dd"))
         # # Expand nested structure
+        logger.info("Selecting and value renaming columns")
         df = df.select(
             col("symbol"),
             col("date"),
@@ -133,6 +147,16 @@ class InvestmentOptionBronzePipeline:
         :param today: The date in 'YYYY-MM-DD' format.
         :return: A Spark DataFrame containing the investment options data.
         """
-        df = self._load_investment_options(today)
+        logger.info("Running InvestmentOptionBronzePipeline for %s", today)
 
-        return self._extract_nested_json(df)
+        df = self._load_investment_options(today)
+        if df.isEmpty():
+            logger.warning("No data found for %s", today)
+            return
+
+        logger.info("Saving investment options data to silver layer")
+        df = self._extract_nested_json(df)
+        InvestmentOptionValueOvertime(spark=self.spark).merge_dataframe(
+            df,
+        )
+        logger.info("Investment options data saved to silver layer")
