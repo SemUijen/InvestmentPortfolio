@@ -67,6 +67,7 @@ class AsyncDataIngestor:
         file_name = f"{today}_{symbol_name}.json"
         directory = (
             Path(self.base_dir)
+            / "investment_options"
             / symbol_name
             / f"year={today.year}"
             / f"month={today.month}"
