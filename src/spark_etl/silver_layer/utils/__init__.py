@@ -1,3 +1,3 @@
-from .bronze_source import BronzeSource
+from .bronze_source import InvestmentOptionBronzePipeline
 
-__all__ = ["BronzeSource"]
+__all__ = ["InvestmentOptionBronzePipeline"]
