@@ -73,7 +73,7 @@ class AsyncDataIngestor:
             / f"month={today.month}"
             / f"day={today.day}"
         )
-        return rf"{directory}\{file_name}"
+        return rf"{directory}/{file_name}"
 
     async def ingest_all(self) -> None:
         """Ingest data from all URLs concurrently."""
