@@ -81,13 +81,13 @@ class BaseTable(ABC):
             raise ValueError("Primary keys columns are not defined.")
 
         pk_cols = [table.column(col).cast(pa.string()) for col in primary_keys]
-        concat_array = pc.binary_join_element_wise(
-            *pk_cols,
-        )
+        if len(pk_cols) == 1:
+            concat_array = pk_cols[0]  # No joining needed
+        else:
+            concat_array = pc.binary_join_element_wise(*pk_cols)
 
         hash_values = [
-            hashlib.md5(row.as_py().encode(), usedforsecurity=False).hexdigest()
-            for row in concat_array
+            hashlib.sha256(row.as_py().encode()).hexdigest() for row in concat_array
         ]
 
         id_array = pa.array(hash_values, type=pa.string())
