@@ -1,0 +1,10 @@
+relationship f57a9ddc-4b43-432d-8d3f-670a21778b52
+	joinOnDateBehavior: datePartOnly
+	fromColumn: InvestmentOptionValueOvertime.date
+	toColumn: LocalDateTable_7fa9d46f-97b0-43a7-9ecf-cbd25149cb7f.Date
+
+relationship b3058828-430f-4313-9131-04d32864aa14
+	joinOnDateBehavior: datePartOnly
+	fromColumn: InvestmentOptionBought.date_bought
+	toColumn: LocalDateTable_09a22560-e779-40b0-b540-124608247339.Date
+
