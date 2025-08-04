@@ -97,18 +97,25 @@ class BaseTable(ABC):
         """Return the DeltaTable for the specified table."""
         return DeltaTable(f"{self.silver_path}/{self.table_name}")
 
+    def _merge_pyarrow_tables(
+        self,
+        old_table: pa.Table,
+        new_data: pa.Table,
+    ) -> pa.Table:
+        """Merge two PyArrow tables."""
+        new_ids = new_data["id"]
+        mask = pc.is_in(old_table["id"], value_set=new_ids)
+        filtered_existing = old_table.filter(pc.invert(mask))
+        return pa.concat_tables([filtered_existing, new_data], promote=True)
+
     def _merge_data(self, input_df: pa.Table):
         """Merge the input DataFrame with the existing Delta table."""
         delta_table = self.get_table()
         existing_table = delta_table.to_pyarrow_table()
         input_table = self._add_hash_id(input_df)
 
-        new_ids = input_table["id"]
-        mask = pc.is_in(existing_table["id"], value_set=new_ids)
-        filtered_existing = existing_table.filter(pc.invert(mask))
-
         # Step 4: Concatenate new and non-overlapping existing data
-        merged_table = pa.concat_tables([filtered_existing, input_table], promote=True)
+        merged_table = self._merge_pyarrow_tables(existing_table, input_table)
 
         write_deltalake(
             table_or_uri=delta_table,
