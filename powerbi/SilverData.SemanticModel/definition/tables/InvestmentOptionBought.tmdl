@@ -1,0 +1,85 @@
+table InvestmentOptionBought
+	lineageTag: ae534dce-08b5-4646-bde9-4cdb43d56d41
+
+	column symbol
+		dataType: string
+		lineageTag: d81bd909-e3c3-40bc-8d30-53d922493ea6
+		summarizeBy: none
+		sourceColumn: symbol
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_bought
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fe7e8132-df4e-49bf-9d5e-22534fff8143
+		summarizeBy: none
+		sourceColumn: date_bought
+
+		variation Variation
+			isDefault
+			relationship: b3058828-430f-4313-9131-04d32864aa14
+			defaultHierarchy: LocalDateTable_09a22560-e779-40b0-b540-124608247339.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column price
+		dataType: double
+		lineageTag: fbad8f6d-4c21-4162-821e-307c2c3a58ed
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 62379e8b-f6bc-4cc6-98b5-09b402a4d030
+		summarizeBy: sum
+		sourceColumn: amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column cost_of_buy
+		dataType: double
+		lineageTag: 8f261053-c463-4373-8b02-782bf6c2aef0
+		summarizeBy: sum
+		sourceColumn: cost_of_buy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column broker
+		dataType: string
+		lineageTag: 1386fea8-e280-4591-8437-5740fbe7726d
+		summarizeBy: none
+		sourceColumn: broker
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: string
+		lineageTag: f68f85a4-5000-4d97-9a7e-6c86b2e9171b
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition InvestmentOptionBought = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\investment_option_bought"),
+				    ToDelta = DeltaLake.Table(Source)
+				in
+				    ToDelta
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
