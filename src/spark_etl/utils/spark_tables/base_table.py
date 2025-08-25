@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import md5
 from pyspark.sql.types import StructType
-
+from src.spark_etl.utils import get_spark_session()
 load_dotenv()
 
 logging.basicConfig(
@@ -28,7 +28,7 @@ class BaseTable(ABC):
     def __init__(self, spark: SparkSession | None = None):
         if spark is None:
             logging.info("Creating Spark session.")
-            spark = self._create_spark_session()
+            spark = get_spark_session()
 
         self.spark = spark
 
@@ -59,24 +59,6 @@ class BaseTable(ABC):
         # Convert to lowercase
         return snake_case.lower()
 
-    def _create_spark_session(
-        self,
-        spark: SparkSession | None = None,
-    ) -> SparkSession:
-        builder = (
-            SparkSession.builder.appName("MyApp")
-            .config(
-                "spark.sql.extensions",
-                "io.delta.sql.DeltaSparkSessionExtension",
-            )
-            .config(
-                "spark.sql.catalog.spark_catalog",
-                "org.apache.spark.sql.delta.catalog.DeltaCatalog",
-            )
-        )
-
-        spark = configure_spark_with_delta_pip(builder).getOrCreate()
-        return spark
 
     @abstractmethod
     def return_defined_schema(self) -> StructType:
