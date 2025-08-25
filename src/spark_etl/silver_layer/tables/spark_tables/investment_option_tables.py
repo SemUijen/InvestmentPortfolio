@@ -2,7 +2,14 @@
 
 from dotenv import load_dotenv
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StringType, StructField, StructType
+from pyspark.sql.types import (
+    DateType,
+    FloatType,
+    IntegerType,
+    StringType,
+    StructField,
+    StructType,
+)
 
 from .spark_base_table import BaseTable
 
@@ -74,3 +81,29 @@ class StockExchange(BaseTable):
     def return_primary_keys_columns(self) -> list[str]:
         """Return the primary key columns for the StockExchange table."""
         return ["symbol"]
+
+
+class InvestmentOptionValueOvertime(BaseTable):
+    """Investment Option Value Over Time Table in Silver Layer."""
+
+    def __init__(self, spark: SparkSession | None = None):
+        """Initialize the InvestmentOptionValueOvertime table."""
+        super().__init__(spark)
+
+    def return_defined_schema(self) -> StructType:
+        """Return the schema for the InvestmentOptionValueOvertime table."""
+        return StructType(
+            [
+                StructField("symbol", StringType(), True),
+                StructField("date", DateType(), True),
+                StructField("open", FloatType(), True),
+                StructField("high", FloatType(), True),
+                StructField("close", FloatType(), True),
+                StructField("low", FloatType(), True),
+                StructField("volume", IntegerType(), True),
+            ],
+        )
+
+    def return_primary_keys_columns(self) -> list[str]:
+        """Return the primary key columns for the InvestmentOptionValueOvertime table."""
+        return ["symbol", "date"]

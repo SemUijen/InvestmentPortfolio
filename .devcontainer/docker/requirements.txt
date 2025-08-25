@@ -7,7 +7,8 @@ aiofiles
 python-dotenv
 pytest
 pydantic
-
+deltalake
+pyarrow
 
 
 # Delta Version for pySpark
