@@ -6,7 +6,6 @@ import re
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from delta import configure_spark_with_delta_pip
 from delta.tables import DeltaTable, DeltaTableBuilder
 from dotenv import load_dotenv
 from pyspark.sql import DataFrame, SparkSession
@@ -28,7 +27,7 @@ class BaseTable(ABC):
     def __init__(self, spark: SparkSession | None = None):
         if spark is None:
             logging.info("Creating Spark session.")
-            spark = get_spark_session()
+            self.spark = get_spark_session()
 
         self.spark = spark
 
@@ -89,6 +88,9 @@ class BaseTable(ABC):
             self.spark,
             f"{self.silver_path}/{self.table_name}",
         )
+    
+    def get_dataframe(self) -> DataFrame:
+        return self.get_table().toDF()
 
     def _return_delta_table_builder(self) -> DeltaTableBuilder:
         """Return a DeltaTableBuilder for the specified table."""
