@@ -11,7 +11,7 @@ from pyspark.sql.types import (
     StructType,
 )
 
-from .spark_base_table import BaseTable
+from src.spark_etl.utils import BaseTable
 
 load_dotenv()
 
@@ -107,3 +107,28 @@ class InvestmentOptionValueOvertime(BaseTable):
     def return_primary_keys_columns(self) -> list[str]:
         """Return the primary key columns for the InvestmentOptionValueOvertime table."""
         return ["symbol", "date"]
+
+
+class InvestmentOptionBought(BaseTable):
+    """Investment Option Bought Table in Silver Layer."""
+
+    def __init__(self):
+        """Initialize the InvestmentOptionBought table."""
+        super().__init__()
+
+    def return_defined_schema(self) -> StructType:
+        """Return the schema for the InvestmentOptionBought table."""
+        return StructType(
+            [
+                StructField("symbol", StringType(), True),
+                StructField("date_bought", DateType(), True),
+                StructField("price", FloatType(), True),
+                StructField("amount", FloatType(), True),
+                StructField("cost_of_buy", FloatType(), True),
+                StructField("broker", StringType(), True),
+            ],
+        )
+
+    def return_primary_keys_columns(self) -> list[str]:
+        """Return the primary key columns for the InvestmentOptionBought table."""
+        return ["symbol", "date_bought", "price", "broker"]
