@@ -8,5 +8,7 @@ services:
       - 127.0.0.1:8888:20
     volumes:
       - ..:/code/
+      - E:/InvestmentPortfolioData:/mnt/data
     environment:
       DEV: "True"
+      DATA_DIR: "/mnt/data"

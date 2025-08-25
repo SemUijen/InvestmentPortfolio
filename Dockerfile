@@ -3,7 +3,7 @@ FROM spark:3.5.0-scala2.12-java11-ubuntu
 
 USER 0
 
-RUN echo 'python3 -m pytest tests/' >> /root/.bash_history
+
 
 # Install Python 3.12
 RUN set -ex; \

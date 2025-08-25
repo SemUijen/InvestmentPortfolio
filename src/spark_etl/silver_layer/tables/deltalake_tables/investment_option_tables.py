@@ -55,4 +55,4 @@ class StockExchange(BaseTable):
 
     def return_primary_keys_columns(self) -> list[str]:
         """Return the primary key columns for the StockExchange table."""
-        return ["symbol"]
+        return ["symbol", "region"]
