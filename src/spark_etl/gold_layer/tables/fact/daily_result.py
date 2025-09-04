@@ -1,6 +1,13 @@
 from dotenv import load_dotenv
 from pyspark.sql import SparkSession
-from pyspark.sql.types import DateType, FloatType, StringType, StructField, StructType
+from pyspark.sql.types import (
+    DateType,
+    FloatType,
+    IntegerType,
+    StringType,
+    StructField,
+    StructType,
+)
 
 from src.spark_etl.utils import BaseTable
 
@@ -16,12 +23,13 @@ class FactDailyResult(BaseTable):
         """Return the schema for the StockExchange table."""
         return StructType(
             [
-                StructField("date_id", StringType(), True),
+                StructField("date_id", IntegerType(), True),
                 StructField("date", DateType(), True),
                 StructField("symbol", StringType(), True),
                 StructField("total_investment", FloatType(), True),
                 StructField("total_value", FloatType(), True),
                 StructField("number_owned", FloatType(), True),
+                StructField("avg_buy_price", FloatType(), True),
                 StructField("value_single_io", FloatType(), True),
                 StructField("product_profit", FloatType(), True),
                 StructField("currency_profit", FloatType(), True),
