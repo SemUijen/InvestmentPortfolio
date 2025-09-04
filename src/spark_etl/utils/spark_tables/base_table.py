@@ -11,7 +11,9 @@ from dotenv import load_dotenv
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import md5
 from pyspark.sql.types import StructType
-from src.spark_etl.utils import get_spark_session()
+
+from src.spark_etl.utils import get_spark_session
+
 load_dotenv()
 
 logging.basicConfig(
@@ -58,7 +60,6 @@ class BaseTable(ABC):
         # Convert to lowercase
         return snake_case.lower()
 
-
     @abstractmethod
     def return_defined_schema(self) -> StructType:
         """Abstract method to process data. Must be implemented by subclasses."""
@@ -88,7 +89,7 @@ class BaseTable(ABC):
             self.spark,
             f"{self.silver_path}/{self.table_name}",
         )
-    
+
     def get_dataframe(self) -> DataFrame:
         return self.get_table().toDF()
 
