@@ -112,9 +112,9 @@ class InvestmentOptionValueOvertime(BaseTable):
 class InvestmentOptionBought(BaseTable):
     """Investment Option Bought Table in Silver Layer."""
 
-    def __init__(self):
+    def __init__(self, spark: SparkSession | None = None):
         """Initialize the InvestmentOptionBought table."""
-        super().__init__()
+        super().__init__(spark)
 
     def return_defined_schema(self) -> StructType:
         """Return the schema for the InvestmentOptionBought table."""
