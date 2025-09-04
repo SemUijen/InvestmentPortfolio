@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StringType, StructField, StructType
+from pyspark.sql.types import DateType, FloatType, StringType, StructField, StructType
 
 from src.spark_etl.utils import BaseTable
 
@@ -17,13 +17,15 @@ class FactDailyResult(BaseTable):
         return StructType(
             [
                 StructField("date_id", StringType(), True),
+                StructField("date", DateType(), True),
                 StructField("symbol", StringType(), True),
-                StructField("total_value", StringType(), True),
-                StructField("number_owned", StringType(), True),
-                StructField("value_single", StringType(), True),
-                StructField("product_profit", StringType(), True),
-                StructField("currency_profit", StringType(), True),
-                StructField("total_profit", StringType(), True),
+                StructField("total_investment", FloatType(), True),
+                StructField("total_value", FloatType(), True),
+                StructField("number_owned", FloatType(), True),
+                StructField("value_single_io", FloatType(), True),
+                StructField("product_profit", FloatType(), True),
+                StructField("currency_profit", FloatType(), True),
+                StructField("total_profit", FloatType(), True),
             ],
         )
 
