@@ -7,7 +7,9 @@ from src.spark_etl.utils import get_spark_session
 
 from .utils import InvestmentOptionBronzePipeline
 
-if __name__ == "__main__":
+
+def main():
+    """Run silver layer pipeline."""
     load_dotenv()  # Load environment variables from .env file
     spark = get_spark_session()
 
@@ -19,3 +21,7 @@ if __name__ == "__main__":
     # Example usage
     today = datetime.now()
     bronze_source.run(today)
+
+
+if __name__ == "__main__":
+    main()
