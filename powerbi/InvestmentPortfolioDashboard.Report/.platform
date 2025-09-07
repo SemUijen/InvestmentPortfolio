@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "InvestmentPortfolioDashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "b0954593-54b9-44c3-bdd3-fb4d1a78f3b7"
+  }
+}

@@ -1,0 +1,40 @@
+table io_stock_exchange
+	lineageTag: 51f9d05d-9357-4d9e-8987-5a0e7eed40a7
+
+	column io_symbol
+		dataType: string
+		lineageTag: 5c2c96b0-357b-4c0d-9a9b-c5e702a407ac
+		summarizeBy: none
+		sourceColumn: io_symbol
+
+		annotation SummarizationSetBy = Automatic
+
+	column exchange_symbol
+		dataType: string
+		lineageTag: 1b978018-1559-488f-a1be-fcc0adc2b157
+		summarizeBy: none
+		sourceColumn: exchange_symbol
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: string
+		lineageTag: 144e14f9-daf6-4706-9852-8a6bbea6c46a
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition io_stock_exchange = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\io_stock_exchange"),
+				    ToDelta = DeltaLake.Table(Source)
+				in
+				    ToDelta
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

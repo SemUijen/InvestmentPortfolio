@@ -1,0 +1,50 @@
+table investment_option
+	lineageTag: 97407ae3-389e-4b21-b9eb-e22ded99f1ee
+
+	column symbol
+		dataType: string
+		lineageTag: b9048520-871b-4670-88a1-bf4f4a47d975
+		summarizeBy: none
+		sourceColumn: symbol
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: be1dd558-0db6-45c9-a68c-f34d08be4428
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: 5cb99bdf-408e-494c-8c78-5ec3d21f07a1
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: string
+		lineageTag: 892344cf-0ce4-4dc6-9a87-e69dac0befa7
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition investment_option = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\investment_option"),
+				    ToDelta = DeltaLake.Table(Source)
+				in
+				    ToDelta
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
