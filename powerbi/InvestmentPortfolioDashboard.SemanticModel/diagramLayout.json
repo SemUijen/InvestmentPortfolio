@@ -10,10 +10,11 @@
       "nodes": [
         {
           "location": {
-            "x": 1420,
-            "y": 62
+            "x": 330,
+            "y": 480
           },
           "nodeIndex": "investment_option",
+          "nodeLineageTag": "97407ae3-389e-4b21-b9eb-e22ded99f1ee",
           "size": {
             "height": 176,
             "width": 234
@@ -22,8 +23,8 @@
         },
         {
           "location": {
-            "x": 0,
-            "y": 0
+            "x": 963,
+            "y": 5
           },
           "nodeIndex": "FactDailyResult",
           "nodeLineageTag": "ba5c3b29-42cc-4eec-aa5e-10f69311dee4",
@@ -35,8 +36,8 @@
         },
         {
           "location": {
-            "x": 284,
-            "y": 26
+            "x": 0,
+            "y": 0
           },
           "nodeIndex": "investment_option_bought",
           "nodeLineageTag": "97518275-79bc-4d35-96eb-21b148f428db",
@@ -48,8 +49,8 @@
         },
         {
           "location": {
-            "x": 568,
-            "y": 14
+            "x": 0,
+            "y": 351
           },
           "nodeIndex": "investment_option_value_overtime",
           "nodeLineageTag": "7abe8fa8-137e-4392-abd0-951e4c3f56ae",
@@ -61,8 +62,8 @@
         },
         {
           "location": {
-            "x": 852,
-            "y": 74
+            "x": 411,
+            "y": 0
           },
           "nodeIndex": "io_stock_exchange",
           "nodeLineageTag": "51f9d05d-9357-4d9e-8987-5a0e7eed40a7",
@@ -74,8 +75,8 @@
         },
         {
           "location": {
-            "x": 1136,
-            "y": 38
+            "x": 316,
+            "y": 184
           },
           "nodeIndex": "stock_exchange",
           "nodeLineageTag": "55119f18-6385-43a7-94c8-39eb655c489f",

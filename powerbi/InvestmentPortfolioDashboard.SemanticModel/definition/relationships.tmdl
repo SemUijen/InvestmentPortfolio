@@ -13,15 +13,3 @@ relationship 91996437-20b3-4970-b371-fad88f702c95
 	fromColumn: FactDailyResult.date
 	toColumn: LocalDateTable_6f141cc2-8b3c-4770-b3f2-3a980c1a652a.Date
 
-relationship AutoDetected_ff674328-ccfe-4ee6-a237-1461cc7cb917
-	fromColumn: investment_option_bought.symbol
-	toColumn: investment_option.symbol
-
-relationship AutoDetected_cdc1ffd7-1a8c-48de-b893-100a2114dc9f
-	fromColumn: investment_option_value_overtime.symbol
-	toColumn: investment_option.symbol
-
-relationship AutoDetected_15e5aeb1-19d5-4d90-8d64-6234676831ff
-	fromColumn: FactDailyResult.symbol
-	toColumn: investment_option.symbol
-
