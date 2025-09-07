@@ -1,4 +1,6 @@
+import subprocess
 import tkinter as tk
+from pathlib import Path
 from tkinter import ttk
 
 from .base_screen import BaseScreen
@@ -39,3 +41,26 @@ class StartupScreen(BaseScreen):
             width=20,
         )
         investment_options_btn.grid(row=2, column=0, pady=10)
+
+        run_pipeline_btn = ttk.Button(
+            self.main_frame,
+            text="Run Medaillon Pipeline",
+            command=self.run_medaillon_pipeline,
+            width=20,
+        )
+        run_pipeline_btn.grid(row=3, column=0, pady=10)
+
+    def run_medaillon_pipeline(self):
+        """Run the Medaillon ETL pipeline."""
+        try:
+            self.app_controller.show_info("Running Medaillon pipeline...")
+            root_folder = Path(__file__).resolve().parents[3]
+            subprocess.run(
+                ["docker-compose", "run", "--rm", "run-medaillon-pipeline"],
+                check=True,
+                cwd=root_folder,
+            )
+            self.app_controller.show_info("Medaillon pipeline completed successfully!")
+        except subprocess.CalledProcessError as e:
+            error_msg = f"Error running Medaillon pipeline: {e}"
+            self.app_controller.show_error(error_msg)

@@ -31,7 +31,7 @@ def main():
             df_fact_daily,
             (df_io_bought.symbol == df_fact_daily.symbol)
             & (
-                (df_io_bought.date > df_fact_daily.latest_date)
+                (df_io_bought.date_bought > df_fact_daily.latest_date)
                 | df_fact_daily.latest_date.isNull()
             ),
             "left",
