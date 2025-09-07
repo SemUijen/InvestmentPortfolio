@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
-  "name": "5d06d2413e7be88c3f17",
+  "name": "d82cf2419fdefd526a38",
   "position": {
     "x": 0,
-    "y": 20.082576383154418,
-    "z": 3000,
-    "height": 151.14781172584642,
-    "width": 343.51775392237823,
-    "tabOrder": 2000
+    "y": 51.014492753623188,
+    "z": 0,
+    "height": 144.92753623188406,
+    "width": 352.463768115942
   },
   "visual": {
     "visualType": "advancedSlicerVisual",
@@ -20,13 +19,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "investment_option_value_overtime"
+                      "Entity": "FactDailyResult"
                     }
                   },
                   "Property": "symbol"
                 }
               },
-              "queryRef": "investment_option_value_overtime.symbol",
+              "queryRef": "FactDailyResult.symbol",
               "nativeQueryRef": "symbol"
             }
           ]
@@ -38,6 +37,26 @@
         {
           "properties": {}
         }
+      ],
+      "layout": [
+        {
+          "properties": {
+            "columnCount": {
+              "expr": {
+                "Literal": {
+                  "Value": "4L"
+                }
+              }
+            },
+            "rowCount": {
+              "expr": {
+                "Literal": {
+                  "Value": "4L"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
@@ -45,12 +64,12 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "b928e759b187172e51e0",
+        "name": "183dabce6cfb2e7b8b17",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "investment_option_value_overtime"
+                "Entity": "FactDailyResult"
               }
             },
             "Property": "symbol"

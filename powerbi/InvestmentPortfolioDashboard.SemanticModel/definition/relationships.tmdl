@@ -13,3 +13,17 @@ relationship 91996437-20b3-4970-b371-fad88f702c95
 	fromColumn: FactDailyResult.date
 	toColumn: LocalDateTable_6f141cc2-8b3c-4770-b3f2-3a980c1a652a.Date
 
+relationship f2dc58b9-53f8-3dc1-99c1-3a11467c3142
+	crossFilteringBehavior: bothDirections
+	fromColumn: investment_option_value_overtime.symbol
+	toColumn: investment_option.symbol
+
+relationship c9e6c7a1-79fc-6fa4-b7b1-bdf431bb0292
+	fromColumn: FactDailyResult.symbol
+	toColumn: investment_option.symbol
+
+relationship ea5fa952-836d-478f-a6ed-09fd8078b537
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date.Date
+	toColumn: LocalDateTable_dcbd38ab-ca63-46e2-81b0-1fd6de3c5c22.Date
+

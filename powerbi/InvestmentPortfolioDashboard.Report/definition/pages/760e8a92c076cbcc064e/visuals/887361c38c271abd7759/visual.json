@@ -4,10 +4,10 @@
   "position": {
     "x": 624.65963566634707,
     "y": 460.21093000958774,
-    "z": 2,
+    "z": 1000,
     "height": 201.26558005752636,
     "width": 639.38638542665387,
-    "tabOrder": 2
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -80,51 +80,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "7b117efdd9a663dbc5e2",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "investment_option_value_overtime"
-              }
-            },
-            "Property": "CAGR 1 Year %"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "9708f98a33b121628560",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "investment_option_value_overtime"
-              }
-            },
-            "Property": "CAGR All Time %"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "586d73642e82780e2613",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "investment_option_value_overtime"
-              }
-            },
-            "Property": "CAGR 5 Years %"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

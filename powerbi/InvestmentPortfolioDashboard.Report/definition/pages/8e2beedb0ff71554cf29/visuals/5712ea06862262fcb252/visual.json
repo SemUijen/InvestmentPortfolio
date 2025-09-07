@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
-  "name": "5d06d2413e7be88c3f17",
+  "name": "5712ea06862262fcb252",
   "position": {
     "x": 0,
-    "y": 20.082576383154418,
-    "z": 3000,
-    "height": 151.14781172584642,
-    "width": 343.51775392237823,
-    "tabOrder": 2000
+    "y": 39.901477832512313,
+    "z": 1000,
+    "height": 201.2807881773399,
+    "width": 527.58620689655174
   },
   "visual": {
     "visualType": "advancedSlicerVisual",
@@ -20,13 +19,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "investment_option_value_overtime"
+                      "Entity": "FactDailyResult"
                     }
                   },
                   "Property": "symbol"
                 }
               },
-              "queryRef": "investment_option_value_overtime.symbol",
+              "queryRef": "FactDailyResult.symbol",
               "nativeQueryRef": "symbol"
             }
           ]
@@ -45,12 +44,12 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "b928e759b187172e51e0",
+        "name": "441269b569e328adb3a1",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "investment_option_value_overtime"
+                "Entity": "FactDailyResult"
               }
             },
             "Property": "symbol"

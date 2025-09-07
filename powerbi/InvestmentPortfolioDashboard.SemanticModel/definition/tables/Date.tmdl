@@ -1,0 +1,70 @@
+table Date
+	lineageTag: bc3bf1f5-9a45-49e8-aea6-15a29923515c
+
+	column Date
+		formatString: General Date
+		lineageTag: a414848e-5fff-4857-8c1b-375203470c49
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: ea5fa952-836d-478f-a6ed-09fd8078b537
+			defaultHierarchy: LocalDateTable_dcbd38ab-ca63-46e2-81b0-1fd6de3c5c22.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 398dda14-7cd7-4d78-a6da-e30726b96cb7
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNumber
+		formatString: 0
+		lineageTag: 62173b01-ffc5-45d3-90ed-3c5b8bcd5afa
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MonthNumber]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		formatString: 0
+		lineageTag: cd9981ec-b714-47e4-b869-3b8616609473
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateID
+		formatString: 0
+		lineageTag: bbfdbcf8-3ad2-42a7-80a9-06bd6ccff941
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [DateID]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    CALENDAR(
+				        TODAY(),    // 5 years back from Jan 1 of current year
+				        DATE(YEAR(TODAY()) + 20, 12, 31)  // 20 years into the future
+				    ),
+				    "Year", YEAR([Date]),
+				    "MonthNumber", MONTH([Date]),
+				    "Day", DAY([Date]),
+				    "DateID", YEAR([Date]) * 10000 + MONTH([Date]) * 100 + DAY([Date])
+				)
+
+	annotation PBI_Id = 28dddfcfa5ed427b8ed753ab09ed2bb9
+

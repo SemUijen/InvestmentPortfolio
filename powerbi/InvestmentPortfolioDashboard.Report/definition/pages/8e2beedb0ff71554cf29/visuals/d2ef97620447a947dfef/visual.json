@@ -1,15 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
-  "name": "f898a541c70e1f892a96",
+  "name": "d2ef97620447a947dfef",
   "position": {
     "x": 0,
-    "y": 62.249240121580549,
-    "z": 0,
-    "height": 657.50759878419456,
-    "width": 1238.1762917933131
+    "y": 360,
+    "z": 2000,
+    "height": 360,
+    "width": 1280.3940886699509,
+    "tabOrder": 1000
   },
   "visual": {
-    "visualType": "lineChart",
+    "visualType": "lineStackedColumnComboChart",
     "query": {
       "queryState": {
         "Category": {
@@ -31,25 +32,49 @@
             }
           ]
         },
-        "Series": {
+        "Y": {
           "projections": [
             {
               "field": {
-                "Column": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "FactDailyResult"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactDailyResult"
+                        }
+                      },
+                      "Property": "product_profit"
                     }
                   },
-                  "Property": "symbol"
+                  "Function": 0
                 }
               },
-              "queryRef": "FactDailyResult.symbol",
-              "nativeQueryRef": "symbol"
+              "queryRef": "Sum(FactDailyResult.product_profit)",
+              "nativeQueryRef": "Sum of product_profit"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactDailyResult"
+                        }
+                      },
+                      "Property": "currency_profit"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(FactDailyResult.currency_profit)",
+              "nativeQueryRef": "Sum of currency_profit"
             }
           ]
         },
-        "Y": {
+        "Y2": {
           "projections": [
             {
               "field": {
@@ -97,28 +122,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "d30bc18e354c3dfb6e78",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "symbol"
-          }
-        },
-        "type": "Categorical",
-        "objects": {
-          "general": [
-            {
-              "properties": {}
-            }
-          ]
-        }
-      },
-      {
-        "name": "9800209e32b9afde04e8",
+        "name": "31113e8de2aaf09176a0",
         "field": {
           "Column": {
             "Expression": {
@@ -129,11 +133,10 @@
             "Property": "date"
           }
         },
-        "type": "RelativeTime",
-        "isLockedInViewMode": true
+        "type": "Categorical"
       },
       {
-        "name": "c8197d137d0de70225f7",
+        "name": "b326d5ad9f3db0643285",
         "field": {
           "Aggregation": {
             "Expression": {
@@ -149,8 +152,45 @@
             "Function": 0
           }
         },
-        "type": "Advanced",
-        "isLockedInViewMode": true
+        "type": "Advanced"
+      },
+      {
+        "name": "c946a8403449dd833dfc",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FactDailyResult"
+                  }
+                },
+                "Property": "product_profit"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7f36db92cdecf1143b1f",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FactDailyResult"
+                  }
+                },
+                "Property": "currency_profit"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

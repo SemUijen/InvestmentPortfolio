@@ -24,6 +24,8 @@ ref table stock_exchange
 ref table io_stock_exchange
 ref table FactDailyResult
 ref table LocalDateTable_6f141cc2-8b3c-4770-b3f2-3a980c1a652a
+ref table Date
+ref table LocalDateTable_dcbd38ab-ca63-46e2-81b0-1fd6de3c5c22
 
 ref cultureInfo en-GB
 
