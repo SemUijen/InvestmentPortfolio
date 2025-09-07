@@ -3,7 +3,7 @@ FROM spark:3.5.0-scala2.12-java11-ubuntu
 
 USER 0
 
-
+RUN echo 'python3 -m pytest tests/' >> /root/.bash_history
 
 # Install Python 3.12
 RUN set -ex; \
@@ -24,13 +24,10 @@ RUN python3 -m pip install --upgrade pip
 # Update package list and install Git
 RUN apt-get update && apt-get install -y git
 
-WORKDIR /code
-# Copy application code
-COPY . .
-
-# copy the requirements file, # Install dependencies 
-COPY docker/requirements.txt .
-RUN pip install -r requirements.txt
+#WORKDIR /code
+# copy the requirements file, # Install dependencies
+COPY . .  
+RUN pip install --no-cache-dir -r requirements.txt
 
 
-CMD ["python3", "app.py"]
+CMD ["python3", "-m", "src.spark_etl.app"]

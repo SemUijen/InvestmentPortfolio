@@ -1,8 +1,50 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
   "name": "8e2beedb0ff71554cf29",
-  "displayName": "Page 1",
+  "displayName": "Profit Overtime",
   "displayOption": "FitToPage",
   "height": 720,
-  "width": 1280
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "2420dc1629484c03c6d4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "symbol"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "5f200d46f90783d87773",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "abd82e773c5c6e23f164",
+        "boundFilter": "2420dc1629484c03c6d4",
+        "asAggregation": false,
+        "qnaSingleSelectRequired": false,
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "symbol"
+          }
+        }
+      }
+    ],
+    "referenceScope": "CrossReport"
+  }
 }
