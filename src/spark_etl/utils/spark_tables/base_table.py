@@ -26,10 +26,16 @@ logger = logging.getLogger(__name__)
 class BaseTable(ABC):
     """Base class for Silver Layer tables in Spark ETL."""
 
-    def __init__(self, spark: SparkSession | None = None):
+    def __init__(self, medaillon_layer: str, spark: SparkSession | None = None) -> None:
+        """Initialize the BaseTable."""
+        if medaillon_layer not in ["bronze", "silver", "gold"]:
+            msg = "medaillon_layer must be one of 'bronze', 'silver', or 'gold'."
+            raise ValueError(msg)
+
+        self.medaillon_layer = medaillon_layer
         if spark is None:
             logging.info("Creating Spark session.")
-            self.spark = get_spark_session()
+            spark = get_spark_session()
 
         self.spark = spark
 
@@ -37,7 +43,7 @@ class BaseTable(ABC):
         if not data_dir:
             raise ValueError("Environment variable 'DATA_DIR' is not set.")
 
-        self.silver_path = Path(data_dir) / "silver"
+        self.silver_path = Path(data_dir) / self.medaillon_layer
 
         self.table_name = self._class_name_to_table_name()
 

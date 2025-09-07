@@ -21,7 +21,7 @@ class InvestmentOption(BaseTable):
 
     def __init__(self, spark: SparkSession | None = None):
         """Initialize the InvestmentOption table."""
-        super().__init__(spark)
+        super().__init__(medaillon_layer="silver", spark=spark)
 
     def return_defined_schema(self) -> StructType:
         """Return the schema for the InvestmentOption table."""
@@ -43,7 +43,7 @@ class IoStockExchange(BaseTable):
 
     def __init__(self, spark: SparkSession | None = None):
         """Initialize the IoStockExchange table."""
-        super().__init__(spark)
+        super().__init__(medaillon_layer="silver", spark=spark)
 
     def return_defined_schema(self) -> StructType:
         """Return the schema for the IoStockExchange table."""
@@ -64,7 +64,7 @@ class StockExchange(BaseTable):
 
     def __init__(self, spark: SparkSession | None = None):
         """Initialize the StockExchange table."""
-        super().__init__(spark)
+        super().__init__(medaillon_layer="silver", spark=spark)
 
     def return_defined_schema(self) -> StructType:
         """Return the schema for the StockExchange table."""
@@ -88,7 +88,7 @@ class InvestmentOptionValueOvertime(BaseTable):
 
     def __init__(self, spark: SparkSession | None = None):
         """Initialize the InvestmentOptionValueOvertime table."""
-        super().__init__(spark)
+        super().__init__(medaillon_layer="silver", spark=spark)
 
     def return_defined_schema(self) -> StructType:
         """Return the schema for the InvestmentOptionValueOvertime table."""
@@ -114,7 +114,7 @@ class InvestmentOptionBought(BaseTable):
 
     def __init__(self, spark: SparkSession | None = None):
         """Initialize the InvestmentOptionBought table."""
-        super().__init__(spark)
+        super().__init__(medaillon_layer="silver", spark=spark)
 
     def return_defined_schema(self) -> StructType:
         """Return the schema for the InvestmentOptionBought table."""

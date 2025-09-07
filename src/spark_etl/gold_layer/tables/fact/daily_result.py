@@ -17,7 +17,7 @@ load_dotenv()
 class FactDailyResult(BaseTable):
     def __init__(self, spark: SparkSession | None = None):
         """Initialize the StockExchange table."""
-        super().__init__(spark)
+        super().__init__(medaillon_layer="gold", spark=spark)
 
     def return_defined_schema(self) -> StructType:
         """Return the schema for the StockExchange table."""
