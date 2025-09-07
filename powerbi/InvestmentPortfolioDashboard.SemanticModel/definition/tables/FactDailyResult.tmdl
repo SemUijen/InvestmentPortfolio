@@ -1,0 +1,137 @@
+table FactDailyResult
+	lineageTag: ba5c3b29-42cc-4eec-aa5e-10f69311dee4
+
+	column id
+		dataType: string
+		lineageTag: 8a86a163-7193-44cd-a47e-982d8afd5e73
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ede163b4-d06e-4625-964d-4d0cd9c547d4
+		summarizeBy: sum
+		sourceColumn: date_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4d2c3c7a-1edb-448e-996a-db231565c886
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 91996437-20b3-4970-b371-fad88f702c95
+			defaultHierarchy: LocalDateTable_6f141cc2-8b3c-4770-b3f2-3a980c1a652a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column symbol
+		dataType: string
+		lineageTag: 0a1617de-9451-4e13-a8a4-c02134a6f621
+		summarizeBy: none
+		sourceColumn: symbol
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_investment
+		dataType: double
+		lineageTag: d2f2f8f2-e360-4404-be18-a0096437cbd7
+		summarizeBy: sum
+		sourceColumn: total_investment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_value
+		dataType: double
+		lineageTag: 3ebf7a32-b632-4cb1-9eba-a45f199e862e
+		summarizeBy: sum
+		sourceColumn: total_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column number_owned
+		dataType: double
+		lineageTag: 6a8a8b3a-8c38-45f5-99ca-2bde45a1e135
+		summarizeBy: sum
+		sourceColumn: number_owned
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_buy_price
+		dataType: double
+		lineageTag: f2699f6c-fffa-45a9-8666-4db7870e2e99
+		summarizeBy: sum
+		sourceColumn: avg_buy_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column value_single_io
+		dataType: double
+		lineageTag: ef68f858-7db1-49b9-a7cc-bc16c5542df1
+		summarizeBy: sum
+		sourceColumn: value_single_io
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column product_profit
+		dataType: double
+		lineageTag: 640ffadf-d0a5-4125-998f-aea3020315bd
+		summarizeBy: sum
+		sourceColumn: product_profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column currency_profit
+		dataType: double
+		lineageTag: a57cf8f1-b45a-4094-a06c-89ffa9117866
+		summarizeBy: sum
+		sourceColumn: currency_profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_profit
+		dataType: double
+		lineageTag: 53ef8ccd-6093-47af-baa2-cae4f057fa3c
+		summarizeBy: sum
+		sourceColumn: total_profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition FactDailyResult = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Contents("E:\InvestmentPortfolioData\gold\fact_daily_result"),
+				    ToDelta = DeltaLake.Table(Source)
+				in
+				    ToDelta
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

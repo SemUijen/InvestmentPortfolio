@@ -1,0 +1,97 @@
+table investment_option_value_overtime
+	lineageTag: 7abe8fa8-137e-4392-abd0-951e4c3f56ae
+
+	column symbol
+		dataType: string
+		lineageTag: fbd0e38c-e3ce-4d60-80d3-a80424b7928e
+		summarizeBy: none
+		sourceColumn: symbol
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fb1b6125-2102-498b-8790-b23fe790f1d4
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: e9e45d7b-e14d-40ee-86b8-1b32adb2e13a
+			defaultHierarchy: LocalDateTable_3c8b8991-bc2c-4a35-bd77-ada304709490.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column open
+		dataType: double
+		lineageTag: a129d47b-134f-4821-8d16-cfe6953a57f6
+		summarizeBy: sum
+		sourceColumn: open
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column high
+		dataType: double
+		lineageTag: 6db1a5be-c24b-49d1-bb7b-5992ce766f01
+		summarizeBy: sum
+		sourceColumn: high
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column low
+		dataType: double
+		lineageTag: d44d34d2-b145-43c0-9f18-06d117e4b34c
+		summarizeBy: sum
+		sourceColumn: low
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column close
+		dataType: double
+		lineageTag: f4108e66-1679-4fcc-86dd-a657fd50fbe2
+		summarizeBy: sum
+		sourceColumn: close
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column volume
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f672d30-af08-4102-a357-c9c6987119e0
+		summarizeBy: sum
+		sourceColumn: volume
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: string
+		lineageTag: 49cb7e7d-5980-45bb-9b88-c7a1135f4731
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition investment_option_value_overtime = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\investment_option_value_overtime"),
+				    ToDelta = DeltaLake.Table(Source)
+				in
+				    ToDelta
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

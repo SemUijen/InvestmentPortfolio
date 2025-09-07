@@ -2,11 +2,14 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-from pyspark.sql import DataFrame, SparkSession
+import pyspark.sql.functions as F
+from pyspark.sql import DataFrame, SparkSession, Window
 from pyspark.sql.functions import col, explode, split, to_date
 from pyspark.sql.types import MapType, StringType, StructField, StructType
 
-from src.spark_etl.silver_layer.tables.spark_tables import InvestmentOptionValueOvertime
+from src.spark_etl.silver_layer.tables.spark_tables import (
+    InvestmentOptionValueOvertime,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -141,6 +144,89 @@ class InvestmentOptionBronzePipeline:
 
         return df
 
+    def _fill_missing_weekends(self, df: DataFrame) -> DataFrame:
+        """Fill missing weekend dates in the DataFrame."""
+        logger.info("Filling missing weekend dates in DataFrame")
+        # Identify the first date with non-null 'close' value for each symbol
+        first_dates = (
+            df.filter(col("close").isNotNull())
+            .groupBy("symbol")
+            .agg(F.min("date").alias("first_date"))
+        )
+
+        # Generate complete date series per symbol
+        complete_series = first_dates.select(
+            col("symbol"),
+            explode(
+                F.sequence(
+                    col("first_date"),
+                    F.current_date(),
+                    F.expr("interval 1 day"),
+                ),
+            ).alias("date"),
+        )
+
+        # Join and fill missing values
+        window_spec = Window.partitionBy("symbol").orderBy("date")
+
+        result = (
+            complete_series.join(df, ["symbol", "date"], "left")
+            .withColumn(
+                "close_filled",
+                F.last("close", ignorenulls=True).over(
+                    window_spec.rowsBetween(
+                        Window.unboundedPreceding,
+                        Window.currentRow,
+                    ),
+                ),
+            )
+            .withColumn(
+                "open_filled",
+                F.last("open", ignorenulls=True).over(
+                    window_spec.rowsBetween(
+                        Window.unboundedPreceding,
+                        Window.currentRow,
+                    ),
+                ),
+            )
+            .withColumn(
+                "high_filled",
+                F.last("high", ignorenulls=True).over(
+                    window_spec.rowsBetween(
+                        Window.unboundedPreceding,
+                        Window.currentRow,
+                    ),
+                ),
+            )
+            .withColumn(
+                "low_filled",
+                F.last("low", ignorenulls=True).over(
+                    window_spec.rowsBetween(
+                        Window.unboundedPreceding,
+                        Window.currentRow,
+                    ),
+                ),
+            )
+            .withColumn(
+                "volume_filled",
+                F.when(F.dayofweek(col("date")).isin([1, 7]), F.lit(0)).otherwise(
+                    F.coalesce(col("volume"), F.lit(0)),
+                ),
+            )
+            .select(
+                "symbol",
+                "date",
+                col("open_filled").alias("open"),
+                col("high_filled").alias("high"),
+                col("low_filled").alias("low"),
+                col("close_filled").alias("close"),
+                col("volume_filled").alias("volume"),
+            )
+            .orderBy("symbol", "date")
+        )
+
+        return result
+
     def run(self, today: datetime):
         """Run the pipeline to load investment options data.
 
@@ -156,6 +242,7 @@ class InvestmentOptionBronzePipeline:
 
         logger.info("Saving investment options data to silver layer")
         df = self._extract_nested_json(df)
+        df = self._fill_missing_weekends(df)
         InvestmentOptionValueOvertime(spark=self.spark).merge_dataframe(
             df,
         )

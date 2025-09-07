@@ -1,0 +1,29 @@
+model Model
+	culture: en-GB
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-NL
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["investment_option","investment_option_bought","investment_option_value_overtime","stock_exchange","io_stock_exchange","FactDailyResult"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.146.1254.0 (25.08)+791a7518fadc83da883d79322a2658aff57c8db3
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table investment_option
+ref table investment_option_bought
+ref table DateTableTemplate_51ccc6b3-b3d9-416a-ad88-d82361b21ca1
+ref table LocalDateTable_8f88aac7-fd76-4754-b0dc-1fbc201d513d
+ref table investment_option_value_overtime
+ref table LocalDateTable_3c8b8991-bc2c-4a35-bd77-ada304709490
+ref table stock_exchange
+ref table io_stock_exchange
+ref table FactDailyResult
+ref table LocalDateTable_6f141cc2-8b3c-4770-b3f2-3a980c1a652a
+
+ref cultureInfo en-GB
+

@@ -1,0 +1,64 @@
+table stock_exchange
+	lineageTag: 55119f18-6385-43a7-94c8-39eb655c489f
+
+	column symbol
+		dataType: string
+		lineageTag: e393fb43-5b46-4a09-80c5-f4af66e40761
+		summarizeBy: none
+		sourceColumn: symbol
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: 1328ae96-fd54-4b76-937f-2d954558712f
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column markt_open
+		dataType: string
+		lineageTag: dfb5b73d-502f-4c38-ab5c-729caee39dc0
+		summarizeBy: none
+		sourceColumn: markt_open
+
+		annotation SummarizationSetBy = Automatic
+
+	column markt_close
+		dataType: string
+		lineageTag: 4fbe79a9-8410-4f12-987a-1ba64ef8459f
+		summarizeBy: none
+		sourceColumn: markt_close
+
+		annotation SummarizationSetBy = Automatic
+
+	column currency
+		dataType: string
+		lineageTag: f7561bb3-a2bc-4879-b7d3-f20832256ced
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: string
+		lineageTag: 2451b5a1-77be-4ecb-918b-44c3b0a9ab0b
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition stock_exchange = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\stock_exchange"),
+				    ToDelta = DeltaLake.Table(Source)
+				in
+				    ToDelta
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
