@@ -1,6 +1,176 @@
 table investment_option_value_overtime
 	lineageTag: 7abe8fa8-137e-4392-abd0-951e4c3f56ae
 
+	measure 'Latest Value' = ```
+			
+			CALCULATE (
+			    LASTNONBLANKVALUE ( investment_option_value_overtime[date], 
+			        SUM ( investment_option_value_overtime[close] ) ),
+			    ALL ( investment_option_value_overtime )
+			)
+			```
+		lineageTag: 1206b41d-22a0-434f-8736-59d91b13c8da
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Earliest Value' = ```
+			
+			CALCULATE (
+			    FIRSTNONBLANKVALUE ( investment_option_value_overtime[date], 
+			        SUM ( investment_option_value_overtime[close] ) ),
+			    ALL ( investment_option_value_overtime )
+			)
+			```
+		lineageTag: b19518eb-3494-4f94-82c6-e13055698cd6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Value 5 Years Ago' = ```
+			
+			CALCULATE (
+			    LASTNONBLANKVALUE ( investment_option_value_overtime[date], 
+			        SUM ( investment_option_value_overtime[close] ) ),
+			    DATEADD ( investment_option_value_overtime[date], -5, YEAR )
+			)
+			```
+		lineageTag: a48e2f69-5090-44ac-b55a-5ce0f4be208b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Value 6 Months Ago' = ```
+			
+			CALCULATE (
+			    LASTNONBLANKVALUE ( investment_option_value_overtime[date], 
+			        SUM ( investment_option_value_overtime[close] ) ),
+			    DATEADD ( investment_option_value_overtime[date], -6, MONTH )
+			)
+			```
+		lineageTag: af641b40-eda4-460b-b00c-43f1d1863d10
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAGR All Time %' =
+			
+			VAR LatestDate =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[date]),
+			        ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol])
+			    )
+			VAR EarliestDate =
+			    CALCULATE(
+			        MIN(investment_option_value_overtime[date]),
+			        ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol])
+			    )
+			VAR PV =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[close]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] = EarliestDate
+			        )
+			    )
+			VAR FV =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[close]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] = LatestDate
+			        )
+			    )
+			VAR n_months = DATEDIFF(EarliestDate, LatestDate, MONTH)
+			VAR CAGRValue = IF(PV > 0 && n_months > 0, ((FV / PV) ^ (12.0 / n_months)) - 1)
+			RETURN
+			IF(NOT ISBLANK(CAGRValue), FORMAT(CAGRValue, "0.00%"))
+		lineageTag: fe214a93-bfe8-4453-beed-ab3c53755197
+
+	measure 'CAGR 5 Years %' =
+			
+			VAR LatestDate =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[date]),
+			        ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol])
+			    )
+			VAR TargetDate = EDATE(LatestDate, -60)  // 5 years ago
+			VAR EarliestDate =
+			    CALCULATE(
+			        MIN(investment_option_value_overtime[date]),
+			        ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol])
+			    )
+			VAR PVDateCandidate =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[date]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] <= TargetDate
+			        )
+			    )
+			VAR PVDate = IF(NOT ISBLANK(PVDateCandidate), PVDateCandidate, EarliestDate)
+			VAR PV =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[close]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] = PVDate
+			        )
+			    )
+			VAR FV =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[close]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] = LatestDate
+			        )
+			    )
+			VAR n_months = DATEDIFF(PVDate, LatestDate, MONTH)
+			VAR CAGRValue = IF(PV > 0 && n_months > 0, ((FV / PV) ^ (12.0 / n_months)) - 1)
+			RETURN
+			IF(NOT ISBLANK(CAGRValue), FORMAT(CAGRValue, "0.00%"))
+		lineageTag: 83728620-1b67-49d8-bac5-53ccfb805dde
+
+	measure 'CAGR 1 Year %' =
+			
+			VAR LatestDate =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[date]),
+			        ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol])
+			    )
+			VAR TargetDate = EDATE(LatestDate, -12)  // 12 months = 1 year ago
+			VAR EarliestDate =
+			    CALCULATE(
+			        MIN(investment_option_value_overtime[date]),
+			        ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol])
+			    )
+			VAR PVDateCandidate =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[date]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] <= TargetDate
+			        )
+			    )
+			VAR PVDate = IF(NOT ISBLANK(PVDateCandidate), PVDateCandidate, EarliestDate)
+			VAR PV =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[close]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] = PVDate
+			        )
+			    )
+			VAR FV =
+			    CALCULATE(
+			        MAX(investment_option_value_overtime[close]),
+			        FILTER(
+			            ALLEXCEPT(investment_option_value_overtime, investment_option_value_overtime[symbol]),
+			            investment_option_value_overtime[date] = LatestDate
+			        )
+			    )
+			VAR n_months = DATEDIFF(PVDate, LatestDate, MONTH)
+			VAR CAGRValue = IF(PV > 0 && n_months > 0, ((FV / PV) ^ (12.0 / n_months)) - 1)
+			RETURN
+			IF(NOT ISBLANK(CAGRValue), FORMAT(CAGRValue, "0.00%"))
+		lineageTag: 5cc0729e-b0fd-44ae-b7b5-4316cdbae79f
+
 	column symbol
 		dataType: string
 		lineageTag: fbd0e38c-e3ce-4d60-80d3-a80424b7928e

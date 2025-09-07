@@ -1,0 +1,63 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "5d06d2413e7be88c3f17",
+  "position": {
+    "x": 0,
+    "y": 20.082576383154418,
+    "z": 4,
+    "height": 151.14781172584642,
+    "width": 343.51775392237823,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "advancedSlicerVisual",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "investment_option_value_overtime"
+                    }
+                  },
+                  "Property": "symbol"
+                }
+              },
+              "queryRef": "investment_option_value_overtime.symbol",
+              "nativeQueryRef": "symbol"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d8db6197cd462b60e524",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "investment_option_value_overtime"
+              }
+            },
+            "Property": "symbol"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

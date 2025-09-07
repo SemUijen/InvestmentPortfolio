@@ -1,0 +1,130 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "887361c38c271abd7759",
+  "position": {
+    "x": 624.65963566634707,
+    "y": 460.21093000958774,
+    "z": 2,
+    "height": 201.26558005752636,
+    "width": 639.38638542665387,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "investment_option_value_overtime"
+                    }
+                  },
+                  "Property": "CAGR All Time %"
+                }
+              },
+              "queryRef": "investment_option_value_overtime.CAGR All Time",
+              "nativeQueryRef": "CAGR All Time %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "investment_option_value_overtime"
+                    }
+                  },
+                  "Property": "CAGR 5 Years %"
+                }
+              },
+              "queryRef": "investment_option_value_overtime.CAGR 5 Years",
+              "nativeQueryRef": "CAGR 5 Years %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "investment_option_value_overtime"
+                    }
+                  },
+                  "Property": "CAGR 1 Year %"
+                }
+              },
+              "queryRef": "investment_option_value_overtime.CAGR 6 Months",
+              "nativeQueryRef": "CAGR 1 Year %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "investment_option_value_overtime"
+                  }
+                },
+                "Property": "CAGR All Time %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7b117efdd9a663dbc5e2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "investment_option_value_overtime"
+              }
+            },
+            "Property": "CAGR 1 Year %"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9708f98a33b121628560",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "investment_option_value_overtime"
+              }
+            },
+            "Property": "CAGR All Time %"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "586d73642e82780e2613",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "investment_option_value_overtime"
+              }
+            },
+            "Property": "CAGR 5 Years %"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
