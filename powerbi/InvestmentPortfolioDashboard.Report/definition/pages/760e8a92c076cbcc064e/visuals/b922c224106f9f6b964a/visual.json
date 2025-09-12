@@ -4,10 +4,9 @@
   "position": {
     "x": 0,
     "y": 327.67018216682646,
-    "z": 1,
+    "z": 0,
     "height": 392.71332694151488,
-    "width": 576.79769894535,
-    "tabOrder": 1
+    "width": 576.79769894535
   },
   "visual": {
     "visualType": "lineChart",
@@ -98,39 +97,6 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "4f7eceb631490715fca3",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "investment_option_value_overtime"
-              }
-            },
-            "Property": "symbol"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "30c76b944bea26f6ad7c",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "investment_option_value_overtime"
-                  }
-                },
-                "Property": "close"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
         "name": "5b726cab151778240e32",
         "field": {
           "Column": {
@@ -199,6 +165,39 @@
             }
           ]
         }
+      },
+      {
+        "name": "0e3bde96e40338c743f5",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "investment_option_value_overtime"
+              }
+            },
+            "Property": "symbol"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "dcaf28b363be24aac908",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "investment_option_value_overtime"
+                  }
+                },
+                "Property": "close"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

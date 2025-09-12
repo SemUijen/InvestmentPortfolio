@@ -1,0 +1,82 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "d82cf2419fdefd526a38",
+  "position": {
+    "x": 0,
+    "y": 50.577507598784194,
+    "z": 0,
+    "height": 144.92401215805472,
+    "width": 321.94528875379939
+  },
+  "visual": {
+    "visualType": "advancedSlicerVisual",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactDailyResult"
+                    }
+                  },
+                  "Property": "symbol"
+                }
+              },
+              "queryRef": "FactDailyResult.symbol",
+              "nativeQueryRef": "symbol"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {}
+        }
+      ],
+      "layout": [
+        {
+          "properties": {
+            "columnCount": {
+              "expr": {
+                "Literal": {
+                  "Value": "4L"
+                }
+              }
+            },
+            "rowCount": {
+              "expr": {
+                "Literal": {
+                  "Value": "4L"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "183dabce6cfb2e7b8b17",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "symbol"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

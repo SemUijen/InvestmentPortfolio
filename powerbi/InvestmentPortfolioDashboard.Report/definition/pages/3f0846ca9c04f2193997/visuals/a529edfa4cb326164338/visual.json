@@ -1,0 +1,173 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "a529edfa4cb326164338",
+  "position": {
+    "x": 322.31884057971013,
+    "y": 38.260869565217391,
+    "z": 2001,
+    "height": 171.59420289855072,
+    "width": 957.68115942028976,
+    "tabOrder": 4001
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactDailyResult"
+                    }
+                  },
+                  "Property": "Current Total Value"
+                }
+              },
+              "queryRef": "FactDailyResult.Current Total Value",
+              "nativeQueryRef": "Current Total Value"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactDailyResult"
+                    }
+                  },
+                  "Property": "Total Value Forecast 5%/20y"
+                }
+              },
+              "queryRef": "FactDailyResult.Total Value Forecast 5%/20y",
+              "nativeQueryRef": "Total Value Forecast 5%/20y"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactDailyResult"
+                    }
+                  },
+                  "Property": "Total Value Forecast 7%/20y"
+                }
+              },
+              "queryRef": "FactDailyResult.Total Value Forecast 7%/20y",
+              "nativeQueryRef": "Total Value Forecast 7%/20y"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactDailyResult"
+                    }
+                  },
+                  "Property": "Total Value Forecast Custom%/20y"
+                }
+              },
+              "queryRef": "FactDailyResult.Total Value Forecast Custom%/20y",
+              "nativeQueryRef": "Total Value Forecast Custom%/20y"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FactDailyResult"
+                  }
+                },
+                "Property": "Current Total Value"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "layout": [
+        {
+          "properties": {
+            "maxTiles": {
+              "expr": {
+                "Literal": {
+                  "Value": "4L"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "2ad540cd2ec308f7d208",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Total Value"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9a338feddfa5e3788bab",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Total Value Forecast 5%/20y"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "14ac8037ae283a0f49a4",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Total Value Forecast Custom%/20y"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "09d5c242690d460d72ea",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Total Value Forecast 7%/20y"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

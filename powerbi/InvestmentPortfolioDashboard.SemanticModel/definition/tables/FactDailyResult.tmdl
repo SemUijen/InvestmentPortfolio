@@ -1,6 +1,138 @@
 table FactDailyResult
 	lineageTag: ba5c3b29-42cc-4eec-aa5e-10f69311dee4
 
+	measure 'Current Total Profit' =
+			
+			VAR LatestDate = MAX(FactDailyResult[Date])
+			RETURN
+			CALCULATE(
+			    SUM(FactDailyResult[Total_Profit]),
+			    FactDailyResult[Date] = LatestDate
+			)
+		lineageTag: c619875d-7f31-4e0e-946d-ced2f5c0e79b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Currency Profit' =
+			
+			VAR LatestDate = MAX(FactDailyResult[Date])
+			RETURN
+			CALCULATE(
+			    SUM(FactDailyResult[currency_profit]),
+			    FactDailyResult[Date] = LatestDate
+			)
+		lineageTag: 7461d74d-0719-4a55-9c6e-9ac2fd99e146
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Option Profit' =
+			
+			VAR LatestDate = MAX(FactDailyResult[Date])
+			RETURN
+			CALCULATE(
+			    SUM(FactDailyResult[product_profit]),
+			    FactDailyResult[Date] = LatestDate
+			)
+		lineageTag: 51eeb6d2-91bb-49f8-9bd4-647d1fb35dc5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Value Forecast 5%/20y' =
+			
+			VAR r = 0.05
+			VAR YearsPassed = 20
+			RETURN
+			[Current Total Value] * (1 + r) ^ YearsPassed
+		lineageTag: 2f87a643-bb87-4c69-92bf-53226b36488a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Total Value' =
+			
+			VAR LatestDate = MAX(FactDailyResult[Date])
+			RETURN
+			CALCULATE(
+			    SUM(FactDailyResult[total_value]),
+			    FactDailyResult[Date] = LatestDate
+			)
+		lineageTag: 63f97a19-0926-40d1-9835-c8e466b564f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Value Forecast 7%/20y' =
+			
+			VAR r = 0.07
+			VAR YearsPassed = 20
+			RETURN
+			[Current Total Value] * (1 + r) ^ YearsPassed
+		lineageTag: 5ca59dbf-2d8d-466a-bb17-41298a882a64
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Value Forecast Custom%/20y' =
+			
+			VAR r = VALUE( SUBSTITUTE([CAGR 5 Years %], "%", "") ) / 100
+			VAR YearsPassed = 20
+			RETURN
+			[Current Total Value] * (1 + r) ^ YearsPassed
+		lineageTag: 28c9a97a-d700-45ab-bf20-b089b3d51471
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Value Forecast CustomRate' =
+			
+			VAR PV = [Current Total Value]
+			VAR r = VALUE(SUBSTITUTE([CAGR 5 Years %], "%", "")) / 100
+			VAR BaseDate = MAX(FactDailyResult[Date])                 -- last actual date
+			VAR CurrentDate = MAX('Date'[Date])             -- x-axis date
+			VAR DaysPassed = DATEDIFF(BaseDate, CurrentDate, DAY)
+			VAR YearsPassed = DIVIDE(DaysPassed, 365)      -- fractional years
+			RETURN
+			IF(
+			    CurrentDate > BaseDate,
+			    PV * (1 + r) ^ YearsPassed,
+			    BLANK()
+			)
+		lineageTag: 334bcf78-9975-49a7-aba5-4a4013c066c5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Value Forecast 5%' =
+			
+			VAR PV = [Current Total Value]
+			VAR r = 0.05
+			VAR BaseDate = MAX(FactDailyResult[Date])                 -- last actual date
+			VAR CurrentDate = MAX('Date'[Date])             -- x-axis date
+			VAR DaysPassed = DATEDIFF(BaseDate, CurrentDate, DAY)
+			VAR YearsPassed = DIVIDE(DaysPassed, 365)      -- fractional years
+			RETURN
+			IF(
+			    CurrentDate > BaseDate,
+			    PV * (1 + r) ^ YearsPassed,
+			    BLANK()
+			)
+		lineageTag: c1682da5-7dd2-40f7-8fdf-6e020d2ac955
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Value Forecast 7%' =
+			
+			VAR PV = [Current Total Value]
+			VAR r = 0.07
+			VAR BaseDate = MAX(FactDailyResult[Date])                 -- last actual date
+			VAR CurrentDate = MAX('Date'[Date])             -- x-axis date
+			VAR DaysPassed = DATEDIFF(BaseDate, CurrentDate, DAY)
+			VAR YearsPassed = DIVIDE(DaysPassed, 365)      -- fractional years
+			RETURN
+			IF(
+			    CurrentDate > BaseDate,
+			    PV * (1 + r) ^ YearsPassed,
+			    BLANK()
+			)
+		lineageTag: 6b0d564d-06b2-447b-a104-ecaccf2407e1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column id
 		dataType: string
 		lineageTag: 8a86a163-7193-44cd-a47e-982d8afd5e73
