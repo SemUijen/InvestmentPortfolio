@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from tkinter import ttk
 from typing import TYPE_CHECKING
-
+from enum import StrEnum
 from deltalake import DeltaTable
 
 from src.spark_etl.silver_layer.tables.deltalake_tables import InvestmentOptionBought
@@ -16,6 +16,11 @@ if TYPE_CHECKING:
     from src.GuiInputTool.application.application import (
         MainApplication as MainApplication,
     )
+
+class CurrencyEnum(StrEnum):
+    """Enumeration for currency options."""
+    USD = "USD"
+    EUR = "EUR"
 
 
 class BoughtInvestmentScreen(BaseScreen):
@@ -121,6 +126,7 @@ class BoughtInvestmentScreen(BaseScreen):
             command=self.app_controller.show_startup_screen,
         ).pack(side=tk.LEFT)
 
+
     def save_data(self) -> None:
         """Save the input data to the Delta table."""
         # Get the selected symbol from dropdown
@@ -151,6 +157,15 @@ class BoughtInvestmentScreen(BaseScreen):
             self.app_controller.show_error(error_msg)
             return
 
+        try:
+            currency = CurrencyEnum(data.get("currency", ""))
+        except ValueError:
+            self.app_controller.show_error(
+                f"Invalid currency selected, should be one of:"
+                 f" {', '.join([c.value for c in CurrencyEnum])}"
+            )
+            return
+
         # Map the GUI field names to the expected schema field names
         try:
             # Prepare data for the delta table with correct field names
@@ -160,6 +175,7 @@ class BoughtInvestmentScreen(BaseScreen):
                 "price": [float(data.get("purchase_price", ""))],
                 "amount": [int(data.get("quantity", 0))],
                 "cost_of_buy": [float(data.get("cost_of_buy", ""))],
+                "currency": [currency.value],
                 "broker": [data.get("broker")],
             }
 
