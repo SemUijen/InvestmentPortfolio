@@ -1,5 +1,5 @@
 {
-  "ruff.configuration": ".vscode/config/ruff.toml",
+  "ruff.configuration": "ruff.toml",
   "ruff.enable": true,
   "ruff.lint.enable": true,
   "[python]": {
