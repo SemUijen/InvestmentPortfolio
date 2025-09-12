@@ -156,5 +156,51 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ef7386a3528ae1bbcaa2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Currency Profit"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "74c4d8571463813e259b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Option Profit"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "89e9eca3e67be6e151c1",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Total Profit"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }
