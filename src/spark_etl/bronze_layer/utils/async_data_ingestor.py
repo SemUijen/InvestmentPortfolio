@@ -22,12 +22,21 @@ class APIRateLimitError(Exception):
         self.message = "API rate limit exceeded."
 
 
+class IngestionURL:
+    """Class representing a URL to be ingested."""
+
+    def __init__(self, url: str, api_category: str, name: str) -> None:
+        self.url = url
+        self.api_category = api_category
+        self.name = name
+
+
 class AsyncDataIngestor:
     """Asynchronous data ingestor for fetching data from a URL."""
 
     def __init__(
         self,
-        to_ingest: list[tuple[str, str]],
+        to_ingest: list[IngestionURL],
         base_dir: str,
         semaphore: int = 5,
     ) -> None:
@@ -56,6 +65,10 @@ class AsyncDataIngestor:
             ):
                 logger.error("API limit reached")
                 raise APIRateLimitError
+            if "Error Message" in response_data:
+                error_msg = response_data["Error Message"]
+                logger.error(error_msg)
+                raise ValueError(error_msg)
 
             return await response.json()
 
@@ -67,30 +80,36 @@ class AsyncDataIngestor:
             await file.write(json.dumps(data, indent=4))
             logger.info("Data saved to %s", file_path)
 
-    async def ingest(self, url: str, symbol_name: str) -> Exception | None:
+    async def ingest(self, ingestion_url: IngestionURL) -> Exception | None:
         """Ingest data from the URL and save it to a file."""
         try:
-            logger.info("Starting data ingestion for %s", symbol_name)
-            response = await self.fetch_data(url=url)
+            logger.info("Starting data ingestion for %s", ingestion_url.name)
+            response = await self.fetch_data(url=ingestion_url.url)
 
-            file_path = await self.create_file_path(symbol_name)
+            file_path = await self.create_file_path(ingestion_url)
             await self.save_data(response, file_path)
             logger.info("Data ingestion completed successfully.")
         except Exception as e:
-            logger.exception("Error during data ingestion for %s: %s", symbol_name, e)
+            logger.exception(
+                "Error during data ingestion for %s",
+                ingestion_url.name,
+            )
             return e
         else:
             return None
 
-    async def create_file_path(self, symbol_name: str) -> str:
+    async def create_file_path(self, ingestion_url: IngestionURL) -> str:
         """Create a file path for saving data."""
         today = date.today()
-        symbol_name = symbol_name.split(".")[0]  # Remove exchange suffix if present
-        file_name = f"{today}_{symbol_name}.json"
+        if ingestion_url.api_category != "investment_options":
+            name = ingestion_url.name.split(".")[0]  # Remove exchange suffix if present
+        else:
+            name = ingestion_url.name
+        file_name = f"{today}_{name}.json"
         directory = (
             Path(self.base_dir)
-            / "investment_options"
-            / symbol_name
+            / ingestion_url.api_category
+            / name
             / f"year={today.year}"
             / f"month={today.month}"
             / f"day={today.day}"
@@ -100,16 +119,16 @@ class AsyncDataIngestor:
     async def ingest_all(self) -> None:
         """Ingest data from all URLs concurrently."""
         tasks = []
-        for url, symbol_name in self.to_ingest:
-            task = self.ingest(url, symbol_name)
+        for ingestion_url in self.to_ingest:
+            task = self.ingest(ingestion_url)
             tasks.append(task)
 
         # Execute all tasks concurrently
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         if any(isinstance(result, Exception) for result in results):
-            logger.error("Some ingestion tasks failed.")
             msg = "One or more ingestion tasks failed. Check logs for details."
-            raise Exception(msg)
+            logger.error(msg)
+            raise RuntimeError(msg)
 
         logger.info("All ingestion tasks completed.")

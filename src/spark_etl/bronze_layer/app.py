@@ -13,9 +13,14 @@ from src.spark_etl.silver_layer.tables.deltalake_tables import (
     InvestmentOptionValueOvertime,
     IoStockExchange,
 )
-from src.stockprobe.alphavantage.url_generator import OutputSizeEnum, TimeSeriesDailyURL
+from src.stockprobe.alphavantage.url_generator import (
+    ExchangeSymbols,
+    ForeignExchangeRateURL,
+    OutputSizeEnum,
+    TimeSeriesDailyURL,
+)
 
-from .utils import AsyncDataIngestor
+from .utils import AsyncDataIngestor, IngestionURL
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,13 +31,14 @@ logger = logging.getLogger(__name__)
 MAX_DIFFERENCE_DAYS = 90
 
 
-def get_investment_options():
+def get_investment_options() -> dict[str, dict[str, str]]:
     """Retrieve investment options from the Delta Lake table."""
 
     def _get_symbols() -> dict[str, dict[str, str]] | None:
         dt = IoStockExchange().get_table().to_pyarrow_table()
 
-        # NOTE: we use 'max' to get a single exchange symbol per investment option it doesnt matter for this case
+        # NOTE: we use 'max' to get a single exchange symbol
+        # per investment option it doesnt matter for this case
         grouped = dt.group_by("io_symbol").aggregate([("exchange_symbol", "max")])
 
         # Return a dictionary: {io_symbol: exchange_symbol}
@@ -69,14 +75,16 @@ def get_investment_options():
 
     symbols = _get_symbols()
     if not symbols:
-        raise ValueError("No symbols found in the database.")
+        msg = "No symbols found in the database"
+        raise ValueError(msg)
 
-    print("Symbols found:", symbols)
+    logger.info("Symbols found: %s", symbols)
 
     return _get_output_size_per_symbol(symbols)
 
 
-async def main():
+async def main() -> None:
+    """Execute Bronze Extractions."""
     # Example URLs and symbol names
     load_dotenv()
 
@@ -87,23 +95,41 @@ async def main():
         error_message = "No API key found. Please set the API_KEY environment variable."
         raise ValueError(error_message)
 
+    urls_to_ingest = []
     urls_to_ingest = [
         (
-            TimeSeriesDailyURL(
-                apikey=api_key,
-                symbol=symbol + "." + symbol_info["exchange_symbol"],
-                validate_symbol=False,
-                outputsize=symbol_info["output_size"],
-            ).return_url(),
-            symbol,
+            IngestionURL(
+                url=TimeSeriesDailyURL(
+                    apikey=api_key,
+                    symbol=symbol + "." + symbol_info["exchange_symbol"],
+                    outputsize=OutputSizeEnum(symbol_info["output_size"]),
+                ).return_url(),
+                api_category="investment_options",
+                name=symbol,
+            )
         )
         for symbol, symbol_info in symbols.items()
     ]
-    logger.info("Found %d URLs to ingest", len(urls_to_ingest))
+
+    # add foreign exchange rate URL:
+    urls_to_ingest.append(
+        (
+            IngestionURL(
+                url=ForeignExchangeRateURL(
+                    apikey=api_key,
+                    from_symbol=ExchangeSymbols.USD,
+                    to_symbol=ExchangeSymbols.EURO,
+                ).return_url(),
+                api_category="exchange_rate",
+                name="USD_EUR",
+            )
+        ),
+    )
 
     data_dir = os.getenv("DATA_DIR", "")
     if not data_dir:
-        raise ValueError("DATA_DIR environment variable is not set.")
+        msg = "DATA_DIR environment variable is not set."
+        raise ValueError(msg)
 
     # Create ingestor
     ingestor = AsyncDataIngestor(

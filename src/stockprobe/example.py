@@ -37,7 +37,6 @@ if __name__ == "__main__":
     url_generator = TimeSeriesDailyURL(
         apikey=api_key,
         symbol="IWDA.AMS",
-        validate_symbol=False,
     )
     daily_url = url_generator.return_url()
     print(daily_url)

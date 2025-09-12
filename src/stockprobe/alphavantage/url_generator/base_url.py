@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
 
-class DataType(str, Enum):
+class DataType(StrEnum):
     """Enumeration for data types used in API responses."""
 
     JSON = "json"

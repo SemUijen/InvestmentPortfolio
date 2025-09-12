@@ -2,22 +2,42 @@
 
 from __future__ import annotations
 
+from enum import StrEnum
+
 from pydantic import Field
 
 from src.stockprobe.alphavantage.url_generator import BaseAPIurl
 
 
-class ForeignExchangeRateAPI(BaseAPIurl):
+class OutputSizeEnum(StrEnum):
+    """Enum for output size."""
+
+    COMPACT = "compact"
+    FULL = "full"
+
+
+class ExchangeSymbols(StrEnum):
+    """Enum for exchange symbols."""
+
+    EURO = "EUR"
+    USD = "USD"
+
+
+class ForeignExchangeRateURL(BaseAPIurl):
     """Base model for all API requests."""
 
-    from_currency: str = Field(..., description="From currency")
-    to_currency: str = Field(..., description="To currency")
-    function: str = "CURRENCY_EXCHANGE_RATE"
+    function: str = "FX_DAILY"
+    from_symbol: ExchangeSymbols = Field(..., description="From EUR")
+    to_symbol: ExchangeSymbols = Field(..., description="To currency")
+    outputsize: OutputSizeEnum = Field(
+        default=OutputSizeEnum.FULL,
+        description="Size of the output data",
+    )
 
 
-test_case = ForeignExchangeRateAPI(
+test = ForeignExchangeRateURL(
     apikey="demo",
-    from_currency="USD",
-    to_currency="EUR",
-)
-print(test_case.return_url())
+    from_symbol=ExchangeSymbols.USD,
+    to_symbol=ExchangeSymbols.EURO,
+).return_url()
+print(test)
