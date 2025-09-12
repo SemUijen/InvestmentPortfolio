@@ -71,6 +71,14 @@ table investment_option_bought
 
 		annotation SummarizationSetBy = Automatic
 
+	column currency
+		dataType: string
+		lineageTag: 95512054-b72d-47d1-a189-f9e0d0c9689f
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
 	partition investment_option_bought = m
 		mode: import
 		source =
