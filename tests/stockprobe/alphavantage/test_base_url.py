@@ -13,13 +13,12 @@ def valid_base_api_url() -> BaseAPIurl:
     return BaseAPIurl(
         apikey="testapikey",
         datatype=DataType.JSON,
-        symbol="AAPL",
     )
 
 
 def test_to_url_params(valid_base_api_url: BaseAPIurl) -> None:
     """Test the _to_url_params method."""
-    expected = "apikey=testapikey&datatype=json&symbol=AAPL"
+    expected = "apikey=testapikey&datatype=json"
     assert valid_base_api_url._to_url_params() == expected
 
 
@@ -58,7 +57,6 @@ def test_extra_field_forbidden() -> None:
         BaseAPIurl(
             apikey="testapikey",
             datatype=DataType.JSON,
-            symbol="AAPL",
             extra_field="extra",  # This should not be allowed
             # The BaseAPIurl model does not accept an 'extra_field'
         )
