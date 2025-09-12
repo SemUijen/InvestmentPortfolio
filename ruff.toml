@@ -26,6 +26,10 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
+    "tests",
+    "src/GuiInputTool",
+    "src/spark_etl",
+    "src/stockprobe",
 ]
 
 # Same as Black.
