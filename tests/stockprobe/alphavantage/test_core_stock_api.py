@@ -13,7 +13,6 @@ def url_generator() -> TimeSeriesDailyURL:
         apikey="testapikey",
         datatype=DataType.JSON,
         symbol="AAPL",
-        validate_symbol=False,
     )
 
 
