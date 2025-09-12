@@ -18,8 +18,8 @@ def url_generator() -> TimeSeriesDailyURL:
 
 def test_to_url_params(url_generator: TimeSeriesDailyURL) -> None:
     """Test the _to_url_params method."""
-    expected = "apikey=testapikey&datatype=json&function=TIME_SERIES_DAILY&symbol=AAPL&outputsize=compact"
+    expected = "apikey=testapikey&datatype=json&function=TIME_SERIES_DAILY&outputsize=compact&symbol=AAPL"
     assert url_generator._to_url_params() == expected
 
-    expected = "https://www.alphavantage.co/query?apikey=testapikey&datatype=json&symbol=AAPL&function=TIME_SERIES_DAILY&outputsize=compact"
+    expected = "https://www.alphavantage.co/query?apikey=testapikey&datatype=json&function=TIME_SERIES_DAILY&outputsize=compact&symbol=AAPL"
     assert url_generator.return_url() == expected

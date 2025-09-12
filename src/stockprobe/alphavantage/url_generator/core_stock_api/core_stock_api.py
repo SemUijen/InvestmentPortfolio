@@ -1,7 +1,7 @@
 """Module contains class for generating URLs for Alpha Vantage CoreStockAPI."""
 
 import logging
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import Field
 
@@ -15,7 +15,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-class OutputSizeEnum(str, Enum):
+class OutputSizeEnum(StrEnum):
     """Enum for output size."""
 
     COMPACT = "compact"
