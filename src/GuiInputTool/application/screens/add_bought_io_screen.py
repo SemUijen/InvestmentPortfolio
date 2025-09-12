@@ -158,7 +158,7 @@ class BoughtInvestmentScreen(BaseScreen):
             return
 
         try:
-            currency = CurrencyEnum(data.get("currency", ""))
+            currency = CurrencyEnum(str(data.get("currency")))
         except ValueError:
             self.app_controller.show_error(
                 f"Invalid currency selected, should be one of:"
