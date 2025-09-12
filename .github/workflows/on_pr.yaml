@@ -16,11 +16,6 @@ jobs:
 
       - name: Run Ruff linter
         uses: astral-sh/ruff-action@v3
-        with:
-          src: >-
-            ./src
-            ./tests
-
       - run: ruff check
 
   py-test:
