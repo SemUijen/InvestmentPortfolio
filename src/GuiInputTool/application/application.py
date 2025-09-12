@@ -53,6 +53,7 @@ class MainApplication:
             InputField("Purchase Price", tk.DoubleVar()),
             InputField("Purchase Date", tk.StringVar(), "YYYY-mm-dd"),
             InputField("Cost of Buy", tk.DoubleVar()),
+            InputField("Currency", tk.StringVar(), "e.g. 'EUR'"),
             InputField(
                 "Broker",
                 tk.StringVar(),
