@@ -2,12 +2,14 @@ services:
   dev-synapse:
     container_name: investment-portfolio-dev-container
     build:
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Docker/Dockerfile
     ports:
       - 127.0.0.1:8888:20
     volumes:
       - ..:/code/
-      - E:/InvestmentPortfolioData:/mnt/data
+      - ${DATA_DIR}:/mnt/data
     environment:
       DEV: "True"
       DATA_DIR: "/mnt/data"
+ 
