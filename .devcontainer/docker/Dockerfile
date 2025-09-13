@@ -25,9 +25,8 @@ RUN python3 -m pip install --upgrade pip
 RUN apt-get update && apt-get install -y git
 
 WORKDIR /code
-# copy the requirements file, # Install dependencies 
-COPY requirements.txt .
-COPY stubs-requirements.txt .
+COPY docker/requirements.txt .
+COPY docker/stubs-requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 
