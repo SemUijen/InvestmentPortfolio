@@ -6,8 +6,7 @@
     "y": 245.30071355759429,
     "z": 1000,
     "height": 474.94393476044854,
-    "width": 1280,
-    "tabOrder": 1000
+    "width": 1280
   },
   "visual": {
     "visualType": "lineChart",
@@ -20,7 +19,7 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Date"
+                      "Entity": "dimDate"
                     }
                   },
                   "Property": "Date"
@@ -86,7 +85,7 @@
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Date"
+                    "Entity": "dimDate"
                   }
                 },
                 "Property": "Date"
@@ -108,7 +107,7 @@
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "Date"
+                "Entity": "dimDate"
               }
             },
             "Property": "Date"
@@ -132,21 +131,7 @@
         }
       },
       {
-        "name": "1184f68e31e3de1f73e9",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "Total Value Forecast CustomRate"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "484a02ad403b790bfe3d",
+        "name": "b9ae7b1093487fc29cef",
         "field": {
           "Measure": {
             "Expression": {
@@ -160,7 +145,7 @@
         "type": "Advanced"
       },
       {
-        "name": "cbf496091842b071f271",
+        "name": "314edca9c9ca3d0d044d",
         "field": {
           "Measure": {
             "Expression": {
@@ -169,6 +154,20 @@
               }
             },
             "Property": "Total Value Forecast 7%"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2e4d9fe758d307d24d19",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Total Value Forecast CustomRate"
           }
         },
         "type": "Advanced"

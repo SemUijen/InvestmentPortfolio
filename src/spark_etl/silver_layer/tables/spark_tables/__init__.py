@@ -5,6 +5,7 @@ from .investment_option_tables import (
     IoStockExchange,
     StockExchange,
 )
+from .currency_exchange_tables import CurrencyExchangeRate
 
 __all__ = [
     "InvestmentOption",
@@ -12,4 +13,5 @@ __all__ = [
     "InvestmentOptionValueOvertime",
     "IoStockExchange",
     "StockExchange",
+    "CurrencyExchangeRate", 
 ]

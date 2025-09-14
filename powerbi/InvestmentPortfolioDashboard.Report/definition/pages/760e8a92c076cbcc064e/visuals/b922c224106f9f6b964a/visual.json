@@ -6,7 +6,8 @@
     "y": 327.67018216682646,
     "z": 0,
     "height": 392.71332694151488,
-    "width": 576.79769894535
+    "width": 576.79769894535,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "lineChart",
@@ -165,39 +166,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "0e3bde96e40338c743f5",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "investment_option_value_overtime"
-              }
-            },
-            "Property": "symbol"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "dcaf28b363be24aac908",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "investment_option_value_overtime"
-                  }
-                },
-                "Property": "close"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

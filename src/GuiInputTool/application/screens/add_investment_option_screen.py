@@ -11,7 +11,7 @@ from src.spark_etl.silver_layer.tables.deltalake_tables import (
     IoStockExchange,
     StockExchange,
 )
-from src.stockprobe.alphavantage.url_generator.base_url import BaseAPIurl
+from src.stockprobe.alphavantage.url_generator import TimeSeriesDailyURL
 
 from .base_screen import BaseScreen, InputField
 
@@ -91,10 +91,9 @@ class InvestmentOptionsScreen(BaseScreen):
                     "ALPHAVANTAGE_API_KEY is not set in the environment variables.",
                 )
                 return {}
-            base_url = BaseAPIurl(
+            base_url = TimeSeriesDailyURL(
                 apikey=apikey,
                 symbol=symbol,
-                validate_symbol=False,
             )
             response = requests.get(base_url.return_search_url(), timeout=10)
             response.raise_for_status()  # Raise an error for bad responses

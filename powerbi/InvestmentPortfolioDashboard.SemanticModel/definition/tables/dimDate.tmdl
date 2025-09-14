@@ -1,4 +1,4 @@
-table Date
+table dimDate
 	lineageTag: bc3bf1f5-9a45-49e8-aea6-15a29923515c
 
 	column Date
@@ -51,7 +51,7 @@ table Date
 
 		annotation SummarizationSetBy = Automatic
 
-	partition Date = calculated
+	partition dimDate = calculated
 		mode: import
 		source =
 				
