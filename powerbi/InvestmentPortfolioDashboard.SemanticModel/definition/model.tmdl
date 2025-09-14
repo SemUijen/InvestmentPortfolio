@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["investment_option","investment_option_bought","investment_option_value_overtime","stock_exchange","io_stock_exchange","FactDailyResult"]
+annotation PBI_QueryOrder = ["investment_option","investment_option_bought","investment_option_value_overtime","stock_exchange","io_stock_exchange","FactDailyResult","currency_exchange_rate"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
@@ -24,8 +24,10 @@ ref table stock_exchange
 ref table io_stock_exchange
 ref table FactDailyResult
 ref table LocalDateTable_6f141cc2-8b3c-4770-b3f2-3a980c1a652a
-ref table Date
+ref table dimDate
 ref table LocalDateTable_dcbd38ab-ca63-46e2-81b0-1fd6de3c5c22
+ref table currency_exchange_rate
+ref table LocalDateTable_d5893424-cbc6-4838-8931-25282ca1e1f5
 
 ref cultureInfo en-GB
 

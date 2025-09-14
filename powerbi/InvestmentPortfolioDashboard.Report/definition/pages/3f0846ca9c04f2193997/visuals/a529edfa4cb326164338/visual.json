@@ -4,10 +4,10 @@
   "position": {
     "x": 322.31884057971013,
     "y": 38.260869565217391,
-    "z": 2001,
+    "z": 3000,
     "height": 171.59420289855072,
     "width": 957.68115942028976,
-    "tabOrder": 4001
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -109,65 +109,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "2ad540cd2ec308f7d208",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "Current Total Value"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "9a338feddfa5e3788bab",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "Total Value Forecast 5%/20y"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "14ac8037ae283a0f49a4",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "Total Value Forecast Custom%/20y"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "09d5c242690d460d72ea",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "Total Value Forecast 7%/20y"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

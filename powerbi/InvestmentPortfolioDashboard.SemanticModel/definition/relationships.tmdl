@@ -24,6 +24,11 @@ relationship c9e6c7a1-79fc-6fa4-b7b1-bdf431bb0292
 
 relationship ea5fa952-836d-478f-a6ed-09fd8078b537
 	joinOnDateBehavior: datePartOnly
-	fromColumn: Date.Date
+	fromColumn: dimDate.Date
 	toColumn: LocalDateTable_dcbd38ab-ca63-46e2-81b0-1fd6de3c5c22.Date
+
+relationship b9610a3b-995f-447a-a555-1508f2ffd8dd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: currency_exchange_rate.date
+	toColumn: LocalDateTable_d5893424-cbc6-4838-8931-25282ca1e1f5.Date
 

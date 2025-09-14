@@ -84,7 +84,7 @@ table FactDailyResult
 			VAR PV = [Current Total Value]
 			VAR r = VALUE(SUBSTITUTE([CAGR 5 Years %], "%", "")) / 100
 			VAR BaseDate = MAX(FactDailyResult[Date])                 -- last actual date
-			VAR CurrentDate = MAX('Date'[Date])             -- x-axis date
+			VAR CurrentDate = MAX('dimDate'[Date])             -- x-axis date
 			VAR DaysPassed = DATEDIFF(BaseDate, CurrentDate, DAY)
 			VAR YearsPassed = DIVIDE(DaysPassed, 365)      -- fractional years
 			RETURN
@@ -102,7 +102,7 @@ table FactDailyResult
 			VAR PV = [Current Total Value]
 			VAR r = 0.05
 			VAR BaseDate = MAX(FactDailyResult[Date])                 -- last actual date
-			VAR CurrentDate = MAX('Date'[Date])             -- x-axis date
+			VAR CurrentDate = MAX('dimDate'[Date])             -- x-axis date
 			VAR DaysPassed = DATEDIFF(BaseDate, CurrentDate, DAY)
 			VAR YearsPassed = DIVIDE(DaysPassed, 365)      -- fractional years
 			RETURN
@@ -120,7 +120,7 @@ table FactDailyResult
 			VAR PV = [Current Total Value]
 			VAR r = 0.07
 			VAR BaseDate = MAX(FactDailyResult[Date])                 -- last actual date
-			VAR CurrentDate = MAX('Date'[Date])             -- x-axis date
+			VAR CurrentDate = MAX('dimDate'[Date])             -- x-axis date
 			VAR DaysPassed = DATEDIFF(BaseDate, CurrentDate, DAY)
 			VAR YearsPassed = DIVIDE(DaysPassed, 365)      -- fractional years
 			RETURN

@@ -6,7 +6,8 @@
     "y": 39.901477832512313,
     "z": 1000,
     "height": 201.2807881773399,
-    "width": 527.58620689655174
+    "width": 527.58620689655174,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "advancedSlicerVisual",
@@ -40,23 +41,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "441269b569e328adb3a1",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "symbol"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }
