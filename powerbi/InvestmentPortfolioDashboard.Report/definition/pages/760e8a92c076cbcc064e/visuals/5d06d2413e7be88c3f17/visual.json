@@ -7,7 +7,7 @@
     "z": 3000,
     "height": 150.75987841945289,
     "width": 343.34346504559272,
-    "tabOrder": 2000
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "advancedSlicerVisual",
@@ -83,23 +83,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "b928e759b187172e51e0",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "investment_option_value_overtime"
-              }
-            },
-            "Property": "symbol"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

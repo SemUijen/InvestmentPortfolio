@@ -6,8 +6,7 @@
     "y": 360,
     "z": 2000,
     "height": 360,
-    "width": 1280.3940886699509,
-    "tabOrder": 1000
+    "width": 1280.3940886699509
   },
   "visual": {
     "visualType": "lineStackedColumnComboChart",
@@ -118,80 +117,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "31113e8de2aaf09176a0",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDailyResult"
-              }
-            },
-            "Property": "date"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "b326d5ad9f3db0643285",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDailyResult"
-                  }
-                },
-                "Property": "total_profit"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "c946a8403449dd833dfc",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDailyResult"
-                  }
-                },
-                "Property": "product_profit"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "7f36db92cdecf1143b1f",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDailyResult"
-                  }
-                },
-                "Property": "currency_profit"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
