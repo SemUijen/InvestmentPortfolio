@@ -19,6 +19,7 @@ class InvestmentOptionBought(BaseTable):
             ("amount", pa.float64()),
             ("cost_of_buy", pa.float64()),
             ("currency", pa.string()),
+            ("exchange_rate", pa.float64()),
             ("broker", pa.string()),
         ]
 

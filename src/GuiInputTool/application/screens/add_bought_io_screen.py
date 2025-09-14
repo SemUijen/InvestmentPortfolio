@@ -172,10 +172,11 @@ class BoughtInvestmentScreen(BaseScreen):
             table_data = {
                 "symbol": [selected_symbol],
                 "date_bought": [parsed_date],
-                "price": [float(data.get("purchase_price", ""))],
+                "price": [float(data.get("purchase_price", 0.0))],
                 "amount": [int(data.get("quantity", 0))],
-                "cost_of_buy": [float(data.get("cost_of_buy", ""))],
+                "cost_of_buy": [float(data.get("cost_of_buy", 0.0))],
                 "currency": [currency.value],
+                "exchange_rate": [float(data.get("exchange_rate", 0.0))],
                 "broker": [data.get("broker")],
             }
 
