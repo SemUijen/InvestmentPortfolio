@@ -43,6 +43,7 @@ def main():
         F.col("price").alias("price"),
         F.col("amount").alias("number_owned"),
         F.col("cost_of_buy"),
+        F.col("currency"),
     )
 
     df_new_io_bought.show()
