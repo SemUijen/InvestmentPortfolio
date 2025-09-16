@@ -44,15 +44,11 @@ class AsyncDataIngestor:
         self.to_ingest = to_ingest
         self.base_dir = base_dir
 
-    async def fetch_data(self, url: str) -> dict:
+    async def _fetch_data(self, url: str) -> dict:
         """Fetch data from the URL asynchronously."""
-        async with (
-            self.semaphore,
-            aiohttp.ClientSession() as session,
-            session.get(
-                url,
-            ) as response,
-        ):
+
+        async with aiohttp.ClientSession() as session:
+            response = await session.get(url)
             logger.info("Status %s", response.status)
             # NOTE: if API key limit is reached, API will not return an error
             # but an empty response
@@ -70,7 +66,13 @@ class AsyncDataIngestor:
                 logger.error(error_msg)
                 raise ValueError(error_msg)
 
-            return await response.json()
+            return response_data
+
+    async def fetch_data(self, url: str) -> dict:
+        """Fetch data from the URL asynchronously."""
+        async with self.semaphore:
+            return await self._fetch_data(url)
+
 
     async def save_data(self, data: dict, file_path: str) -> None:
         """Save the fetched data to a file."""
