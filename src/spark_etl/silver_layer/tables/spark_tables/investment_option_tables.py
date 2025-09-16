@@ -9,6 +9,7 @@ from pyspark.sql.types import (
     StringType,
     StructField,
     StructType,
+    DecimalType
 )
 
 from src.spark_etl.utils import BaseTable
@@ -96,10 +97,10 @@ class InvestmentOptionValueOvertime(BaseTable):
             [
                 StructField("symbol", StringType(), True),
                 StructField("date", DateType(), True),
-                StructField("open", FloatType(), True),
-                StructField("high", FloatType(), True),
-                StructField("close", FloatType(), True),
-                StructField("low", FloatType(), True),
+                StructField("open", DecimalType(20, 10), True),
+                StructField("high", DecimalType(20, 10), True),
+                StructField("close", DecimalType(20, 10), True),
+                StructField("low", DecimalType(20, 10), True),
                 StructField("volume", IntegerType(), True),
             ],
         )
@@ -122,9 +123,9 @@ class InvestmentOptionBought(BaseTable):
             [
                 StructField("symbol", StringType(), True),
                 StructField("date_bought", DateType(), True),
-                StructField("price", FloatType(), True),
-                StructField("amount", FloatType(), True),
-                StructField("cost_of_buy", FloatType(), True),
+                StructField("price", DecimalType(20, 10), True),
+                StructField("amount", DecimalType(20, 10), True),
+                StructField("cost_of_buy", DecimalType(20, 10), True),
                 StructField("broker", StringType(), True),
             ],
         )

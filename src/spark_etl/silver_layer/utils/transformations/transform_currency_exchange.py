@@ -1,3 +1,4 @@
+from decimal import Decimal
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -5,7 +6,7 @@ from pathlib import Path
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame, SparkSession, Window
 from pyspark.sql.functions import col, explode, split, to_date
-from pyspark.sql.types import MapType, StringType, StructField, StructType
+from pyspark.sql.types import MapType, StringType, StructField, StructType, DecimalType
 
 
 from src.spark_etl.utils import BaseTable
@@ -44,13 +45,11 @@ def extract_nested_json(df: DataFrame) -> DataFrame:
         col("from_currency"),
         col("to_currency"),
         col("date"),
-        col("values.`1. open`").alias("open"),
-        col("values.`2. high`").alias("high"),
-        col("values.`3. low`").alias("low"),
-        col("values.`4. close`").alias("close"),
-        col("values.`5. volume`").alias("volume"),
+        col("values.`1. open`").cast(DecimalType(38,19)).alias("open"),
+        col("values.`2. high`").cast(DecimalType(38,19)).alias("high"),
+        col("values.`3. low`").cast(DecimalType(38,19)).alias("low"),
+        col("values.`4. close`").cast(DecimalType(38,19)).alias("close"),
     )
-
     return df
 
 def fill_missing_weekends(df: DataFrame) -> DataFrame:
@@ -117,12 +116,6 @@ def fill_missing_weekends(df: DataFrame) -> DataFrame:
                 ),
             ),
         )
-        .withColumn(
-            "volume_filled",
-            F.when(F.dayofweek(col("date")).isin([1, 7]), F.lit(0)).otherwise(
-                F.coalesce(col("volume"), F.lit(0)),
-            ),
-        )
         .select(
             "from_currency",
             "to_currency",
@@ -131,9 +124,7 @@ def fill_missing_weekends(df: DataFrame) -> DataFrame:
             col("high_filled").alias("high"),
             col("low_filled").alias("low"),
             col("close_filled").alias("close"),
-            col("volume_filled").alias("volume"),
         )
         .orderBy("from_currency", "to_currency", "date")
     )
-
     return result

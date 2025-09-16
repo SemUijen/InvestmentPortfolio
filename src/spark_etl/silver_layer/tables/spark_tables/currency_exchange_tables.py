@@ -9,6 +9,7 @@ from pyspark.sql.types import (
     StringType,
     StructField,
     StructType,
+    DecimalType
 )
 
 from src.spark_etl.utils import BaseTable
@@ -29,11 +30,10 @@ class CurrencyExchangeRate(BaseTable):
                 StructField("from_currency", StringType(), True),
                 StructField("to_currency", StringType(), True),
                 StructField("date", DateType(), True),
-                StructField("open", FloatType(), True),
-                StructField("high", FloatType(), True),
-                StructField("close", FloatType(), True),
-                StructField("low", FloatType(), True),
-                StructField("volume", IntegerType(), True),
+                StructField("open", DecimalType(38, 19), True),
+                StructField("high", DecimalType(38, 19), True),
+                StructField("close", DecimalType(38, 19), True),
+                StructField("low", DecimalType(38, 19), True),
             ],
         )
 
