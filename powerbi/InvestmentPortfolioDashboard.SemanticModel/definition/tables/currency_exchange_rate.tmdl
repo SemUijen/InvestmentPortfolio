@@ -81,15 +81,6 @@ table currency_exchange_rate
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column volume
-		dataType: int64
-		formatString: 0
-		lineageTag: 5d354159-57cd-41f6-b7be-38d28d108849
-		summarizeBy: sum
-		sourceColumn: volume
-
-		annotation SummarizationSetBy = Automatic
-
 	partition currency_exchange_rate = m
 		mode: import
 		source =
@@ -98,8 +89,6 @@ table currency_exchange_rate
 				    ToDelta = DeltaLake.Table(Source)
 				in
 				    ToDelta
-
-	changedProperty = Name
 
 	annotation PBI_NavigationStepName = Navigation
 
