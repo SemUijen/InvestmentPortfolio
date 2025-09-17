@@ -1,6 +1,5 @@
-from calendar import c
+
 from pyspark.sql import functions as F
-from pyspark.sql.types import DecimalType
 from src.spark_etl.gold_layer.tables import FactDailyResult
 from src.spark_etl.silver_layer.tables.spark_tables import (
     InvestmentOptionBought,
@@ -50,7 +49,6 @@ def main():
         F.col("exchange_rate")
     )
 
-    df_new_io_bought.show()
 
 
     ## 3 Create new rows for facttable from latest date until yesterday for each symbol
@@ -130,8 +128,6 @@ def main():
     ).orderBy(F.col("date").desc(), F.col("symbol").desc())
 
     # Step 4: Calculate currency rate profit
-
-    df_new_daily_results.show()
 
     fact_table_daily.merge_dataframe(df_new_daily_results)
 
