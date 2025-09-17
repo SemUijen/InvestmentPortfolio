@@ -7,6 +7,7 @@ from pyspark.sql.types import (
     StringType,
     StructField,
     StructType,
+    DecimalType
 )
 
 from src.spark_etl.utils import BaseTable
@@ -26,14 +27,17 @@ class FactDailyResult(BaseTable):
                 StructField("date_id", IntegerType(), True),
                 StructField("date", DateType(), True),
                 StructField("symbol", StringType(), True),
-                StructField("total_investment", FloatType(), True),
-                StructField("total_value", FloatType(), True),
-                StructField("number_owned", FloatType(), True),
-                StructField("avg_buy_price", FloatType(), True),
-                StructField("value_single_io", FloatType(), True),
-                StructField("product_profit", FloatType(), True),
-                StructField("currency_profit", FloatType(), True),
-                StructField("total_profit", FloatType(), True),
+                StructField("currency", StringType(), True),
+                StructField("currency_exchange_rate", DecimalType(38,19), True),
+                StructField("total_investment", DecimalType(20,10), True),
+                StructField("local_total_investment", DecimalType(20,10), True),
+                StructField("total_value", DecimalType(20,10), True),
+                StructField("number_owned", DecimalType(20,10), True),
+                StructField("avg_buy_price", DecimalType(20,10), True),
+                StructField("value_single_io", DecimalType(20,10), True),
+                StructField("product_profit", DecimalType(20,10), True),
+                StructField("currency_profit", DecimalType(20,10), True),
+                StructField("unrealized_total_profit", DecimalType(20,10), True),
             ],
         )
 
