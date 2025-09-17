@@ -15,10 +15,11 @@ class InvestmentOptionBought(BaseTable):
         fields: list[tuple[str, pa.DataType]] = [
             ("symbol", pa.string()),
             ("date_bought", pa.date32()),
-            ("price", pa.float64()),
-            ("amount", pa.float64()),
-            ("cost_of_buy", pa.float64()),
+            ("price", pa.decimal128(20, 10)),
+            ("amount", pa.decimal128(20, 10)),
+            ("cost_of_buy", pa.decimal128(20, 10)),
             ("currency", pa.string()),
+            ("exchange_rate", pa.decimal128(38, 19)),
             ("broker", pa.string()),
         ]
 
@@ -37,10 +38,10 @@ class InvestmentOptionValueOvertime(BaseTable):
         fields: list[tuple[str, pa.DataType]] = [
             ("symbol", pa.string()),
             ("date", pa.date32()),
-            ("open", pa.float64()),
-            ("high", pa.float64()),
-            ("low", pa.float64()),
-            ("close", pa.float64()),
+            ("open", pa.decimal128(20, 10)),
+            ("high", pa.decimal128(20, 10)),
+            ("low", pa.decimal128(20, 10)),
+            ("close", pa.decimal128(20, 10)),
             ("volume", pa.int64()),
         ]
 

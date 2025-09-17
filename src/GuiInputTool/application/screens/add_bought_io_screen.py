@@ -7,7 +7,8 @@ from tkinter import ttk
 from typing import TYPE_CHECKING
 from enum import StrEnum
 from deltalake import DeltaTable
-
+from decimal import Decimal
+import pyarrow as pa
 from src.spark_etl.silver_layer.tables.deltalake_tables import InvestmentOptionBought
 
 from .base_screen import BaseScreen, InputField
@@ -165,6 +166,12 @@ class BoughtInvestmentScreen(BaseScreen):
                  f" {', '.join([c.value for c in CurrencyEnum])}"
             )
             return
+        
+        def quantize_decimal(value: str, scale: int) -> Decimal:
+            """Quantize a decimal value to the specified precision and scale."""
+            quantize_str = '1.' + '0' * scale  # e.g., for scale=2, quantize_str='1.00'
+            return Decimal(value).quantize(Decimal(quantize_str))
+
 
         # Map the GUI field names to the expected schema field names
         try:
@@ -172,12 +179,13 @@ class BoughtInvestmentScreen(BaseScreen):
             table_data = {
                 "symbol": [selected_symbol],
                 "date_bought": [parsed_date],
-                "price": [float(data.get("purchase_price", ""))],
-                "amount": [int(data.get("quantity", 0))],
-                "cost_of_buy": [float(data.get("cost_of_buy", ""))],
+                "price": [quantize_decimal(str(data.get("purchase_price" , "0.0")), 10)],
+                "amount": [quantize_decimal(str(data.get("quantity", '0.0')), 10)],
+                "cost_of_buy": [quantize_decimal(str(data.get("cost_of_buy", '0')), 10)],
                 "currency": [currency.value],
+                "exchange_rate": [quantize_decimal(str(data.get("exchange_rate", '0')), 19)],
                 "broker": [data.get("broker")],
-            }
+                }
 
             # Create table instance and merge data
             bought_investment_table = InvestmentOptionBought()

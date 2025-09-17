@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
   "name": "aabbbdf67650870d1a83",
   "position": {
     "x": 974.76066144473452,
@@ -156,5 +156,51 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "f0fb76b3e63cb3fa85d2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Currency Profit"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7638da46c778caa53fe5",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Option Profit"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "70185b18e7eadadae914",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Total Profit"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
   "name": "5d06d2413e7be88c3f17",
   "position": {
     "x": 0,
@@ -67,7 +67,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'AIAA'"
+                                "Value": "'NDIA'"
                               }
                             }
                           ]
@@ -83,5 +83,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "dd2fc11ae3e44c83747b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "investment_option_value_overtime"
+              }
+            },
+            "Property": "symbol"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

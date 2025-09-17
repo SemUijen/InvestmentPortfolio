@@ -79,6 +79,16 @@ table investment_option_bought
 
 		annotation SummarizationSetBy = Automatic
 
+	column exchange_rate
+		dataType: double
+		lineageTag: e0e7c15e-1163-4e4a-a235-e03cf02a3afe
+		summarizeBy: sum
+		sourceColumn: exchange_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition investment_option_bought = m
 		mode: import
 		source =

@@ -1,9 +1,10 @@
-from pyspark.sql import functions as F
 
+from pyspark.sql import functions as F
 from src.spark_etl.gold_layer.tables import FactDailyResult
 from src.spark_etl.silver_layer.tables.spark_tables import (
     InvestmentOptionBought,
     InvestmentOptionValueOvertime,
+    CurrencyExchangeRate
 )
 from src.spark_etl.utils import get_spark_session
 
@@ -14,6 +15,7 @@ def main():
     # Silver Tables
     io_bought = InvestmentOptionBought(spark)
     io_value_overtime = InvestmentOptionValueOvertime(spark)
+    currency_exchange = CurrencyExchangeRate(spark)
 
     # Gold Tables
     fact_table_daily = FactDailyResult(spark)
@@ -42,19 +44,24 @@ def main():
         F.col("date_bought").alias("date"),
         F.col("price").alias("price"),
         F.col("amount").alias("number_owned"),
-        F.col("cost_of_buy"),
+        F.col("cost_of_buy").alias("cost_of_buy"),
+        F.col("currency"),
+        F.col("exchange_rate")
     )
 
-    df_new_io_bought.show()
+
+
     ## 3 Create new rows for facttable from latest date until yesterday for each symbol
 
     df_io_value_overtime = io_value_overtime.get_dataframe()
-    df_io_value_overtime.show()
 
     df_new_daily_results = (
         df_new_io_bought.select(
             F.col("symbol"),
-            (F.col("price") * F.col("number_owned")).alias("total_investment"),
+            (F.col("price") * F.col("number_owned") * F.col("exchange_rate")).alias("total_investment"),
+            (F.col("exchange_rate") * F.col("number_owned")).alias("exchange_rate_weighted"),
+            (F.col("price") * F.col("number_owned")).alias("local_total_investment"),
+            F.col("currency"),
             F.col("number_owned"),
             F.col("cost_of_buy"),
             F.explode(
@@ -68,12 +75,33 @@ def main():
         .groupBy("date", "symbol")
         .agg(
             F.sum("total_investment").alias("total_investment"),
+            F.sum("local_total_investment").alias("local_total_investment"),    
             F.sum("number_owned").alias("number_owned"),
             F.first("cost_of_buy").alias("cost_of_buy"),
+            F.sum("exchange_rate_weighted").alias("exchange_rate_weighted"),
+            F.first("currency").alias("currency"),
         )
         .orderBy("date", "symbol")
     )
-    df_new_daily_results.show()
+    df_currency_exchange = currency_exchange.get_dataframe()
+
+    df_new_daily_results = df_new_daily_results.join(
+            df_currency_exchange,
+            (df_new_daily_results.currency == df_currency_exchange.from_currency)
+            & (df_new_daily_results.date == df_currency_exchange.date),
+            "left",
+        ).fillna(1, subset=["close"]
+        ).drop(
+            df_currency_exchange["date"],
+        ).withColumn(
+                "avg_exchange_rate_change",
+                (F.col("exchange_rate_weighted") / F.col("number_owned") )
+        ).select(
+            df_new_daily_results["*"],
+            # Calculate the currency exchange rate change
+            F.col("avg_exchange_rate_change"),
+            F.col("close").alias("currency_exchange_rate"),
+        )
 
     df_new_daily_results = (
         df_new_daily_results.join(
@@ -81,33 +109,27 @@ def main():
             (df_new_daily_results.symbol == df_io_value_overtime.symbol)
             & (df_new_daily_results.date == df_io_value_overtime.date),
             "left",
-        )
-        .drop(
+        ).drop(
             df_io_value_overtime["date"],
-        )
-        .select(
+        ).select(
             df_new_daily_results["*"],
             F.date_format(F.col("date"), "yyyyddMM").cast("int").alias("date_id"),
             F.col("close").alias("value_single_io"),
             (F.col("total_investment") / F.col("number_owned")).alias("avg_buy_price"),
             (F.col("close") * F.col("number_owned")).alias("total_value"),
-            (F.col("total_value") - F.col("total_investment")).alias(
+            (F.col("total_value") - F.col("local_total_investment") * F.col("currency_exchange_rate")).alias(
                 "product_profit",
             ),
-            (F.lit(0)).alias(
+            (F.col("local_total_investment") * F.col("currency_exchange_rate") - F.col("total_investment")).alias(
                 "currency_profit",
-            ),  # Should be 0 for euros and currency eschange rates for others to the euro
-            (
-                F.col("product_profit")
-                + F.col("currency_profit")
-                - 2 * F.col("cost_of_buy")
-            ).alias("total_profit"),
-        )
-    ).orderBy("date", "symbol")
+            ),  
+            (F.col("total_value") - F.col("total_investment")).alias("unrealized_total_profit"),
+        ).drop("currency_exchange_rate_change", "avg_exchange_rate_change", "exchange_rate_weighted", "cost_of_buy")
+    ).orderBy(F.col("date").desc(), F.col("symbol").desc())
+
+    # Step 4: Calculate currency rate profit
 
     fact_table_daily.merge_dataframe(df_new_daily_results)
-
-    fact_table_daily.get_dataframe().show()
 
     spark.stop()
 

@@ -13,7 +13,7 @@ from .utils.transformations import (
     extract_currency_json, fill_currency_weekends,
 )
 from pyspark.sql.types import MapType, StringType, StructField, StructType
-from src.spark_etl.silver_layer.tables.spark_tables import (InvestmentOptionValueOvertime, CurrencyExchangeRate)
+from src.spark_etl.silver_layer.tables.spark_tables import (InvestmentOptionValueOvertime, CurrencyExchangeRate, currency_exchange_tables)
 
 
 INVESTMENT_OPTION_SCHEMA = StructType(
@@ -92,33 +92,36 @@ def main():
 
     if not (DATA_DIR := os.getenv("DATA_DIR")):
         raise ValueError("DATA_DIR environment variable is not set")
+    
+    investment_option_table = InvestmentOptionValueOvertime(spark=spark)
 
     bronze_source_investment_options = BronzeSource(
         base_dir=f"{DATA_DIR}/bronze",
         spark=spark,
         schema=INVESTMENT_OPTION_SCHEMA,
         bronze_folder="investment_options",
-        spark_table=InvestmentOptionValueOvertime(spark=spark),
+        spark_table=investment_option_table,
     )
     silver_pipeline_investment_options = SilverPipeline(
         bronze_source=bronze_source_investment_options,
         spark=spark,
-        silver_table=InvestmentOptionValueOvertime(spark=spark),
+        silver_table=investment_option_table,
     )
     silver_pipeline_investment_options.add_transform_function(extract_stock_json)
     silver_pipeline_investment_options.add_transform_function(fill_stock_weekends)
 
+    currency_exchange_tables = CurrencyExchangeRate(spark=spark)
     bronze_source_currency_exchange = BronzeSource(
         base_dir=f"{DATA_DIR}/bronze",
         spark=spark,
         schema=CURRENCY_EXCHANGE_SCHEMA,
         bronze_folder="exchange_rate",
-        spark_table=CurrencyExchangeRate(spark=spark),
+        spark_table=currency_exchange_tables,
     )
     silver_pipeline_currency_exchange = SilverPipeline(
         bronze_source=bronze_source_currency_exchange,
         spark=spark,
-        silver_table=CurrencyExchangeRate(spark=spark),
+        silver_table=currency_exchange_tables,
     )
     silver_pipeline_currency_exchange.add_transform_function(extract_currency_json)
     silver_pipeline_currency_exchange.add_transform_function(fill_currency_weekends)
@@ -126,9 +129,10 @@ def main():
 
     # Example usage
     today = datetime.now()
-    #silver_pipeline_investment_options.run(today)
+    silver_pipeline_investment_options.run(today)
     
     silver_pipeline_currency_exchange.run(today)
+
 
 if __name__ == "__main__":
     main()

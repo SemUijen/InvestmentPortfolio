@@ -63,6 +63,7 @@ class SilverPipeline:
         for transform in self.transform_functions:
             df_bronze = transform(df_bronze)
 
+
         self.silver_table.merge_dataframe(
             df_bronze,
         )

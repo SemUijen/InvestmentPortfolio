@@ -6,7 +6,7 @@ table FactDailyResult
 			VAR LatestDate = MAX(FactDailyResult[Date])
 			RETURN
 			CALCULATE(
-			    SUM(FactDailyResult[Total_Profit]),
+			    SUM(FactDailyResult[unrealized_total_profit]),
 			    FactDailyResult[Date] = LatestDate
 			)
 		lineageTag: c619875d-7f31-4e0e-946d-ced2f5c0e79b
@@ -244,11 +244,39 @@ table FactDailyResult
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column total_profit
+	column currency
+		dataType: string
+		lineageTag: 7cb0ea53-2adb-4a8f-a8a1-82a464994021
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column currency_exchange_rate
 		dataType: double
-		lineageTag: 53ef8ccd-6093-47af-baa2-cae4f057fa3c
+		lineageTag: c638fe71-8b95-46f2-9a5f-eab47fff024e
 		summarizeBy: sum
-		sourceColumn: total_profit
+		sourceColumn: currency_exchange_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column local_total_investment
+		dataType: double
+		lineageTag: 7eeb3493-fa54-447a-8312-19f2c7509623
+		summarizeBy: sum
+		sourceColumn: local_total_investment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unrealized_total_profit
+		dataType: double
+		lineageTag: 0c083e52-3105-4a0e-ba3f-d79df8b56402
+		summarizeBy: sum
+		sourceColumn: unrealized_total_profit
 
 		annotation SummarizationSetBy = Automatic
 

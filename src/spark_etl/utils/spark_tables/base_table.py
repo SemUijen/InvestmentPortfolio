@@ -108,7 +108,14 @@ class BaseTable(ABC):
             .addColumn("id", "string")
         )  # Add 'id' column for unique identifier
         for field in self.return_defined_schema():
-            builder.addColumn(field.name, field.dataType.typeName())
+            if field.dataType.typeName() == "decimal":
+                builder.addColumn(
+                    field.name,
+                    f"decimal({field.dataType.precision},{field.dataType.scale})"
+                )
+            else:
+                builder.addColumn(field.name, field.dataType.typeName())
+
 
         builder.location(table_path)
         return builder
