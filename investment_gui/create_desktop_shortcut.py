@@ -5,10 +5,11 @@ import win32com.client
 
 
 def create_bat_shortcut():
+    app_name = "InvestmentPortfolio"
     script_dir = Path(__file__).resolve().parent
     main_script = script_dir / "investment_gui/app.py"
     python_exe = script_dir / ".venv" / "Scripts" / "python.exe"
-    bat_path = script_dir / "Data_Input_App.bat"
+    bat_path = script_dir / f"{app_name}.bat"
     print(f"Script directory: {script_dir}")
 
     if platform.system() == "Windows":
@@ -26,7 +27,7 @@ def create_bat_shortcut():
             # Create shortcut on Desktop with icon
             try:
                 desktop = Path.home() / "OneDrive" / "Bureaublad"
-                shortcut_path = desktop / "Data_Input_App.lnk"
+                shortcut_path = desktop / f"{app_name}.lnk"
                 icon_path = script_dir / "currency.ico"
 
                 shell = win32com.client.Dispatch("WScript.Shell")

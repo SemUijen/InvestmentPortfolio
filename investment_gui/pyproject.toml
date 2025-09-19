@@ -16,6 +16,7 @@ investment-etl = { path = "../investment_etl" }
 [dependency-groups]
 dev = [
     "mypy>=1.18.2",
+    "pywin32>=311",
     "types-pywin32>=311.0.0.20250915",
     "types-requests>=2.32.4.20250913",
 ]
