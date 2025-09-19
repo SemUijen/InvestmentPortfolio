@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
   "name": "a529edfa4cb326164338",
   "position": {
     "x": 322.31884057971013,
@@ -109,5 +109,65 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "6bb94390346b6ddbdd13",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Current Total Value"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4f08099b9762e8cee1ae",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Total Value Forecast 5%/20y"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "24f2e8d99deae8c2eed9",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Total Value Forecast 7%/20y"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "80ac24fd067cf8f87139",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDailyResult"
+              }
+            },
+            "Property": "Total Value Forecast Custom%/20y"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }
