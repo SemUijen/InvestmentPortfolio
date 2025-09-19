@@ -1,0 +1,12 @@
+{
+    "ruff.configuration": "${workspaceFolder}/ruff.toml",
+    "ruff.enable": true,
+    "ruff.lint.enable": true,
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "charliermarsh.ruff",
+    },
+    "mypy.configFile": "mypy.ini",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+    "mypy.runUsingActiveInterpreter": true,
+}
