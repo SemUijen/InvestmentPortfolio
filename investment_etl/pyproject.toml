@@ -11,7 +11,7 @@ dependencies = [
     "deltalake>=1.1.4",
     "pyarrow>=21.0.0",
     "pydantic>=2.11.9",
-    "pyspark>=4.0.1",
+    "pyspark>=4.0.0",
     "python-dotenv>=1.1.1",
 ]
 

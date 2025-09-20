@@ -1,5 +1,5 @@
 # Fabric Runtime 1.3: 
-FROM spark:3.5.0-scala2.12-java11-ubuntu
+FROM spark:4.0.0-scala2.13-java21-ubuntu
 
 USER 0
 
