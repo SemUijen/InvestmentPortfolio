@@ -54,7 +54,8 @@ class StartupScreen(BaseScreen):
         """Run the Medaillon ETL pipeline."""
         try:
             self.app_controller.show_info("Running Medaillon pipeline...")
-            root_folder = Path(__file__).resolve().parents[3]
+            # Set cwd to investment_gui/docker
+            root_folder = Path(__file__).resolve().parents[3] / "docker"
             subprocess.run(
                 ["docker-compose", "run", "--rm", "run-medaillon-pipeline"],
                 check=True,

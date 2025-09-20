@@ -5,7 +5,7 @@ import win32com.client
 
 
 def create_bat_shortcut():
-    app_name = "InvestmentPortfolio"
+    app_name = "Investment Portfolio"
     script_dir = Path(__file__).resolve().parent
     main_script = script_dir / "investment_gui/app.py"
     python_exe = script_dir / ".venv" / "Scripts" / "python.exe"

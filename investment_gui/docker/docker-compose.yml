@@ -1,0 +1,12 @@
+services:
+  run-medaillon-pipeline:
+    container_name: run-medaillon-pipeline
+    build:
+      context: ./run_medaillon
+      dockerfile: ./Dockerfile
+    volumes:
+      - E:/InvestmentPortfolioData:/mnt/data
+    environment:
+      DATA_DIR: "/mnt/data"
+    env_file:
+      - ./run_medaillon/.env
