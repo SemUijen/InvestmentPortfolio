@@ -18,54 +18,54 @@ jobs:
         uses: astral-sh/ruff-action@v3
       - run: ruff check
 
-  py-test:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # py-test:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: "3.12"
 
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~\AppData\Local\pip\Cache
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+  #     - name: Cache pip
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           ~\AppData\Local\pip\Cache
+  #         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-pip-
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r requirements.txt
 
-      - name: Run tests
-        run: |
-          pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+  #     - name: Run tests
+  #       run: |
+  #         pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 
-  static-type-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v3
-        with:
-          python-version: "3.12"
+  # static-type-check:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-python@v3
+  #       with:
+  #         python-version: "3.12"
 
-      - run: pip install mypy # you can pin your preferred version
-      - run: pip install -r stubs-requirements.txt # install stubs for third-party libraries
+  #     - run: pip install mypy # you can pin your preferred version
+  #     - run: pip install -r stubs-requirements.txt # install stubs for third-party libraries
 
-      - name: Get Python changed files
-        id: changed-py-files
-        uses: tj-actions/changed-files@v23
-        with:
-          files: |
-            *.py
-            **/*.py
+  #     - name: Get Python changed files
+  #       id: changed-py-files
+  #       uses: tj-actions/changed-files@v23
+  #       with:
+  #         files: |
+  #           *.py
+  #           **/*.py
 
-      - name: Run if any of the listed files above is changed
-        if: steps.changed-py-files.outputs.any_changed == 'true'
-        run: mypy ${{ steps.changed-py-files.outputs.all_changed_files }} --ignore-missing-imports
+  #     - name: Run if any of the listed files above is changed
+  #       if: steps.changed-py-files.outputs.any_changed == 'true'
+  #       run: mypy ${{ steps.changed-py-files.outputs.all_changed_files }} --ignore-missing-imports

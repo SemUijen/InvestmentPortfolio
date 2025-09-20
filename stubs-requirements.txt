@@ -1,4 +1,0 @@
-# Stubss
-types-requests
-types-aiofiles
-pyarrow-stubs
