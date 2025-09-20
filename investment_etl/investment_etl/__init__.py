@@ -1,0 +1,1 @@
+"""Investment ETL pipeline initialization."""
