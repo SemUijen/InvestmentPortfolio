@@ -64,10 +64,10 @@ jobs:
           path: |
             ~\AppData\Local\uv\Cache
             ~\.cache\uv
-          key: ${{ runner.os }}-uv-dev-${{ matrix.package }}-${{ hashFiles(format('{0}/pyproject.toml', matrix.package)) }}
+          key: ${{ runner.os }}-uv-dev-pytest-${{ matrix.package }}-${{ hashFiles(format('{0}/pyproject.toml', matrix.package)) }}
           restore-keys: |
-            ${{ runner.os }}-uv-dev-${{ matrix.package }}-
-            ${{ runner.os }}-uv-dev-
+            ${{ runner.os }}-uv-dev-pytest-${{ matrix.package }}-
+            ${{ runner.os }}-uv-dev-pytest-
 
       - name: Install package for type checking
         run: |
@@ -106,10 +106,10 @@ jobs:
           path: |
             ~\AppData\Local\uv\Cache
             ~\.cache\uv
-          key: ${{ runner.os }}-uv-dev-${{ matrix.package }}-${{ hashFiles(format('{0}/pyproject.toml', matrix.package)) }}
+          key: ${{ runner.os }}-uv-dev-mypy-${{ matrix.package }}-${{ hashFiles(format('{0}/pyproject.toml', matrix.package)) }}
           restore-keys: |
-            ${{ runner.os }}-uv-dev-${{ matrix.package }}-
-            ${{ runner.os }}-uv-dev-
+            ${{ runner.os }}-uv-dev-mypy-${{ matrix.package }}-
+            ${{ runner.os }}-uv-dev-mypy-
 
       - name: Install package for type checking
         run: |
