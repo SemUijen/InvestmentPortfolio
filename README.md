@@ -210,7 +210,7 @@ InvestmentPortfolio/
 - **Gold Layer**: Business-ready fact tables for analytics
 - **Async Processing**: Rate-limited API calls with error handling
 
-[📖 **Detailed Documentation**](investment_etl/README.md) | [🏗️ **Architecture Diagrams**](investment_etl/ARCHITECTURE.md)
+[📖 **Detailed Documentation**](investment_etl/README.md)
 
 ### 🖥️ **GUI Application** (`investment_gui/`)
 
@@ -234,5 +234,6 @@ InvestmentPortfolio/
 - **Performance Tracking**: Real-time portfolio valuation and profit/loss
 
 [📖 **Detailed Documentation**](powerbi/README.md)
+
 
 
