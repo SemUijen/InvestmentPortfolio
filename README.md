@@ -79,8 +79,6 @@ Create `.env` files in both `investment_etl/` and `investment_gui/docker/run_med
 ALPHAVANTAGE_API_KEY=your_api_key_here
 
 # Data Storage Configuration
-DATA_DIR=E:/InvestmentPortfolioData
-# or
 DATA_DIR=/path/to/your/data/directory
 ```
 
@@ -243,3 +241,4 @@ InvestmentPortfolio/
 - **Performance Tracking**: Real-time portfolio valuation and profit/loss
 
 [📖 **Detailed Documentation**](powerbi/README.md)
+
