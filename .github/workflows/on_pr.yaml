@@ -75,7 +75,7 @@ jobs:
 
       - name: Run tests
         run: |
-          python3 -m pytest ${{ matrix.package }}/tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          python -m pytest ${{ matrix.package }}/tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 
   static-type-check:
     runs-on: windows-latest
@@ -114,4 +114,4 @@ jobs:
           uv sync --group dev
 
       - name: Run if any of the listed files above is changed
-        run: python 3 -m mypy --ignore-missing-imports ${{ matrix.package }}
+        run: python -m mypy --ignore-missing-imports ${{ matrix.package }}
