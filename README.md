@@ -92,14 +92,7 @@ cd investment_gui/docker
 docker-compose build
 ```
 
-### 6️⃣ **Install Desktop Shortcut**
-
-```bash
-# Create desktop shortcut for the GUI application (Windows only)
-python investment_gui/create_desktop_shortcut.py
-```
-
-### 7️⃣ **PowerBI Setup**
+### 6️⃣ **PowerBI Setup**
 
 1. Install PowerBI Desktop from Microsoft Store
 2. Open `powerbi/InvestmentPortfolioDashboard.pbip`
@@ -241,4 +234,5 @@ InvestmentPortfolio/
 - **Performance Tracking**: Real-time portfolio valuation and profit/loss
 
 [📖 **Detailed Documentation**](powerbi/README.md)
+
 
