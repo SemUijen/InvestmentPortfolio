@@ -1,8 +1,11 @@
+"""Module to create and return a Spark session configured for Delta Lake."""
+
 from delta import configure_spark_with_delta_pip
 from pyspark.sql import SparkSession
 
 
 def get_spark_session() -> SparkSession:
+    """Create and return a Spark session configured for Delta Lake."""
     builder = (
         SparkSession.builder.appName("MyApp")
         .config(

@@ -30,7 +30,6 @@ exclude = [
     "investment_etl/bronze_layer",
     "investment_etl/silver_layer",
     "investment_etl/gold_layer",
-    "investment_etl/utils",
 ]
 
 # Same as Black.
