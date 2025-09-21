@@ -74,13 +74,6 @@ def calculate_portfolio_value(
     currency_rate: Optional[Decimal] = None
 ) -> Decimal:
     total_value = Decimal('0')
-    for symbol, quantity in investments.items():
-        if symbol not in prices:
-            raise ValueError(f"Price data missing for symbol: {symbol}")
-        total_value += quantity * prices[symbol]
-
-    if currency_rate:
-        total_value *= currency_rate
 
     return total_value
 ```
