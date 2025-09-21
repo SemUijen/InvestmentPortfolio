@@ -135,7 +135,6 @@ def calculate_compound_interest(
 
 - **Data Sources**: Add new APIs by extending the `stockprobe` module
 - **Transformations**: Custom business logic in silver layer transformations
-- **Storage Formats**: Modify table schemas in the `tables/` directories
 - **Scheduling**: Integrate with cron/Windows Task Scheduler for automation
 
 #### **GUI**
