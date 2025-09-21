@@ -27,7 +27,7 @@ exclude = [
     "site-packages",
     "venv",
     "tests",
-    "investment_gui",
+    "investment_gui/screens",
 ]
 
 # Same as Black.

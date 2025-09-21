@@ -1,3 +1,5 @@
+"""Main application controller for the investment GUI."""
+
 import tkinter as tk
 from tkinter import messagebox
 
@@ -14,6 +16,7 @@ class MainApplication:
     """Main application controller that manages different screens."""
 
     def __init__(self) -> None:
+        """Initialize the main application window and set up the initial screen."""
         self.root = tk.Tk()
         self.root.title("Stock Investment Manager")
         self.root.geometry("500x600")
@@ -44,11 +47,6 @@ class MainApplication:
 
         # Define the input fields you want
         input_fields = [
-            # InputField(
-            #     "Symbol",
-            #     tk.StringVar(),
-            #     "e.g. 'VWCE' for Vanguard FTSE All-World ",
-            # ),
             InputField("Quantity", tk.DoubleVar()),
             InputField("Purchase Price", tk.DoubleVar()),
             InputField("Purchase Date", tk.StringVar(), "YYYY-mm-dd"),
