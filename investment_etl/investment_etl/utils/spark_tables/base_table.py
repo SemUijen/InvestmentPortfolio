@@ -9,7 +9,7 @@ from pathlib import Path
 from delta.tables import DeltaTable, DeltaTableBuilder
 from dotenv import load_dotenv
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import md5
+from pyspark.sql.functions import concat_ws, md5
 from pyspark.sql.types import StructType
 
 from investment_etl.utils import get_spark_session
@@ -34,14 +34,16 @@ class BaseTable(ABC):
 
         self.medaillon_layer = medaillon_layer
         if spark is None:
-            logging.info("Creating Spark session.")
+            msg = "Spark session not provided. Creating a new Spark session."
+            logger.info(msg)
             spark = get_spark_session()
 
         self.spark = spark
 
         data_dir = os.getenv("DATA_DIR")
         if not data_dir:
-            raise ValueError("Environment variable 'DATA_DIR' is not set.")
+            msg = "Environment variable 'DATA_DIR' is not set."
+            raise ValueError(msg)
 
         self.silver_path = Path(data_dir) / self.medaillon_layer
 
@@ -79,10 +81,8 @@ class BaseTable(ABC):
         """
 
     def _add_hash_id(self, input_df: DataFrame) -> DataFrame:
-        """Creates a unique identifier for the table based on its primary keys columns."""
+        """Create a unique identifier based on its primary keys columns."""
         primary_keys = self.return_primary_keys_columns()
-
-        from pyspark.sql.functions import concat_ws
 
         return input_df.withColumn(
             "id",
@@ -97,6 +97,7 @@ class BaseTable(ABC):
         )
 
     def get_dataframe(self) -> DataFrame:
+        """Return the DataFrame for the specified table."""
         return self.get_table().toDF()
 
     def _return_delta_table_builder(self) -> DeltaTableBuilder:
@@ -109,15 +110,20 @@ class BaseTable(ABC):
         )  # Add 'id' column for unique identifier
         for field in self.return_defined_schema():
             if field.dataType.typeName() == "decimal":
-                if hasattr(field.dataType, "precision") and hasattr(field.dataType, "scale"):
+                if hasattr(field.dataType, "precision") and hasattr(
+                    field.dataType,
+                    "scale",
+                ):
                     builder.addColumn(
                         field.name,
                         f"decimal({field.dataType.precision},{field.dataType.scale})",
                     )
                 else:
-                    raise ValueError(
-                        f"Decimal field {field.name} must have precision and scale defined."
+                    msg = (
+                        f"Decimal field {field.name} must have "
+                        "precision and scale defined."
                     )
+                    raise ValueError(msg)
             else:
                 builder.addColumn(field.name, field.dataType.typeName())
 
@@ -125,14 +131,14 @@ class BaseTable(ABC):
         return builder
 
     def _create_table_if_not_exists(self) -> None:
-        """Creates the Delta table if it does not exist."""
+        """Create the Delta table if it does not exist."""
         table_path = f"{self.silver_path}/{self.table_name}"
         if not DeltaTable.isDeltaTable(self.spark, table_path):
             builder = self._return_delta_table_builder()
             builder.execute()
-            logging.info("Table %s created at %s", self.table_name, table_path)
+            logger.info("Table %s created at %s", self.table_name, table_path)
         else:
-            logging.info(
+            logger.info(
                 "Table %s already exists at %s",
                 self.table_name,
                 table_path,
@@ -141,17 +147,18 @@ class BaseTable(ABC):
     def _merge(self, new_data: DataFrame) -> None:
         """Merge new data into the existing Delta table."""
         delta_table = self.get_table()
-        logging.info("Merging data into table %s", self.table_name)
+        logger.info("Merging data into table %s", self.table_name)
         delta_table.alias("existing").merge(
             new_data.alias("new"),
             "existing.id = new.id",  # Assuming 'id' is the primary key
         ).whenMatchedUpdateAll().whenNotMatchedInsertAll().execute()
-        logging.info("Data merged into table %s", self.table_name)
+        logger.info("Data merged into table %s", self.table_name)
 
     def merge_dataframe(self, new_data: DataFrame) -> None:
         """Merge new data into the existing Delta table."""
         if not isinstance(new_data, DataFrame):
-            raise ValueError("new_data must be a Spark DataFrame.")
+            msg = "new_data must be a Spark DataFrame."
+            raise TypeError(msg)
 
         new_data = self._add_hash_id(new_data)
         self._merge(new_data)
@@ -159,14 +166,15 @@ class BaseTable(ABC):
     def merge_dict_data(self, new_data: dict) -> None:
         """Merge new data from a dictionary into the existing Delta table."""
         if not isinstance(new_data, dict):
-            raise ValueError("new_data must be a dictionary.")
+            msg = "new_data must be a dictionary."
+            raise TypeError(msg)
 
-        logging.info("Creating DataFrame from new data.")
+        logger.info("Creating DataFrame from new data.")
         new_df = self.spark.createDataFrame(
             [new_data],
             schema=self.return_defined_schema(),
         )
-        logging.info("Adding hash ID to new DataFrame.")
+        logger.info("Adding hash ID to new DataFrame.")
         new_df = self._add_hash_id(new_df)
-        logging.info("Merging new DataFrame into the table.")
+        logger.info("Merging new DataFrame into the table.")
         self._merge(new_df)
