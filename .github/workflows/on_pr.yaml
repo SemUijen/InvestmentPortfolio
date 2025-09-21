@@ -75,7 +75,8 @@ jobs:
 
       - name: Run tests
         run: |
-          uv run pytest ${{ matrix.package }}/tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          cd ${{ matrix.package }}
+          uv run pytest tests/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 
   static-type-check:
     runs-on: windows-latest
@@ -112,7 +113,8 @@ jobs:
         run: |
           cd ${{ matrix.package }}
           uv sync --group dev
-          cd ..
 
-      - name: Run if any of the listed files above is changed
-        run: uv run mypy --ignore-missing-imports ${{ matrix.package }}
+      - name: Run mypy type checking
+        run: |
+          cd ${{ matrix.package }}
+          uv run mypy --ignore-missing-imports .
