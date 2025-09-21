@@ -31,8 +31,6 @@ We welcome contributions in various forms:
 git clone https://github.com/YOUR_USERNAME/InvestmentPortfolio.git
 cd InvestmentPortfolio
 
-# Add upstream remote
-git remote add upstream https://github.com/SemUijen/InvestmentPortfolio.git
 ```
 
 ### 2️⃣ **Choose Your Contribution Area**
