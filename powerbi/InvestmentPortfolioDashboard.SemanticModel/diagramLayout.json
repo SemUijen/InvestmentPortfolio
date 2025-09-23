@@ -109,6 +109,16 @@
             "width": 234
           },
           "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "DATA_DIR",
+          "nodeLineageTag": "c43ad8ce-caa5-44d2-926c-22d6fc29e2fb",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",

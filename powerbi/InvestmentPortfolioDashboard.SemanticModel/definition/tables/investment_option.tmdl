@@ -37,7 +37,7 @@ table investment_option
 		mode: import
 		source =
 				let
-				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\investment_option"),
+				    Source = Folder.Contents(DATA_DIR & "\silver\investment_option"),
 				    ToDelta = DeltaLake.Table(Source)
 				in
 				    ToDelta

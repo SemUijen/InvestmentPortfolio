@@ -53,7 +53,7 @@ table stock_exchange
 		mode: import
 		source =
 				let
-				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\stock_exchange"),
+				    Source = Folder.Contents(DATA_DIR & "\silver\stock_exchange"),
 				    ToDelta = DeltaLake.Table(Source)
 				in
 				    ToDelta

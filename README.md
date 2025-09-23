@@ -96,7 +96,7 @@ docker-compose build
 
 1. Install PowerBI Desktop from Microsoft Store
 2. Open `powerbi/InvestmentPortfolioDashboard.pbip`
-3. Update data source paths to match your `DATA_DIR`
+3. Update Path in the DATA_DIR query to match your `DATA_DIR`
 4. Refresh data connections
 
 ## ⚡ Quick Start Guide
@@ -234,7 +234,3 @@ InvestmentPortfolio/
 - **Performance Tracking**: Real-time portfolio valuation and profit/loss
 
 [📖 **Detailed Documentation**](powerbi/README.md)
-
-
-
-

@@ -256,7 +256,7 @@ table investment_option_value_overtime
 		mode: import
 		source =
 				let
-				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\investment_option_value_overtime"),
+				    Source = Folder.Contents(DATA_DIR & "\silver\investment_option_value_overtime"),
 				    ToDelta = DeltaLake.Table(Source)
 				in
 				    ToDelta
