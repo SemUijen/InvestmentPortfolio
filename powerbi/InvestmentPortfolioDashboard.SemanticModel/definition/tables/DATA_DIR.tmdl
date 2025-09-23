@@ -1,0 +1,23 @@
+table DATA_DIR
+	lineageTag: c43ad8ce-caa5-44d2-926c-22d6fc29e2fb
+
+	column DATA_DIR
+		dataType: string
+		lineageTag: 6cfa8347-b02f-4bdd-bcf0-735365d4e8b8
+		summarizeBy: none
+		sourceColumn: DATA_DIR
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DATA_DIR = m
+		mode: import
+		source =
+				let
+				    Source = "path/to/your/data"
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
