@@ -286,7 +286,7 @@ table FactDailyResult
 		mode: import
 		source =
 				let
-				    Source = Folder.Contents("E:\InvestmentPortfolioData\gold\fact_daily_result"),
+				    Source = Folder.Contents(DATA_DIR & "\gold\fact_daily_result"),
 				    ToDelta = DeltaLake.Table(Source)
 				in
 				    ToDelta

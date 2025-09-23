@@ -85,7 +85,7 @@ table currency_exchange_rate
 		mode: import
 		source =
 				let
-				    Source = Folder.Contents("E:\InvestmentPortfolioData\silver\currency_exchange_rate"),
+				    Source = Folder.Contents(DATA_DIR & "\silver\currency_exchange_rate"),
 				    ToDelta = DeltaLake.Table(Source)
 				in
 				    ToDelta
