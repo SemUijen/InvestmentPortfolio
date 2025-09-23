@@ -1,4 +1,4 @@
-# 💰 Investment Portfolio Management System
+# 💰 Investment Portfolio Management
 
 A comprehensive, end-to-end investment portfolio management and analytics platform built with modern data engineering practices. The system combines real-time data ingestion, advanced analytics, and interactive visualizations to provide complete investment portfolio insights.
 
@@ -234,6 +234,7 @@ InvestmentPortfolio/
 - **Performance Tracking**: Real-time portfolio valuation and profit/loss
 
 [📖 **Detailed Documentation**](powerbi/README.md)
+
 
 
 
