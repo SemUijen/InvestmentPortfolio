@@ -39,6 +39,7 @@ jobs:
   py-test:
     runs-on: windows-latest
     needs: changes
+    if: needs.changes.outputs.packages != '[]'
     strategy:
       matrix:
         package: ${{ fromJSON(needs.changes.outputs.packages) }}
@@ -81,6 +82,7 @@ jobs:
   static-type-check:
     runs-on: windows-latest
     needs: changes
+    if: needs.changes.outputs.packages != '[]'
     strategy:
       matrix:
         package: ${{ fromJSON(needs.changes.outputs.packages) }}
