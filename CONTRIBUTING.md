@@ -16,7 +16,7 @@ We welcome contributions in various forms:
 
 ### 🔧 **Code Contributions**
 
-- **ETL Pipeline Enhancements**: Improve data processing, add new data sources, optimize performance
+- **ETL Pipeline Enhancements**: Improve data processing, add new data sources, optimize performance 
 - **GUI Features**: Enhance user interface, add new screens, improve user experience
 - **PowerBI Analytics**: Create new dashboards, add advanced visualizations, develop custom measures
 - **Infrastructure**: Improve Docker configurations, optimize Spark settings, enhance deployment
@@ -32,13 +32,6 @@ git clone https://github.com/YOUR_USERNAME/InvestmentPortfolio.git
 cd InvestmentPortfolio
 
 ```
-
-### 2️⃣ **Choose Your Contribution Area**
-
-- **ETL Development**: Focus on `investment_etl/` directory
-- **GUI Development**: Focus on `investment_gui/` directory
-- **Analytics Development**: Focus on `powerbi/` directory
-- **Full-Stack**: Work across multiple components
 
 ## 📝 Coding Standards
 
