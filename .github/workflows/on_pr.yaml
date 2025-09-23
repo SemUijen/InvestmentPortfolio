@@ -120,3 +120,30 @@ jobs:
         run: |
           cd ${{ matrix.package }}
           uv run mypy --ignore-missing-imports .
+
+  # Summary job that always runs and reports the overall status
+  # This should be set as the required check instead of individual jobs
+  validation-summary:
+    runs-on: ubuntu-latest
+    needs: [changes, py-lint, py-test, static-type-check]
+    if: always()
+    steps:
+      - name: Check all jobs status
+        run: |
+          if [[ "${{ needs.py-lint.result }}" == "failure" ]]; then
+            echo "Linting failed"
+            exit 1
+          fi
+
+          if [[ "${{ needs.changes.outputs.packages }}" != "[]" ]]; then
+            if [[ "${{ needs.py-test.result }}" == "failure" ]]; then
+              echo "Tests failed"
+              exit 1
+            fi
+            if [[ "${{ needs.static-type-check.result }}" == "failure" ]]; then
+              echo "Type checking failed"
+              exit 1
+            fi
+          fi
+
+          echo "All validations passed or were skipped appropriately"
