@@ -1,2 +1,4 @@
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
+**/DATA_DIR.tmdl
+**/InvestmentPortfolioDashboard.SemanticModel/definition/tables/DATA_DIR.tmdl
