@@ -26,16 +26,16 @@ class CurrencyExchangeRate(SparkTable):
         """Return the schema for the CurrencyExchangeRate table."""
         return StructType(
             [
-                StructField("from_currency", StringType(), True),
-                StructField("to_currency", StringType(), True),
-                StructField("date", DateType(), True),
-                StructField("open", DecimalType(38, 19), True),
-                StructField("high", DecimalType(38, 19), True),
-                StructField("close", DecimalType(38, 19), True),
-                StructField("low", DecimalType(38, 19), True),
+                StructField("from_currency", StringType(), nullable=True),
+                StructField("to_currency", StringType(), nullable=True),
+                StructField("date", DateType(), nullable=True),
+                StructField("open", DecimalType(38, 19), nullable=True),
+                StructField("high", DecimalType(38, 19), nullable=True),
+                StructField("close", DecimalType(38, 19), nullable=True),
+                StructField("low", DecimalType(38, 19), nullable=True),
             ],
         )
 
     def return_primary_keys_columns(self) -> list[str]:
-        """Return the primary key columns for the InvestmentOptionValueOvertime table."""
+        """Return the primary key columns for the CurrencyExchangeRate table."""
         return ["from_currency", "to_currency", "date"]
