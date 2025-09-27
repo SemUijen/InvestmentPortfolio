@@ -131,3 +131,11 @@ jobs:
         run: |
           cd ${{ matrix.package }}
           uv run mypy --ignore-missing-imports .
+
+  validation-status:
+    runs-on: ubuntu-latest
+    needs: [py-lint, py-test, static-type-check, changes]
+    if: always()
+    steps:
+      - name: Successful deploy
+        run: ${{!contains(needs.*.result, 'failure')}}
