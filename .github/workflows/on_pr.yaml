@@ -83,6 +83,13 @@ jobs:
           echo "HADOOP_HOME=$hadoopHome" | Out-File -FilePath $env:GITHUB_ENV -Append
           echo "$hadoopHome\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
 
+      - name: Set up test environment variables
+        shell: pwsh
+        run: |
+          $testDataDir = "$env:RUNNER_TEMP\test_data"
+          New-Item -ItemType Directory -Force -Path $testDataDir
+          echo "DATA_DIR=$testDataDir" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - name: Run tests
         run: |
           cd ${{ matrix.package }}
