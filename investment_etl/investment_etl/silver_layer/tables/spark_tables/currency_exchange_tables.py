@@ -10,12 +10,12 @@ from pyspark.sql.types import (
     StructType,
 )
 
-from investment_etl.utils import BaseTable
+from investment_etl.utils import SparkTable
 
 load_dotenv()
 
 
-class CurrencyExchangeRate(BaseTable):
+class CurrencyExchangeRate(SparkTable):
     """Currency Exchange Rate Table in Silver Layer."""
 
     def __init__(self, spark: SparkSession | None = None):

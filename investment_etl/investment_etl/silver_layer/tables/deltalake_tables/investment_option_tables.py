@@ -1,9 +1,9 @@
 import pyarrow as pa
 
-from .deltalake_base_table import BaseTable
+from investment_etl.utils import DeltaLakeTable
 
 
-class InvestmentOption(BaseTable):
+class InvestmentOption(DeltaLakeTable):
     """Investment Option Table in Silver Layer."""
 
     def return_defined_schema(self) -> pa.Schema:
@@ -21,7 +21,7 @@ class InvestmentOption(BaseTable):
         return ["symbol"]
 
 
-class IoStockExchange(BaseTable):
+class IoStockExchange(DeltaLakeTable):
     """Investment Option Stock Exchange Table in Silver Layer."""
 
     def return_defined_schema(self) -> pa.Schema:
@@ -38,7 +38,7 @@ class IoStockExchange(BaseTable):
         return ["io_symbol", "exchange_symbol"]
 
 
-class StockExchange(BaseTable):
+class StockExchange(DeltaLakeTable):
     """Stock Exchange Table in Silver Layer."""
 
     def return_defined_schema(self) -> pa.Schema:

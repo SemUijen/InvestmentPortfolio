@@ -11,12 +11,12 @@ from pyspark.sql.types import (
     StructType,
 )
 
-from investment_etl.utils import BaseTable
+from investment_etl.utils import SparkTable
 
 load_dotenv()
 
 
-class InvestmentOption(BaseTable):
+class InvestmentOption(SparkTable):
     """Investment Option Table in Silver Layer."""
 
     def __init__(self, spark: SparkSession | None = None):
@@ -38,7 +38,7 @@ class InvestmentOption(BaseTable):
         return ["symbol"]
 
 
-class IoStockExchange(BaseTable):
+class IoStockExchange(SparkTable):
     """Investment Option Stock Exchange Table in Silver Layer."""
 
     def __init__(self, spark: SparkSession | None = None):
@@ -59,7 +59,7 @@ class IoStockExchange(BaseTable):
         return ["io_symbol", "exchange_symbol"]
 
 
-class StockExchange(BaseTable):
+class StockExchange(SparkTable):
     """Stock Exchange Table in Silver Layer."""
 
     def __init__(self, spark: SparkSession | None = None):
@@ -83,7 +83,7 @@ class StockExchange(BaseTable):
         return ["symbol"]
 
 
-class InvestmentOptionValueOvertime(BaseTable):
+class InvestmentOptionValueOvertime(SparkTable):
     """Investment Option Value Over Time Table in Silver Layer."""
 
     def __init__(self, spark: SparkSession | None = None):
@@ -109,7 +109,7 @@ class InvestmentOptionValueOvertime(BaseTable):
         return ["symbol", "date"]
 
 
-class InvestmentOptionBought(BaseTable):
+class InvestmentOptionBought(SparkTable):
     """Investment Option Bought Table in Silver Layer."""
 
     def __init__(self, spark: SparkSession | None = None):
