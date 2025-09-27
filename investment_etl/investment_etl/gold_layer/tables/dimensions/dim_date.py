@@ -9,12 +9,12 @@ from pyspark.sql.types import (
     StructType,
 )
 
-from investment_etl.utils import BaseTable
+from investment_etl.utils import SparkTable
 
 load_dotenv()
 
 
-class DimDate(BaseTable):
+class DimDate(SparkTable):
     def __init__(self, spark: SparkSession | None = None):
         """Initialize the StockExchange table."""
         super().__init__(medaillon_layer="gold", spark=spark)
