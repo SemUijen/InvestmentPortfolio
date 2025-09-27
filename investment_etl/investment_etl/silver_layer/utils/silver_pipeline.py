@@ -6,7 +6,7 @@ from functools import wraps
 
 from pyspark.sql import SparkSession
 
-from investment_etl.utils import BaseTable
+from investment_etl.utils import SparkTable
 
 from .bronze_source import BronzeSource
 
@@ -24,7 +24,7 @@ class SilverPipeline:
         self,
         bronze_source: BronzeSource,
         spark: SparkSession,
-        silver_table: BaseTable,
+        silver_table: SparkTable,
     ):
         self.bronze_source = bronze_source
         self.spark = spark
