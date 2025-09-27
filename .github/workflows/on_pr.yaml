@@ -43,6 +43,9 @@ jobs:
     strategy:
       matrix:
         package: ${{ fromJSON(needs.changes.outputs.packages) }}
+    env:
+      DATA_DIR: C:\temp\test_data
+      HADOOP_HOME: C:\temp\hadoop
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -77,18 +80,10 @@ jobs:
       - name: Set up Hadoop for Spark (Windows)
         shell: pwsh
         run: |
-          $hadoopHome = "$env:RUNNER_TEMP\hadoop"
-          New-Item -ItemType Directory -Force -Path "$hadoopHome\bin"
-          Invoke-WebRequest -Uri "https://github.com/steveloughran/winutils/raw/master/hadoop-3.0.0/bin/winutils.exe" -OutFile "$hadoopHome\bin\winutils.exe"
-          echo "HADOOP_HOME=$hadoopHome" | Out-File -FilePath $env:GITHUB_ENV -Append
-          echo "$hadoopHome\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
-
-      - name: Set up test environment variables
-        shell: pwsh
-        run: |
-          $testDataDir = "$env:RUNNER_TEMP\test_data"
-          New-Item -ItemType Directory -Force -Path $testDataDir
-          echo "DATA_DIR=$testDataDir" | Out-File -FilePath $env:GITHUB_ENV -Append
+          New-Item -ItemType Directory -Force -Path "$env:HADOOP_HOME\bin"
+          New-Item -ItemType Directory -Force -Path "$env:DATA_DIR"
+          Invoke-WebRequest -Uri "https://github.com/steveloughran/winutils/raw/master/hadoop-3.0.0/bin/winutils.exe" -OutFile "$env:HADOOP_HOME\bin\winutils.exe"
+          echo "$env:HADOOP_HOME\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
 
       - name: Run tests
         run: |
