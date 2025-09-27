@@ -1,6 +1,6 @@
 from pyspark.sql import functions as F
 
-from investment_etl.gold_layer.tables import FactDailyResult
+from investment_etl.gold_layer.tables.fact.spark_tables import FactDailyResult
 from investment_etl.silver_layer.tables.spark_tables import (
     CurrencyExchangeRate,
     InvestmentOptionBought,
