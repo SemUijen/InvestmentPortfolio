@@ -131,7 +131,6 @@ InvestmentPortfolio/
 ├──
 ├── investment_etl/                     # ETL Pipeline (Medallion Architecture)
 │   ├── README.md                       # ETL-specific documentation
-│   ├── ARCHITECTURE.md                 # Technical architecture diagrams
 │   ├── pyproject.toml                  # ETL dependencies and configuration
 │   ├── uv.lock                         # Dependency lock file
 │   ├── mypy.ini                        # Type checking configuration
@@ -142,20 +141,33 @@ InvestmentPortfolio/
 │       │   ├── app.py                  # Bronze layer entry point
 │       │   ├── stockprobe/             # AlphaVantage API integration
 │       │   │   └── alphavantage/       # API client and URL generators
+│       │   │       └── url_generator/  # URL generation utilities
 │       │   └── utils/                  # Async data ingestor utilities
+│       │       └── async_data_ingestor.py  # Async data fetching
 │       ├── silver_layer/               # Data cleaning and validation
 │       │   ├── app.py                  # Silver layer entry point
 │       │   ├── tables/                 # Delta Lake table definitions
 │       │   │   ├── spark_tables/       # Spark-based table management
 │       │   │   └── deltalake_tables/   # Native Delta Lake operations
 │       │   └── utils/                  # Data transformation utilities
+│       │       ├── bronze_source.py    # Bronze data reader
+│       │       ├── silver_pipeline.py  # Processing pipeline
+│       │       └── transformations/    # Data transformation functions
 │       ├── gold_layer/                 # Business intelligence
 │       │   ├── app.py                  # Gold layer entry point
 │       │   ├── pipelines/              # Business logic pipelines
-│       │   └── tables/                 # Fact and dimension tables
+│       │   │   ├── enrich_daily_results.py  # Daily aggregation pipeline
+│       │   │   └── transformations/    # Gold layer transformations
+│       │   └── tables/                 # Fact tables
+│       │       └── fact/               # Fact table definitions
+│       │           ├── spark_tables/   # Spark-based fact tables
+│       │           └── deltalake_tables/  # Delta Lake fact tables
 │       └── utils/                      # Shared utilities
 │           ├── spark_session/          # Spark configuration
-│           └── spark_tables/           # Base table classes
+│           │   └── get_spark_session.py  # Spark session factory
+│           └── base_tables/            # Base table classes
+│               ├── spark_tables/       # Spark base table classes
+│               └── deltalake_tables/   # Delta Lake base table classes
 │
 ├── investment_gui/                     # Desktop GUI Application
 │   ├── README.md                       # GUI-specific documentation
