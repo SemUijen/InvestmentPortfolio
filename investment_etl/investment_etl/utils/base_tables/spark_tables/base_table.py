@@ -12,7 +12,7 @@ from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import concat_ws, md5
 from pyspark.sql.types import StructType
 
-from investment_etl.utils import get_spark_session
+from investment_etl.utils.spark_session import get_spark_session
 
 load_dotenv()
 

@@ -24,14 +24,22 @@ load_dotenv()
 class BaseTable(ABC):
     """Base class for Silver Layer tables using the deltalake package."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        medaillon_layer: str,
+    ) -> None:
         """Initialize the BaseTable."""
+        if medaillon_layer not in ["bronze", "silver", "gold"]:
+            msg = "medaillon_layer must be one of 'bronze', 'silver', or 'gold'."
+            raise ValueError(msg)
+        self.medaillon_layer = medaillon_layer
+
         data_dir = os.getenv("DATA_DIR")
         if not data_dir:
             msg = "Environment variable 'DATA_DIR' is not set."
             raise ValueError(msg)
 
-        self.silver_path = Path(data_dir) / "silver"
+        self.silver_path = Path(data_dir) / self.medaillon_layer
 
         self.table_name = self._class_name_to_table_name()
 

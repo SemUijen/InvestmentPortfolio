@@ -80,7 +80,7 @@ class StockExchange(SparkTable):
 
     def return_primary_keys_columns(self) -> list[str]:
         """Return the primary key columns for the StockExchange table."""
-        return ["symbol"]
+        return ["symbol", "region"]
 
 
 class InvestmentOptionValueOvertime(SparkTable):
@@ -125,6 +125,8 @@ class InvestmentOptionBought(SparkTable):
                 StructField("price", DecimalType(20, 10), nullable=True),
                 StructField("amount", DecimalType(20, 10), nullable=True),
                 StructField("cost_of_buy", DecimalType(20, 10), nullable=True),
+                StructField("currency", StringType(), nullable=True),
+                StructField("exchange_rate", DecimalType(38, 19), nullable=True),
                 StructField("broker", StringType(), nullable=True),
             ],
         )

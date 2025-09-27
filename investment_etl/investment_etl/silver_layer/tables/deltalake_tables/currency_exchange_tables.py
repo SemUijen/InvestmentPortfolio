@@ -8,6 +8,10 @@ from investment_etl.utils import DeltaLakeTable
 class CurrencyExchangeRate(DeltaLakeTable):
     """Currency Exchange Rate Table in Silver Layer."""
 
+    def __init__(self) -> None:
+        """Initialize the CurrencyExchangeRate table."""
+        super().__init__(medaillon_layer="silver")
+
     def return_defined_schema(self) -> pa.Schema:
         """Return the schema for the CurrencyExchangeRate table."""
         fields: list[tuple[str, pa.DataType]] = [

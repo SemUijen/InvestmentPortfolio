@@ -8,6 +8,10 @@ from investment_etl.utils import DeltaLakeTable
 class InvestmentOption(DeltaLakeTable):
     """Investment Option Table in Silver Layer."""
 
+    def __init__(self) -> None:
+        """Initialize the InvestmentOption table."""
+        super().__init__(medaillon_layer="silver")
+
     def return_defined_schema(self) -> pa.Schema:
         """Return the schema for the InvestmentOption table."""
         return pa.schema(
@@ -26,6 +30,10 @@ class InvestmentOption(DeltaLakeTable):
 class IoStockExchange(DeltaLakeTable):
     """Investment Option Stock Exchange Table in Silver Layer."""
 
+    def __init__(self) -> None:
+        """Initialize the IoStockExchange table."""
+        super().__init__(medaillon_layer="silver")
+
     def return_defined_schema(self) -> pa.Schema:
         """Return the schema for the IoStockExchange table."""
         return pa.schema(
@@ -42,6 +50,10 @@ class IoStockExchange(DeltaLakeTable):
 
 class StockExchange(DeltaLakeTable):
     """Stock Exchange Table in Silver Layer."""
+
+    def __init__(self) -> None:
+        """Initialize the StockExchange table."""
+        super().__init__(medaillon_layer="silver")
 
     def return_defined_schema(self) -> pa.Schema:
         """Return the schema for the StockExchange table."""
@@ -62,6 +74,10 @@ class StockExchange(DeltaLakeTable):
 
 class InvestmentOptionBought(DeltaLakeTable):
     """Investment Option Bought Table in Silver Layer."""
+
+    def __init__(self) -> None:
+        """Initialize the InvestmentOptionBought table."""
+        super().__init__(medaillon_layer="silver")
 
     def return_defined_schema(self) -> pa.Schema:
         """Return the schema for the InvestmentOptionBought table."""
@@ -86,6 +102,10 @@ class InvestmentOptionBought(DeltaLakeTable):
 class InvestmentOptionValueOvertime(DeltaLakeTable):
     """Investment Option Value Overtime Table in Silver Layer."""
 
+    def __init__(self) -> None:
+        """Initialize the InvestmentOptionValueOvertime table."""
+        super().__init__(medaillon_layer="silver")
+
     def return_defined_schema(self) -> pa.Schema:
         """Return the schema for the InvestmentOptionValueOvertime table."""
         fields: list[tuple[str, pa.DataType]] = [
@@ -95,7 +115,7 @@ class InvestmentOptionValueOvertime(DeltaLakeTable):
             ("high", pa.decimal128(20, 10)),
             ("low", pa.decimal128(20, 10)),
             ("close", pa.decimal128(20, 10)),
-            ("volume", pa.int64()),
+            ("volume", pa.int32()),
         ]
 
         return pa.schema(fields=fields)
