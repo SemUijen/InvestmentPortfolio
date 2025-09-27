@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class BaseTable(ABC):
-    """Base class for Silver Layer tables in Spark ETL."""
+    """Base class for Silver Layer tables using pyspark delta."""
 
     def __init__(self, medaillon_layer: str, spark: SparkSession | None = None) -> None:
         """Initialize the BaseTable."""

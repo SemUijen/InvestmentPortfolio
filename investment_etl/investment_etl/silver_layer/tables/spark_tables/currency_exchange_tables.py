@@ -18,7 +18,7 @@ load_dotenv()
 class CurrencyExchangeRate(SparkTable):
     """Currency Exchange Rate Table in Silver Layer."""
 
-    def __init__(self, spark: SparkSession | None = None):
+    def __init__(self, spark: SparkSession | None = None) -> None:
         """Initialize the CurrencyExchangeRate table."""
         super().__init__(medaillon_layer="silver", spark=spark)
 
