@@ -12,7 +12,7 @@ from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import concat_ws, md5
 from pyspark.sql.types import StructType
 
-from investment_etl.utils import get_spark_session
+from investment_etl.utils.spark_session import get_spark_session
 
 load_dotenv()
 
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class BaseTable(ABC):
-    """Base class for Silver Layer tables in Spark ETL."""
+    """Base class for Silver Layer tables using pyspark delta."""
 
     def __init__(self, medaillon_layer: str, spark: SparkSession | None = None) -> None:
         """Initialize the BaseTable."""

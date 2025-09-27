@@ -1,4 +1,4 @@
-"""This module provides the base class for Silver Layer tables using the deltalake package."""
+"""Module for the base class for Silver Layer tables using the deltalake package."""
 
 import hashlib
 import logging
@@ -22,12 +22,24 @@ load_dotenv()
 
 
 class BaseTable(ABC):
-    def __init__(self):
+    """Base class for Silver Layer tables using the deltalake package."""
+
+    def __init__(
+        self,
+        medaillon_layer: str,
+    ) -> None:
+        """Initialize the BaseTable."""
+        if medaillon_layer not in ["bronze", "silver", "gold"]:
+            msg = "medaillon_layer must be one of 'bronze', 'silver', or 'gold'."
+            raise ValueError(msg)
+        self.medaillon_layer = medaillon_layer
+
         data_dir = os.getenv("DATA_DIR")
         if not data_dir:
-            raise ValueError("Environment variable 'DATA_DIR' is not set.")
+            msg = "Environment variable 'DATA_DIR' is not set."
+            raise ValueError(msg)
 
-        self.silver_path = Path(data_dir) / "silver"
+        self.silver_path = Path(data_dir) / self.medaillon_layer
 
         self.table_name = self._class_name_to_table_name()
 
@@ -74,11 +86,12 @@ class BaseTable(ABC):
         """
 
     def _add_hash_id(self, table: pa.Table) -> pa.Table:
-        """Creates a unique identifier for the table based on its primary keys columns."""
+        """Create a unique identifier based on its primary keys columns."""
         primary_keys = self.return_primary_keys_columns()
 
         if not primary_keys:
-            raise ValueError("Primary keys columns are not defined.")
+            msg = "Primary keys columns are not defined."
+            raise ValueError(msg)
 
         pk_cols = [table.column(col).cast(pa.string()) for col in primary_keys]
         if len(pk_cols) == 1:
@@ -108,7 +121,7 @@ class BaseTable(ABC):
         filtered_existing = old_table.filter(pc.invert(mask))
         return pa.concat_tables([filtered_existing, new_data], promote=True)
 
-    def _merge_data(self, input_df: pa.Table):
+    def _merge_data(self, input_df: pa.Table) -> None:
         """Merge the input DataFrame with the existing Delta table."""
         delta_table = self.get_table()
         existing_table = delta_table.to_pyarrow_table()

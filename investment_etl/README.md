@@ -50,7 +50,7 @@ investment_etl/
 │   │   ├── app.py               # Bronze layer main entry point
 │   │   ├── stockprobe/          # API integration modules
 │   │   │   └── alphavantage/    # AlphaVantage API client
-│   │   │       └── url_generator/
+│   │   │       └── url_generator/  # URL generation utilities
 │   │   └── utils/
 │   │       └── async_data_ingestor.py  # Async data fetching
 │   ├── silver_layer/            # Data cleaning and validation
@@ -64,14 +64,19 @@ investment_etl/
 │   │       └── transformations/      # Data transformation functions
 │   ├── gold_layer/              # Business intelligence layer
 │   │   ├── app.py              # Gold layer main entry point
-│   │   ├── tables/             # Fact and dimension tables
-│   │   │   ├── fact/           # Fact tables (daily results)
-│   │   │   └── dimensions/     # Dimension tables (date, etc.)
+│   │   ├── tables/             # Fact tables
+│   │   │   └── fact/           # Fact table definitions
+│   │   │       ├── spark_tables/     # Spark-based fact tables
+│   │   │       └── deltalake_tables/ # Delta Lake fact tables
 │   │   └── pipelines/
-│   │       └── enrich_daily_results.py  # Daily aggregation pipeline
+│   │       ├── enrich_daily_results.py  # Daily aggregation pipeline
+│   │       └── transformations/      # Gold layer transformations
 │   └── utils/                   # Shared utilities
 │       ├── spark_session/       # Spark configuration
-│       └── spark_tables/        # Base table classes
+│       │   └── get_spark_session.py  # Spark session factory
+│       └── base_tables/         # Base table classes
+│           ├── spark_tables/    # Spark base table classes
+│           └── deltalake_tables/ # Delta Lake base table classes
 ├── pyproject.toml              # Project configuration
 └── README.md                   # This file
 ```

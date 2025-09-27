@@ -1,12 +1,16 @@
-from .bought_investment_table import (
+"""Silver Deltalake Tables Module."""
+
+from .currency_exchange_tables import CurrencyExchangeRate
+from .investment_option_tables import (
+    InvestmentOption,
     InvestmentOptionBought,
     InvestmentOptionValueOvertime,
+    IoStockExchange,
+    StockExchange,
 )
-from .deltalake_base_table import BaseTable
-from .investment_option_tables import InvestmentOption, IoStockExchange, StockExchange
 
 __all__ = [
-    "BaseTable",
+    "CurrencyExchangeRate",
     "InvestmentOption",
     "InvestmentOptionBought",
     "InvestmentOptionValueOvertime",

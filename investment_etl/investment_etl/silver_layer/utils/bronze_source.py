@@ -5,7 +5,7 @@ from pathlib import Path
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.types import StructType
 
-from investment_etl.utils import BaseTable
+from investment_etl.utils import SparkTable
 
 logging.basicConfig(
     level=logging.INFO,
@@ -23,7 +23,7 @@ class BronzeSource:
         spark: SparkSession,
         schema: StructType,
         bronze_folder: str,
-        spark_table: BaseTable,
+        spark_table: SparkTable,
     ):
         self.base_dir = base_dir
         self.spark = spark

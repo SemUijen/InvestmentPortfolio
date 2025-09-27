@@ -24,6 +24,9 @@ RUN python3 -m pip install --upgrade pip
 # Update package list and install Git
 RUN apt-get update && apt-get install -y git
 
+# Install uv (Universal Virtualenv) 
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
 WORKDIR /code
 COPY docker/requirements.txt .
 COPY docker/stubs-requirements.txt .

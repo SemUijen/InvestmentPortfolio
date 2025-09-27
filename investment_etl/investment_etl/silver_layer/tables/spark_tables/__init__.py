@@ -1,3 +1,6 @@
+"""Silver Spark Tables Module."""
+
+from .currency_exchange_tables import CurrencyExchangeRate
 from .investment_option_tables import (
     InvestmentOption,
     InvestmentOptionBought,
@@ -5,13 +8,12 @@ from .investment_option_tables import (
     IoStockExchange,
     StockExchange,
 )
-from .currency_exchange_tables import CurrencyExchangeRate
 
 __all__ = [
+    "CurrencyExchangeRate",
     "InvestmentOption",
     "InvestmentOptionBought",
     "InvestmentOptionValueOvertime",
     "IoStockExchange",
     "StockExchange",
-    "CurrencyExchangeRate", 
 ]

@@ -28,7 +28,8 @@ exclude = [
     "venv",
     "tests",
     "investment_etl/bronze_layer",
-    "investment_etl/silver_layer",
+    "investment_etl/silver_layer/utils",
+    "investment_etl/silver_layer/app.py",
     "investment_etl/gold_layer",
 ]
 
