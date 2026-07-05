@@ -5,7 +5,7 @@ services:
       context: ./run_medaillon
       dockerfile: ./Dockerfile
     volumes:
-      - E:/InvestmentPortfolioData:/mnt/data
+      - /home/sem_uijen/investment_data:/mnt/data
     environment:
       DATA_DIR: "/mnt/data"
     env_file:

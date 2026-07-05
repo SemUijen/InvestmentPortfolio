@@ -7,6 +7,7 @@ from PySide6.QtCore import QProcess, Qt
 from PySide6.QtWidgets import QLabel, QPushButton
 
 from .base_screen import BaseScreen
+from .settings_dialog import EnvSettingsDialog
 
 if TYPE_CHECKING:
     from investment_gui.application.application import MainApplication
@@ -14,6 +15,10 @@ if TYPE_CHECKING:
 
 class StartupScreen(BaseScreen):
     """Startup screen with navigation options."""
+
+    def _open_settings(self) -> None:
+        """Open the environment settings popup."""
+        EnvSettingsDialog(self).exec()
 
     def __init__(self, app_controller: "MainApplication") -> None:
         super().__init__(app_controller)
@@ -38,6 +43,10 @@ class StartupScreen(BaseScreen):
         self.pipeline_btn = QPushButton("Run Medaillon Pipeline")
         self.pipeline_btn.clicked.connect(self.run_medaillon_pipeline)
         self.layout.addWidget(self.pipeline_btn)
+
+        settings_btn = QPushButton("Settings")
+        settings_btn.clicked.connect(self._open_settings)
+        self.layout.addWidget(settings_btn)
 
         self.layout.addStretch()
 

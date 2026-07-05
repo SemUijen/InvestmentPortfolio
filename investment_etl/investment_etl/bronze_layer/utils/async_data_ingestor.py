@@ -55,10 +55,9 @@ class AsyncDataIngestor:
             response.raise_for_status()  # Raise an error for bad responses
 
             response_data = await response.json()
-            if (
-                "our standard API rate limit is 25 requests per day"
-                in response_data.get("Information", "notfound")
-            ):
+            info = response_data.get("Information", "")
+            if any(phrase in info for phrase in ("25 requests per day", "1 request per second")):
+
                 logger.error("API limit reached")
                 raise APIRateLimitError
             if "Error Message" in response_data:
@@ -91,6 +90,7 @@ class AsyncDataIngestor:
             file_path = await self.create_file_path(ingestion_url)
             await self.save_data(response, file_path)
             logger.info("Data ingestion completed successfully.")
+            asyncio.sleep(1) # Only 1 request per second
         except Exception as e:
             logger.exception(
                 "Error during data ingestion for %s",
