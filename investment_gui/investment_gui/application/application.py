@@ -1,90 +1,77 @@
-"""Main application controller for the investment GUI."""
+"""Main application controller for the investment GUI (PySide6)."""
 
-import tkinter as tk
-from tkinter import messagebox
+import datetime
+
+from PySide6.QtWidgets import QMainWindow, QMessageBox, QStackedWidget
 
 from .screens import (
-    BaseScreen,
     BoughtInvestmentScreen,
+    CurrencyEnum,
     InputField,
     InvestmentOptionsScreen,
     StartupScreen,
 )
 
 
-class MainApplication:
-    """Main application controller that manages different screens."""
+class MainApplication(QMainWindow):
+    """Main window that manages the different screens via a QStackedWidget."""
 
     def __init__(self) -> None:
-        """Initialize the main application window and set up the initial screen."""
-        self.root = tk.Tk()
-        self.root.title("Stock Investment Manager")
-        self.root.geometry("500x600")
+        super().__init__()
+        self.setWindowTitle("Stock Investment Manager")
+        self.resize(500, 600)
 
-        # Configure grid weight for responsive design
-        self.root.columnconfigure(0, weight=1)
-        self.root.rowconfigure(0, weight=1)
+        self.stack = QStackedWidget()
+        self.setCentralWidget(self.stack)
 
-        # Current screen reference
-        self.current_screen: BaseScreen | None = None
+        # Screens are created once and switched, not destroyed and rebuilt.
+        self.startup_screen = StartupScreen(self)
 
-        # Show startup screen initially
+        self.bought_screen = BoughtInvestmentScreen(
+            self,
+            input_fields=[
+                InputField("Quantity", float),
+                InputField("Purchase Price", float),
+                InputField("Purchase Date", datetime.date),
+                InputField("Cost of Buy", float),
+                InputField("Currency", str, choices=[c.value for c in CurrencyEnum]),
+                InputField("Exchange Rate", float),
+                InputField("Broker", str, "e.g. degiro"),
+            ],
+        )
+
+        self.options_screen = InvestmentOptionsScreen(
+            self,
+            input_fields=[
+                InputField("Symbol", str, "e.g. 'VWCE' for Vanguard FTSE All-World"),
+            ],
+        )
+
+        for screen in (self.startup_screen, self.bought_screen, self.options_screen):
+            self.stack.addWidget(screen)
+
         self.show_startup_screen()
 
-    def clear_screen(self) -> None:
-        """Clear the current screen."""
-        if self.current_screen:
-            self.current_screen.destroy()
-
+    # ------------------------------------------------------------ navigation
     def show_startup_screen(self) -> None:
         """Display the startup/main menu screen."""
-        self.clear_screen()
-        self.current_screen = StartupScreen(self.root, self)
+        self.stack.setCurrentWidget(self.startup_screen)
 
     def show_data_input_screen(self) -> None:
-        """Display the data input screen."""
-        self.clear_screen()
-
-        # Define the input fields you want
-        input_fields = [
-            InputField("Quantity", tk.DoubleVar()),
-            InputField("Purchase Price", tk.DoubleVar()),
-            InputField("Purchase Date", tk.StringVar(), "YYYY-mm-dd"),
-            InputField("Cost of Buy", tk.DoubleVar()),
-            InputField("Currency", tk.StringVar(), "e.g. 'EUR'"),
-            InputField("Exchange Rate", tk.DoubleVar()),
-            InputField(
-                "Broker",
-                tk.StringVar(),
-                "e.g. degiro",
-            ),
-        ]
-
-        self.current_screen = BoughtInvestmentScreen(self.root, self, input_fields)
+        """Display the data input screen if its data can be loaded."""
+        if self.bought_screen.prepare():
+            self.stack.setCurrentWidget(self.bought_screen)
 
     def show_investment_options_screen(self) -> None:
-        """Display the add investment options screen."""
-        self.clear_screen()
+        """Display the add investment options screen if it is usable."""
+        if self.options_screen.prepare():
+            self.stack.setCurrentWidget(self.options_screen)
 
-        # Define the input fields you want
-        input_fields = [
-            InputField(
-                "Symbol",
-                tk.StringVar(),
-                "e.g. 'VWCE' for Vanguard FTSE All-World ",
-            ),
-        ]
-
-        self.current_screen = InvestmentOptionsScreen(self.root, self, input_fields)
-
-    def run(self) -> None:
-        """Start the application."""
-        self.root.mainloop()
-
+    # --------------------------------------------------------------- dialogs
     def show_error(self, message: str) -> None:
         """Display an error message in a popup."""
-        messagebox.showerror("Error", message)
+        QMessageBox.critical(self, "Error", message)
 
     def show_info(self, message: str) -> None:
         """Display an informational message in a popup."""
-        messagebox.showinfo("Info", message)
+        QMessageBox.information(self, "Info", message)
