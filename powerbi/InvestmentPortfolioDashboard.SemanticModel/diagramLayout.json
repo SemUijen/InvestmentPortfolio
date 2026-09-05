@@ -111,7 +111,10 @@
           "zIndex": 0
         },
         {
-          "location": {},
+          "location": {
+            "x": 1503,
+            "y": 279.5
+          },
           "nodeIndex": "DATA_DIR",
           "nodeLineageTag": "c43ad8ce-caa5-44d2-926c-22d6fc29e2fb",
           "size": {

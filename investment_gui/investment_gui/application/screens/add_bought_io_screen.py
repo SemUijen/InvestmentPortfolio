@@ -1,22 +1,21 @@
+"""Screen for inputting bought stock investment data (PySide6)."""
+
 import logging
 import os
-import tkinter as tk
-from datetime import datetime
 from decimal import Decimal
 from enum import StrEnum
 from pathlib import Path
-from tkinter import ttk
 from typing import TYPE_CHECKING
 
 from deltalake import DeltaTable
 from investment_etl.silver_layer.tables.deltalake_tables import InvestmentOptionBought
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QComboBox, QHBoxLayout, QLabel, QPushButton
 
-from .base_screen import BaseScreen, InputField
+from .base_screen import BaseScreen, InputField, ValidationError
 
 if TYPE_CHECKING:
-    from investment_gui.application import (
-        MainApplication,
-    )
+    from investment_gui.application import MainApplication
 
 
 class CurrencyEnum(StrEnum):
@@ -31,187 +30,135 @@ class BoughtInvestmentScreen(BaseScreen):
 
     def __init__(
         self,
-        root: tk.Tk,
         app_controller: "MainApplication",
         input_fields: list[InputField],
-    ):
-        super().__init__(root, app_controller)
-        self.input_fields = input_fields
+    ) -> None:
+        super().__init__(app_controller)
 
-        # Create main frame
-        self.main_frame.grid(row=0, column=0, sticky="nsew")
-        # Configure grid weights
-        self.main_frame.columnconfigure(1, weight=1)
-        self.current_row = 0
+        title = QLabel("Stock Investment Manager")
+        font = title.font()
+        font.setPointSize(16)
+        font.setBold(True)
+        title.setFont(font)
+        title.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.layout.insertWidget(0, title)  # above the form
 
-        # Title
-        title_label = ttk.Label(
-            self.main_frame,
-            text="Stock Investment Manager",
-            font=("Arial", 16, "bold"),
-        )
-        title_label.grid(row=0, column=0, pady=(0, 30), columnspan=2)
-        self.current_row += 1
+        # Symbol dropdown as the first form row
+        self.symbol_combo = QComboBox()
+        self.symbol_combo.setPlaceholderText("Select Symbol")
+        self.symbol_combo.setCurrentIndex(-1)
+        self.form.addRow("Symbol:", self.symbol_combo)
 
-        self.add_symbol_dropdown()
-        self.current_row += 1
-        # Create all input fields
         self.add_input_fields(input_fields)
-        # Create buttons
-        self.create_buttons()
+        self._create_buttons()
+        self.layout.addStretch()
+
+    # ------------------------------------------------------------------ setup
+    def _create_buttons(self) -> None:
+        buttons = QHBoxLayout()
+
+        save_btn = QPushButton("Save")
+        save_btn.clicked.connect(self.save_data)
+        buttons.addWidget(save_btn)
+
+        clear_btn = QPushButton("Clear")
+        clear_btn.clicked.connect(self.clear_fields)
+        buttons.addWidget(clear_btn)
+
+        back_btn = QPushButton("Back to Main")
+        back_btn.clicked.connect(self.app_controller.show_startup_screen)
+        buttons.addWidget(back_btn)
+
+        self.layout.addLayout(buttons)
+
+    # ---------------------------------------------------------------- symbols
+    def prepare(self) -> bool:
+        """Load symbols before the screen is shown.
+
+        Called by the controller on every navigation to this screen, so newly
+        added investment options always appear. Returns False (blocking
+        navigation) when symbols cannot be loaded.
+        """
+        return self._refresh_symbols()
+
+    def _refresh_symbols(self) -> bool:
+        symbols = self._get_symbols()
+        if symbols is None:
+            return False
+
+        previous = self.symbol_combo.currentText()
+        self.symbol_combo.clear()
+        self.symbol_combo.addItems(symbols)
+        if previous in symbols:
+            self.symbol_combo.setCurrentText(previous)
+        else:
+            self.symbol_combo.setCurrentIndex(-1)  # show placeholder
+        return True
 
     def _get_symbols(self) -> list[str] | None:
-        if not (DATA_DIR := os.getenv("DATA_DIR")):
+        if not (data_dir := os.getenv("DATA_DIR")):
             self.app_controller.show_error(
                 "DATA_DIR is not set in the environment variables.",
             )
             return None
 
-        path = Path(DATA_DIR) / "silver" / "investment_option"
-        dt = DeltaTable(path).to_pyarrow_table()
-        symbols = dt.column("symbol").to_pylist()
+        path = Path(data_dir) / "silver" / "investment_option"
+        try:
+            table = DeltaTable(path).to_pyarrow_table()
+        except Exception as exc:  # noqa: BLE001 - surface any table failure to the user
+            self.app_controller.show_error(f"Failed to load symbols: {exc!s}")
+            logging.exception("Failed to load symbols from Delta table")
+            return None
+
+        symbols = table.column("symbol").to_pylist()
         if not symbols:
             self.app_controller.show_error("No symbols found in the database.")
             return None
-
         return symbols
 
-    def add_symbol_dropdown(self) -> None:
-        """Create a dropdown for selecting stock symbols."""
-        symbols = self._get_symbols()
-        if symbols is None:
-            self.app_controller.show_error(
-                "Failed to load symbols or no symbols found.",
-            )
-            return
-
-        ttk.Label(self.main_frame, text="Symbol:").grid(
-            row=self.current_row,
-            column=0,
-            sticky=tk.W,
-            padx=5,
-        )
-        self.symbol_dropdown = ttk.Combobox(
-            self.main_frame,
-            values=symbols,
-            state="readonly",
-            width=20,
-        )
-        self.symbol_dropdown.grid(row=self.current_row, column=1, pady=5, sticky="we")
-        self.symbol_dropdown.set("Select Symbol")
-
-    def create_buttons(self) -> None:
-        """Create buttons for saving and clearing data."""
-        # NEW - buttons are placed in a horizontal frame
-        button_frame = ttk.Frame(self.main_frame)
-        button_frame.grid(
-            row=self.current_row,
-            column=0,
-            columnspan=2,
-            pady=20,
-        )
-
-        # Save button
-        ttk.Button(button_frame, text="Save", command=self.save_data).pack(
-            side=tk.LEFT,
-            padx=(0, 10),
-        )
-
-        # Clear button
-        ttk.Button(button_frame, text="Clear", command=self.clear_fields).pack(
-            side=tk.LEFT,
-            padx=(0, 10),
-        )
-
-        ttk.Button(
-            button_frame,
-            text="Back to Main",
-            command=self.app_controller.show_startup_screen,
-        ).pack(side=tk.LEFT)
-
+    # ------------------------------------------------------------------- save
     def save_data(self) -> None:
         """Save the input data to the Delta table."""
-        # Get the selected symbol from dropdown
-        selected_symbol = self.symbol_dropdown.get()
-        if selected_symbol == "Select Symbol" or not selected_symbol:
+        if self.symbol_combo.currentIndex() == -1:
             self.app_controller.show_error("Please select a symbol.")
             return
-
-        # Collect data from input fields
-        data = {}
-        for field in self.input_fields:
-            field_name = field.label.lower().replace(" ", "_")
-            if not field.field.get() or field.field.get() == field.placeholder:
-                self.app_controller.show_error(
-                    f"Please fill in the {field.label} field.",
-                )
-                return
-            data[field_name] = field.field.get()  # Validate required fields
-
-        date_str = str(data.get("purchase_date", ""))
-        try:
-            parsed_date = datetime.strptime(
-                date_str,
-                "%Y-%m-%d",
-            ).date()
-        except ValueError:
-            error_msg = "Please enter date in YYYY-MM-DD format."
-            self.app_controller.show_error(error_msg)
-            return
+        selected_symbol = self.symbol_combo.currentText()
 
         try:
-            currency = CurrencyEnum(str(data.get("currency")))
-        except ValueError:
-            self.app_controller.show_error(
-                f"Invalid currency selected, should be one of:"
-                f" {', '.join([c.value for c in CurrencyEnum])}",
-            )
+            values = self.get_values()
+        except ValidationError as exc:
+            self.app_controller.show_error(str(exc))
             return
 
-        def quantize_decimal(value: str, scale: int) -> Decimal:
+        def quantize_decimal(value: object, scale: int) -> Decimal:
             """Quantize a decimal value to the specified precision and scale."""
-            quantize_str = "1." + "0" * scale  # e.g., for scale=2, quantize_str='1.00'
-            return Decimal(value).quantize(Decimal(quantize_str))
+            quantize_str = "1." + "0" * scale
+            return Decimal(str(value)).quantize(Decimal(quantize_str))
 
-        # Map the GUI field names to the expected schema field names
         try:
-            # Prepare data for the delta table with correct field names
             table_data = {
                 "symbol": [selected_symbol],
-                "date_bought": [parsed_date],
-                "price": [quantize_decimal(str(data.get("purchase_price", "0.0")), 10)],
-                "amount": [quantize_decimal(str(data.get("quantity", "0.0")), 10)],
-                "cost_of_buy": [
-                    quantize_decimal(str(data.get("cost_of_buy", "0")), 10),
-                ],
-                "currency": [currency.value],
-                "exchange_rate": [
-                    quantize_decimal(str(data.get("exchange_rate", "0")), 19),
-                ],
-                "broker": [data.get("broker")],
+                "date_bought": [values["Purchase Date"]],  # datetime.date from QDateEdit
+                "price": [quantize_decimal(values["Purchase Price"], 10)],
+                "amount": [quantize_decimal(values["Quantity"], 10)],
+                "cost_of_buy": [quantize_decimal(values["Cost of Buy"], 10)],
+                "currency": [CurrencyEnum(values["Currency"]).value],
+                "exchange_rate": [quantize_decimal(values["Exchange Rate"], 19)],
+                "broker": [values["Broker"]],
             }
 
-            # Create table instance and merge data
             bought_investment_table = InvestmentOptionBought()
             bought_investment_table.merge_from_dict(table_data)
 
             self.app_controller.show_info("Investment data saved successfully!")
             self.clear_fields()
 
-        except (ValueError, ImportError, OSError) as e:
-            self.app_controller.show_error(f"Error saving data: {e!s}")
+        except (ValueError, ImportError, OSError) as exc:
+            self.app_controller.show_error(f"Error saving data: {exc!s}")
             logging.exception("Error saving investment data")
 
+    # ------------------------------------------------------------------ clear
     def clear_fields(self) -> None:
-        """Clear all input fields."""
-        # Clear the symbol dropdown
-        self.symbol_dropdown.set("Select Symbol")
-
-        # Clear all input fields
-        for field in self.input_fields:
-            if isinstance(field.field, tk.StringVar):
-                field.field.set("")
-            elif isinstance(field.field, tk.DoubleVar):
-                field.field.set(0.0)
-            elif isinstance(field.field, tk.IntVar):
-                field.field.set(0)
+        """Clear all input fields and reset the symbol dropdown."""
+        self.symbol_combo.setCurrentIndex(-1)
+        super().clear_fields()

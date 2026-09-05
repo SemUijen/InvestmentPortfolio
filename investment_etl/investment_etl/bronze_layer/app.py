@@ -135,7 +135,7 @@ async def main() -> None:
     ingestor = AsyncDataIngestor(
         to_ingest=urls_to_ingest,
         base_dir=rf"{data_dir}/bronze",
-        semaphore=2,
+        semaphore=1,
     )
 
     # Run ingestion

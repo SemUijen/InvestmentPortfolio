@@ -13,7 +13,7 @@ table DATA_DIR
 		mode: import
 		source =
 				let
-				    Source = "path/to/your/data"
+				    Source = "\\wsl.localhost\Ubuntu\home\sem_uijen\investment_data"
 				in
 				    Source
 
